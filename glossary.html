@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glossary of Terms — Tendwell</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="tendwell.css">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-PLACEHOLDER"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-PLACEHOLDER');
+    </script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html, body {
+            font-family: Inter, system-ui, -apple-system, sans-serif;
+            background: #F5F2ED;
+            color: #2B2B2B;
+            line-height: 1.6;
+        }
+
+        /* Navigation */
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background: rgba(245, 242, 237, 0.92);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid #E8E5E0;
+        }
+        nav > div {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .nav-logo {
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .nav-logo-icon { font-size: 24px; }
+        .nav-logo-text { font-weight: 700; font-size: 22px; color: #2D6A5A; }
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            font-size: 15px;
+            font-weight: 500;
+        }
+        .nav-links a {
+            color: #2B2B2B;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+        .nav-links a:hover,
+        .nav-links a.active { color: #2D6A5A; }
+        .nav-links a.active { font-weight: 600; }
+
+        /* Page layout */
+        .page-header {
+            background: #2D6A5A;
+            padding: 56px 24px 48px;
+            text-align: center;
+        }
+        .page-header h1 {
+            font-size: 42px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 12px;
+        }
+        .page-header p {
+            font-size: 17px;
+            color: rgba(255,255,255,0.8);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .main-content {
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 48px 24px 80px;
+        }
+
+        /* Search bar */
+        .search-wrap {
+            position: relative;
+            margin-bottom: 40px;
+        }
+        .search-wrap input {
+            width: 100%;
+            padding: 14px 20px 14px 48px;
+            border: 2px solid #E8E5E0;
+            border-radius: 12px;
+            font-size: 16px;
+            font-family: Inter, system-ui;
+            background: white;
+            color: #2B2B2B;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .search-wrap input:focus { border-color: #2D6A5A; }
+        .search-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 18px;
+            color: #888;
+            pointer-events: none;
+        }
+        .no-results {
+            display: none;
+            text-align: center;
+            padding: 40px;
+            color: #888;
+            font-size: 16px;
+        }
+
+        /* Letter index */
+        .letter-index {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 40px;
+        }
+        .letter-index a {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            color: #2D6A5A;
+            background: white;
+            border: 1px solid #E8E5E0;
+            transition: all 0.15s;
+        }
+        .letter-index a:hover {
+            background: #2D6A5A;
+            color: white;
+            border-color: #2D6A5A;
+        }
+        .letter-index a.empty {
+            color: #CCC;
+            border-color: #EEE;
+            pointer-events: none;
+        }
+
+        /* Letter sections */
+        .letter-section {
+            margin-bottom: 40px;
+        }
+        .letter-heading {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: #2D6A5A;
+            border-bottom: 2px solid #2D6A5A;
+            padding-bottom: 8px;
+            margin-bottom: 20px;
+            scroll-margin-top: 80px;
+        }
+
+        /* Term cards */
+        .term {
+            background: white;
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin-bottom: 12px;
+            border: 1px solid #E8E5E0;
+            transition: box-shadow 0.2s;
+        }
+        .term:hover { box-shadow: 0 2px 12px rgba(0,0,0,0.07); }
+        .term-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 17px;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 6px;
+        }
+        .term-also {
+            font-size: 13px;
+            font-weight: 500;
+            color: #888;
+            margin-left: 6px;
+        }
+        .term-def {
+            font-size: 15px;
+            color: #555;
+            line-height: 1.65;
+        }
+        .term-tip {
+            margin-top: 8px;
+            padding: 8px 12px;
+            background: #F0FAF7;
+            border-left: 3px solid #2D6A5A;
+            border-radius: 0 6px 6px 0;
+            font-size: 13px;
+            color: #2D6A5A;
+            font-style: italic;
+        }
+
+        /* Back to top */
+        .back-to-top {
+            text-align: center;
+            margin-top: 48px;
+        }
+        .back-to-top a {
+            color: #2D6A5A;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        @media (max-width: 640px) {
+            .page-header h1 { font-size: 30px; }
+            .nav-links { gap: 16px; font-size: 13px; }
+            .term { padding: 16px 18px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="tw-nav">
+        <div class="tw-nav-inner">
+            <a href="index.html" class="tw-nav-logo">
+                <span class="tw-nav-logo-icon">🌿</span>
+                <span class="tw-nav-logo-text">Tendwell</span>
+            </a>
+            <div class="tw-nav-links">
+                <a href="index.html">Home</a>
+                <a href="guide.html">Guide</a>
+                <a href="providers.html">Providers</a>
+                <a href="costs.html">Costs</a>
+                <a href="support.html">Support</a>
+                <a href="guide.html" class="tw-nav-cta">Get Help Now</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <div class="tw-page-header">
+        <span class="tw-page-header-label">Plain-English Definitions</span>
+        <h1>Glossary of Terms</h1>
+        <p>Plain-English definitions for the legal, medical, and financial words you'll encounter after a loved one passes.</p>
+    </div>
+
+    <div class="main-content">
+
+        <!-- Search -->
+        <div class="search-wrap">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="glossary-search" placeholder="Search a term, e.g. "probate" or "executor"…" oninput="filterGlossary()" autocomplete="off">
+        </div>
+
+        <!-- Letter Index -->
+        <div class="letter-index" id="letter-index">
+            <a href="#A">A</a>
+            <a href="#B">B</a>
+            <a href="#C">C</a>
+            <a href="#D">D</a>
+            <a href="#E">E</a>
+            <a href="#F">F</a>
+            <a href="#G">G</a>
+            <a href="#H">H</a>
+            <a href="#I">I</a>
+            <a href="#J">J</a>
+            <a href="#K" class="empty">K</a>
+            <a href="#L">L</a>
+            <a href="#M">M</a>
+            <a href="#N">N</a>
+            <a href="#O">O</a>
+            <a href="#P">P</a>
+            <a href="#Q" class="empty">Q</a>
+            <a href="#R">R</a>
+            <a href="#S">S</a>
+            <a href="#T">T</a>
+            <a href="#U" class="empty">U</a>
+            <a href="#V">V</a>
+            <a href="#W">W</a>
+            <a href="#X" class="empty">X</a>
+            <a href="#Y" class="empty">Y</a>
+            <a href="#Z" class="empty">Z</a>
+        </div>
+
+        <div id="no-results" class="no-results">No terms match your search. Try a different word.</div>
+
+        <!-- A -->
+        <div class="letter-section" id="A">
+            <div class="letter-heading">A</div>
+
+            <div class="term">
+                <div class="term-name">Administrator <span class="term-also">also: Administratrix</span></div>
+                <div class="term-def">A person appointed by the court to manage and distribute a deceased person's estate when there is no valid will, or when the named executor cannot serve. The court appoints an administrator — typically the surviving spouse or an adult child — through the probate process.</div>
+            </div>
+
+            <div class="term">
+                <div class="term-name">Autopsy <span class="term-also">also: Post-mortem Examination</span></div>
+                <div class="term-def">A medical examination of a body performed after death to determine the cause and manner of death. In California, an autopsy may be ordered by the coroner if the death was sudden, unexpected, or potentially criminal. Families may also request a private autopsy, though it comes at additional cost.</div>
+            </div>
+        </div>
+
+        <!-- B -->
+        <div class="letter-section" id="B">
+            <div class="letter-heading">B</div>
+
+            <div class="term">
+                <div class="term-name">Beneficiary</div>
+                <div class="term-def">A person or organization designated to receive assets from a will, life insurance policy, retirement account, or trust. Beneficiary designations on accounts like IRAs or life insurance generally override what's written in a will — they transfer directly without going through probate.</div>
+                <div class="term-tip">💡 Always update beneficiary designations after major life events like marriage, divorce, or the birth of a child.</div>
+            </div>
+
+            <div class="term">
+                <div class="term-name">Burial Permit</div>
+                <div class="term-def">A legal document required in California before a body can be buried or cremated. The funeral home typically obtains this permit by filing with the county health department. It is issued after the death certificate is signed by a physician or coroner.</div>
+            </div>
+
+            <div class="term">
+                <div class="term-name">Bequest</div>
+                <div class="term-def">A gift of property or money left to someone in a will. A specific bequest names a particular asset ("I leave my car to my son"). A general bequest is a gift of value ("I leave $10,000 to my daughter"). A residuary bequest covers what remains after all other gifts and debts are settled.</div>
+            </div>
+        </div>
+
+        <!-- C -->
+        <div class="letter-section" id="C">
+            <div class="letter-heading">C</div>
+
+            <div class="term">
+                <div class="term-name">Certificate of Trust</div>
+                <div class="term-def">A shortened version of a trust document that proves the trust exists and identifies the trustee's powers, without revealing the full details of the trust's assets or beneficiaries. Banks and financial institutions commonly require this when transferring accounts.</div>
+            </div>
+
+            <div class="term">
+                <div class="term-name">Coroner / Medical Examiner</div>
+                <div class="term-def">A public official responsible for investigating deaths that are sudden, violent, suspicious, or occur without a doctor present. The coroner certifies the cause and manner of death on the death certificate. In California, large counties typically have a Medical Examiner (a physician) while smaller counties may have a coroner.</div>
+            </div>
+
+            <div class="term">
+                <div class="term-name">Cremation</div>
+                <div class="term-def">A method of final disposition in which the body is reduced to bone fragments (commonly called "ashes" or "cremated remains") through high heat. In California, a cremation permit must be obtained first, and there is a mandatory 24-hour waiting period after death before cremation can take place.</div>
+                <div class="term-tip">💡 California is one of the most cremation-friendly states in the country — roughly 70% of deaths result in cremation.</div>
+            </div>
+
+            <div class="term">
+                <div class="term-name">Codicil</div>
+                <div class="term-def">A legal document that modifies, adds to, or revokes part of an existing will — without replacing the entire will. Codicils must meet the same signing and witnessing requirements as the original will to be valid.</div>
+            </div>
+
+            <div class="term">
+                <div class="term-name">Conservatorship</div>
+                <div class="term-def">A court-ordered arrangement in which a person (the conservator) is appointed to manage the personal and/or financial affairs of a living adult who is unable to do so themselves due to incapacity. This is distinct from guardianship, which applies to minors.</div>
+            </div>
+        </div>
+
+        <!-- D -->
+        <div class="letter-section" id="D">
+            <div class="letter-heading">D</div>
+
+            <div class="term">
+                <div class="term-name">Death Certificate</div>
+                <div class="term-def">The official government-issued document that legally records a person's death, including the date, location, and cause. You will need certified copies for nearly every estate task — notifying banks, transferring property, claiming life insurance, and more.</div>
+                <div class="term-tip">💡 Order more than you think you need. Most families need 8–12 certified copies. Each one typically costs $21 in California.</div>
+            </div>
+
+            <div class="term">
+                <div class="term-name">Decedent</div>
+                <div class="term-def">The legal term for the person who has died. You'll see this word throughout wills, court documents, and estate paperwork. It simply means "the deceased person."</div>
+            </div>
+
+            <div class="term">
+                <div class="term-name">Direct Cremation</div>
+                <div class="term-def">The simplest and most affordable cremation option — the body is cremated shortly after death with no formal viewing or funeral service beforehand. The family receives the cremated remains and may hold a memorial separately, at a time and place of their choosing.</div>
+            </div>
+
+            <div class="term">
+                <div class="term-name">Disposition</div>
+                <div class="term-def">The legal term for what happens to the body after death — burial, cremation, green burial, body donation, or other methods. Each method requires specific permits and must follow California state regulations.</div>
+            </div>
+
+            <div class="term">
+                <div class="term-name">Durable Power of Attorney</div>
+                <div class="term-def">A legal document authorizing someone (the "agent") to make financial or medical decisions on behalf of another person. "Durable" means it remains valid even if the person becomes incapacitated. Unlike a regular POA, it does not expire upon incapacity — but it does end at death.</div>
+            </div>
+        </div>
+
+        <!-- E -->
+        <div class="letter-section" id="E">
+            <div class="letter-heading">E</div>
+
+            <div class="term">
+                <div class="term-name">Estate</div>
+                <div class="term-def">Everything a person owns at the time of death — bank accounts, real estate, investments, personal property, vehicles, and any debts owed to them — minus any liabilities they owe. The estate is what gets distributed to heirs after debts and taxes are paid.</div>
+            </div>
+
+            <div class="term">
+                <div class="term-name">Executor <span class="term-also">also: Executrix, Personal Representative</span></div>
+                <div class="term-def">The person named in a will who is responsible for managing and carrying out the estate's administration — locating assets, paying debts and taxes, filing paperwork, and distributing what remains to beneficiaries. In California, the executor must be confirmed by the probate court.</div>
+                <div class="term-tip">💡 If the estate is straightforward and worth less than $184,500 (2024 threshold), California offers simplified procedures that may bypass probate entirely.</div>
+            </div>
+
+            <div class="term">
+                <div class="term-name">Embalming</div>
+                <div class="term-def">A chemical preservation process applied to the body — typically to delay decomposition for viewing. California law does not require embalming; it is only legally required if the body will be transported across state lines by common carrier, or if burial is delayed beyond a certain period.</div>
+            </div>
+        </div>
+
+        <!-- F -->
+        <div class="letter-section" id="F">
+            <div class="letter-heading">F</div>
+
+            <div class="term">
+                <div class="term-name">Final Disposition</div>
+                <div class="term-def">See <em>Disposition</em>. This term specifically refers to the permanent handling of the body — distinguishing it from temporary storage or transport.</div>
+            </div>
+
+            <div class="term">
+                <div class="term-name">Funeral Director <span class="term-also">also: Mortician, Undertaker</span></div>
+                <div class="term-def">A licensed professional who arranges and oversees funeral and burial services. In California, funeral directors must be licensed by the Cemetery and Funeral Bureau. They handle paperwork (like the death certificate and burial permit), body preparation, and coordination with cemeteries or crematories.</div>
+            </div>
+
+            <div class="term">
+                <div class="term-name">Funeral Home <span class="term-also">also: Mortuary, Funeral Parlor</span></div>
+                <div class="term-def">A licensed establishment that provides funeral and burial services. Under California law, funeral homes must provide itemized price lists upon request. The Federal Trade Commission's "Funeral Rule" also requires them to give you pricing over the phone.</div>
+                <div class="term-tip">💡 You are never required to purchase a package. California law guarantees your right to purchase only the specific services you want.</div>
+            </div>
+        </div>
+
+        <!-- G -->
+        <div class="letter-section" id="G">
+            <div class="letter-heading">G</div>
+
+            <div class="term">
+                <div class="term-name">Grant Deed</div>
+                <div class="term-def">The document used in California to transfer ownership of real estate from one person to another. After a death, property held in the decedent's name alone typically requires a court order (through probate) to transfer via a new deed. Property held in a trust can be transferred more simply.</div>
+            </div>
+
+            <div class="term">
+                <div class="term-name">Green Burial <span class="term-also">also: Natural Burial</span></div>
+                <div class="term-def">An environmentally friendly approach to burial in which the body is interred without embalming chemicals, in a biodegradable container (or none at all), allowing it to decompose naturally. California has a growing number of natural burial grounds, particularly in the Bay Area.</div>
+            </div>
+
+            <div class="term">
+                <div class="term-name">Guardian</div>
+                <div class="term-def">A person appointed by a court (or named in a will) to care for a minor child if both parents die. Naming a guardian in your will is one of the most important things parents can do. Without a named guardian, a court decides who raises your children.</div>
+            </div>
+        </div>
+
+        <!-- H -->
+        <div class="letter-section" id="H">
+            <div class="letter-heading">H</div>
+
+            <div class="term">
+                <div class="term-name">Heir</div>
+                <div class="term-def">A person legally entitled to inherit from an estate under state law (when there is no will) or as named in a will. An heir is not the same as a beneficiary — beneficiaries are specifically named; heirs are determined by law through rules of "intestate succession."</div>
+            </div>
+
+            <div class="term">
+                <div class="term-name">Holographic Will</div>
+                <div class="term-def">A will that is handwritten and signed by the person making it (the "testator"), without witnesses. California recognizes holographic wills as valid, but they are more likely to be challenged in court and can cause complications. Typed wills with witnesses are far more reliable.</div>
+            </div>
+        </div>
+
+        <!-- I -->
+        <div class="letter-section" id="I">
+            <div class="letter-heading">I</div>
+
+            <div class="term">
+                <div class="term-name">Interment</div>
+                <div class="term-def">The burial of a body or cremated remains in the ground or in a tomb. "Interment" specifically refers to burial in earth or a cemetery structure; placement of ashes in a columbarium niche is called "inurnment."</div>
+            </div>
+
+            <div class="term">
+                <div class="term-name">Intestate <span class="term-also">also: Dying Intestate</span></div>
+                <div class="term-def">Dying without a valid will. When someone dies intestate in California, the state's intestate succession laws determine who inherits — typically a surviving spouse first, then children, then parents, then siblings, in a specific order. A judge cannot override this formula, even if it contradicts what the person might have wanted.</div>
+                <div class="term-tip">💡 Roughly 60% of Americans die without a will. Having even a simple will prevents the state from making these decisions for your family.</div>
+            </div>
+
+            <div class="term">
+                <div class="term-name">Inurnment</div>
+                <div class="term-def">The placement of cremated remains (ashes) into an urn or a columbarium niche. Columbarium niches are small compartments, typically in a wall at a cemetery or mausoleum, where urns are stored.</div>
+            </div>
+        </div>
+
+        <!-- J -->
+        <div class="letter-section" id="J">
+            <div class="letter-heading">J</div>
+
+            <div class="term">
+                <div class="term-name">Joint Tenancy</div>
+                <div class="term-def">A form of property co-ownership where all owners share an equal interest, and when one owner dies, their share automatically passes to the surviving owner(s) — bypassing probate entirely. This is very common between spouses. It requires a "right of survivorship" to be legally effective.</div>
+            </div>
+        </div>
+
+        <!-- L -->
+        <div class="letter-section" id="L">
+            <div class="letter-heading">L</div>
+
+            <div class="term">
+                <div class="term-name">Letters Testamentary <span class="term-also">also: Letters of Administration</span></div>
+                <div class="term-def">Official court documents issued by the probate court that authorize the executor (or administrator) to act on behalf of the estate. Banks, government agencies, and title companies will require these letters before releasing assets or transferring property. They are obtained by filing a petition with the probate court.</div>
+            </div>
+
+            <div class="term">
+                <div class="term-name">Life Insurance</div>
+                <div class="term-def">A policy that pays a lump-sum benefit (the "death benefit") to named beneficiaries upon the insured person's death. Life insurance proceeds are generally not subject to income tax and do not go through probate — they transfer directly to beneficiaries. Contact the insurer with the policy number and a death certificate to file a claim.</div>
+            </div>
+
+            <div class="term">
+                <div class="term-name">Living Trust <span class="term-also">also: Revocable Living Trust</span></div>
+                <div class="term-def">A legal arrangement in which a person (the "grantor") transfers their assets into a trust during their lifetime. The grantor typically serves as the trustee while alive, maintaining full control. Upon death, a "successor trustee" distributes assets to beneficiaries according to the trust terms — without going through probate, which saves time and money.</div>
+                <div class="term-tip">💡 In California, where probate can take 1–2 years and cost 4–7% of the estate's value, a living trust is often worth having.</div>
+            </div>
+        </div>
+
+        <!-- M -->
+        <div class="letter-section" id="M">
+            <div class="letter-heading">M</div>
+
+            <div class="term">
+                <div class="term-name">Mausoleum</div>
+                <div class="term-def">An above-ground structure at a cemetery that houses burial chambers (called "crypts"). Mausoleums may be private (for a single family) or community structures where multiple unrelated individuals are interred. They are typically more expensive than ground burial.</div>
+            </div>
+
+            <div class="term">
+                <div class="term-name">Mortuary <span class="term-also">also: Funeral Home</span></div>
+                <div class="term-def">A facility licensed to receive, store, and prepare human remains. The terms mortuary and funeral home are used interchangeably in California, though some mortuaries focus primarily on body preparation and transport without operating full funeral service facilities.</div>
+            </div>
+        </div>
+
+        <!-- N -->
+        <div class="letter-section" id="N">
+            <div class="letter-heading">N</div>
+
+            <div class="term">
+                <div class="term-name">Next of Kin</div>
+                <div class="term-def">The closest living relative(s) of a deceased person. Next of kin have legal authority to make decisions about body disposition (burial or cremation) when there is no pre-arranged plan. California law specifies the order: surviving spouse/domestic partner, then adult children, then parents, then siblings.</div>
+            </div>
+
+            <div class="term">
+                <div class="term-name">Notarization</div>
+                <div class="term-def">The process by which a notary public witnesses and officially certifies a signature on a document. Many estate documents — deeds, affidavits, powers of attorney — require notarization to be legally valid. Some banks offer free notary services to account holders.</div>
+            </div>
+        </div>
+
+        <!-- O -->
+        <div class="letter-section" id="O">
+            <div class="letter-heading">O</div>
+
+            <div class="term">
+                <div class="term-name">Obituary</div>
+                <div class="term-def">A written announcement of a person's death, typically including biographical information, survivors, and service details. Obituaries are published in newspapers and online memorial sites. Be thoughtful about what personal information you include — obituaries are public documents and can be misused by identity thieves.</div>
+            </div>
+        </div>
+
+        <!-- P -->
+        <div class="letter-section" id="P">
+            <div class="letter-heading">P</div>
+
+            <div class="term">
+                <div class="term-name">Pay-on-Death (POD) Designation</div>
+                <div class="term-def">A beneficiary designation on a bank or credit union account that transfers the account's balance directly to the named person upon death — bypassing probate. Setting this up requires only a simple form at your bank. The named beneficiary has no access to the funds while the account holder is alive.</div>
+            </div>
+
+            <div class="term">
+                <div class="term-name">Probate</div>
+                <div class="term-def">The court-supervised legal process of validating a will, paying debts, and distributing estate assets. In California, probate is generally required for estates with assets over $184,500 (as of 2024) that are not held in a trust, jointly owned, or designated with beneficiaries. The process typically takes 9 months to 2 years and can cost 4–7% of the estate's value in attorney and executor fees.</div>
+                <div class="term-tip">💡 Probate is public record — anyone can look up what someone owned and who inherited it. Trusts are private.</div>
+            </div>
+
+            <div class="term">
+                <div class="term-name">Probate Court</div>
+                <div class="term-def">The division of the California Superior Court that handles matters involving wills, estates, conservatorships, and guardianships. Each county has its own probate court. For example, Alameda County Probate Court is in Oakland; Santa Clara County Probate Court is in San Jose.</div>
+            </div>
+        </div>
+
+        <!-- R -->
+        <div class="letter-section" id="R">
+            <div class="letter-heading">R</div>
+
+            <div class="term">
+                <div class="term-name">Remains</div>
+                <div class="term-def">A general term for the body of a deceased person. "Cremated remains" specifically refers to the bone fragments remaining after cremation, commonly (and inaccurately) called "ashes." The cremated remains of an average adult weigh 3–9 pounds.</div>
+            </div>
+
+            <div class="term">
+                <div class="term-name">Right of Survivorship</div>
+                <div class="term-def">A legal right allowing a co-owner of property to automatically inherit the other co-owner's share upon death, without going through probate. This is the defining feature of joint tenancy and community property with right of survivorship. It must be explicitly stated in the property deed to be legally valid.</div>
+            </div>
+        </div>
+
+        <!-- S -->
+        <div class="letter-section" id="S">
+            <div class="letter-heading">S</div>
+
+            <div class="term">
+                <div class="term-name">Small Estate Affidavit</div>
+                <div class="term-def">A simplified legal procedure in California allowing heirs to collect certain assets (like bank accounts) without going through formal probate, as long as the total value of assets subject to probate is $184,500 or less (2024 limit). The affidavit must be filed at least 40 days after death.</div>
+            </div>
+
+            <div class="term">
+                <div class="term-name">Successor Trustee</div>
+                <div class="term-def">The person or institution that takes over management of a living trust after the original trustee (usually the grantor) becomes incapacitated or dies. The successor trustee distributes assets to beneficiaries according to the trust's instructions, without court involvement.</div>
+            </div>
+
+            <div class="term">
+                <div class="term-name">Surviving Spouse</div>
+                <div class="term-def">The husband, wife, or registered domestic partner who outlives their partner. California is a community property state — generally, a surviving spouse automatically owns half of all community property acquired during the marriage. The other half goes through the estate process.</div>
+            </div>
+        </div>
+
+        <!-- T -->
+        <div class="letter-section" id="T">
+            <div class="letter-heading">T</div>
+
+            <div class="term">
+                <div class="term-name">Tenancy in Common</div>
+                <div class="term-def">A form of property co-ownership where each owner holds a separate, divisible share that can be different sizes. Unlike joint tenancy, there is no right of survivorship — when a tenant in common dies, their share passes through their estate (via will or probate), not automatically to the co-owner(s).</div>
+            </div>
+
+            <div class="term">
+                <div class="term-name">Transfer-on-Death (TOD) Designation</div>
+                <div class="term-def">Similar to a pay-on-death designation, but applied to investment accounts, brokerage accounts, and vehicles (in California). TOD designations allow these assets to pass directly to named beneficiaries without probate. California allows TOD deeds for real estate as well.</div>
+            </div>
+
+            <div class="term">
+                <div class="term-name">Trust</div>
+                <div class="term-def">A legal arrangement in which one person (the "trustee") holds and manages assets for the benefit of another (the "beneficiary"). Trusts can be created during life (living trust) or through a will (testamentary trust). They are a primary tool for avoiding probate and directing how assets are distributed.</div>
+            </div>
+
+            <div class="term">
+                <div class="term-name">Trustee</div>
+                <div class="term-def">The person or institution legally responsible for managing a trust's assets according to the trust document. The trustee has a fiduciary duty — meaning they must act in the best interests of the beneficiaries, not themselves. Mismanaging trust assets as a trustee can result in personal legal liability.</div>
+            </div>
+        </div>
+
+        <!-- V -->
+        <div class="letter-section" id="V">
+            <div class="letter-heading">V</div>
+
+            <div class="term">
+                <div class="term-name">VA Burial Benefits</div>
+                <div class="term-def">Federal benefits available to eligible veterans and their spouses, including: free burial in a national cemetery, a government headstone or marker, a burial flag, and a Presidential Memorial Certificate. Eligible veterans may also receive a burial allowance. Contact the National Cemetery Scheduling Office at <a href="tel:18005351117" style="color:#2D6A5A;">1-800-535-1117</a> or visit <a href="https://www.cem.va.gov" target="_blank" rel="noopener" style="color:#2D6A5A;">cem.va.gov</a>.</div>
+                <div class="term-tip">💡 Many families don't know about these benefits. Bring the DD-214 discharge papers to the funeral home early — they handle most of the VA filing on your behalf.</div>
+            </div>
+        </div>
+
+        <!-- W -->
+        <div class="letter-section" id="W">
+            <div class="letter-heading">W</div>
+
+            <div class="term">
+                <div class="term-name">Will <span class="term-also">also: Last Will and Testament</span></div>
+                <div class="term-def">A legal document in which a person (the "testator") expresses how they want their property distributed after death and who should care for minor children. In California, a will must be signed by the testator in the presence of two adult witnesses who also sign. A will must go through probate before assets can be distributed.</div>
+                <div class="term-tip">💡 A will does not avoid probate — it just tells the probate court what you wanted. A living trust is needed to avoid probate entirely.</div>
+            </div>
+        </div>
+
+        <div class="back-to-top">
+            <a href="#top">↑ Back to top</a>
+        </div>
+
+    </div><!-- end main-content -->
+
+    <!-- Footer -->
+    <footer class="tw-footer">
+        <div class="tw-footer-inner">
+            <div class="tw-footer-grid">
+                <div>
+                    <div class="tw-footer-brand-name">🌿 Tendwell</div>
+                    <p class="tw-footer-tagline">Making end-of-life logistics accessible and clear for Bay Area families. Free to use, always.</p>
+                </div>
+                <div>
+                    <div class="tw-footer-col-title">Pages</div>
+                    <ul class="tw-footer-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="guide.html">Guide</a></li>
+                        <li><a href="providers.html">Providers</a></li>
+                        <li><a href="costs.html">Costs</a></li>
+                        <li><a href="support.html">Support</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="tw-footer-col-title">Resources</div>
+                    <ul class="tw-footer-links">
+                        <li><a href="glossary.html">Glossary</a></li>
+                        <li><a href="faq.html">FAQ</a></li>
+                        <li><a href="mailto:hello@tendwell.com">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="tw-footer-col-title">Disclaimer</div>
+                    <p class="tw-footer-disclaimer">Tendwell does not endorse any provider listed on this site. All listings are for informational purposes only. Always verify credentials directly with providers.</p>
+                </div>
+            </div>
+            <div class="tw-footer-bottom">
+                <span>© 2026 Tendwell. A free community resource.</span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function filterGlossary() {
+            const query = document.getElementById('glossary-search').value.toLowerCase().trim();
+            const terms = document.querySelectorAll('.term');
+            const sections = document.querySelectorAll('.letter-section');
+            const noResults = document.getElementById('no-results');
+            const letterIndex = document.getElementById('letter-index');
+
+            let totalVisible = 0;
+
+            sections.forEach(section => {
+                let sectionHasVisible = false;
+                const sectionTerms = section.querySelectorAll('.term');
+                sectionTerms.forEach(term => {
+                    const text = term.textContent.toLowerCase();
+                    if (!query || text.includes(query)) {
+                        term.style.display = '';
+                        sectionHasVisible = true;
+                        totalVisible++;
+                    } else {
+                        term.style.display = 'none';
+                    }
+                });
+                section.style.display = sectionHasVisible ? '' : 'none';
+            });
+
+            noResults.style.display = totalVisible === 0 ? 'block' : 'none';
+            letterIndex.style.display = query ? 'none' : 'flex';
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,1530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Step-by-Step Guide | Tendwell</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="tendwell.css">
+    <!-- GA4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-XXXXXXXXXX');
+    </script>
+    <style>
+        * {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+        body {
+            background-color: #F5F2ED;
+        }
+        .task-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+        }
+        .task-card.reviewed {
+            border-left-color: #16A34A;
+        }
+        .task-card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+        }
+        .task-header {
+            padding: 20px 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            user-select: none;
+        }
+        .task-icon {
+            font-size: 28px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        .task-content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+        .task-title-section {
+            flex: 1;
+        }
+        .task-title {
+            font-weight: 600;
+            font-size: 16px;
+            color: #2B2B2B;
+            margin-bottom: 4px;
+        }
+        .task-description {
+            font-size: 14px;
+            color: #888888;
+        }
+        .task-status {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .task-status.not-started {
+            background-color: #F0F0F0;
+            color: #666666;
+        }
+        .task-status.reviewed {
+            background-color: #DCFCE7;
+            color: #16A34A;
+        }
+        .task-detail {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease, padding 0.4s ease;
+            padding-left: 24px;
+            padding-right: 24px;
+        }
+        .task-detail.expanded {
+            max-height: 1000px;
+            padding-bottom: 24px;
+        }
+        .task-detail-text {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #555555;
+            margin-bottom: 16px;
+        }
+        .task-detail-link {
+            display: inline-block;
+            color: #2D6A5A;
+            text-decoration: none;
+            font-weight: 500;
+            margin: 8px 0;
+            transition: opacity 0.2s;
+        }
+        .task-detail-link:hover {
+            opacity: 0.8;
+        }
+        .task-detail-phone {
+            display: block;
+            color: #2D6A5A;
+            text-decoration: none;
+            font-weight: 500;
+            margin: 8px 0;
+            transition: opacity 0.2s;
+        }
+        .task-detail-phone:hover {
+            opacity: 0.8;
+        }
+        .mark-reviewed-btn {
+            background-color: #2D6A5A;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-top: 16px;
+        }
+        .mark-reviewed-btn:hover {
+            background-color: #1f4d3f;
+        }
+        .expand-icon {
+            font-size: 20px;
+            transition: transform 0.3s ease;
+            flex-shrink: 0;
+            color: #2D6A5A;
+        }
+        .expand-icon.expanded {
+            transform: rotate(180deg);
+        }
+        .progress-bar-container {
+            background-color: white;
+            padding: 16px 24px;
+            border-radius: 12px;
+            margin-bottom: 32px;
+        }
+        .progress-text {
+            font-size: 14px;
+            font-weight: 600;
+            color: #2B2B2B;
+            margin-bottom: 12px;
+        }
+        .progress-fill {
+            height: 8px;
+            background-color: #E8E5E0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .progress-bar {
+            height: 100%;
+            background-color: #2D6A5A;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+        .section-header {
+            margin-top: 48px;
+            margin-bottom: 24px;
+        }
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #2B2B2B;
+            margin-bottom: 4px;
+        }
+        .section-subtitle {
+            font-size: 14px;
+            color: #888888;
+        }
+        .page-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .page-title {
+            font-size: 36px;
+            font-weight: 700;
+            color: #2B2B2B;
+            margin-bottom: 12px;
+        }
+        .page-subtitle {
+            font-size: 16px;
+            color: #666666;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .footer {
+            background-color: white;
+            border-top: 1px solid #E8E5E0;
+            padding: 48px 24px;
+            margin-top: 80px;
+        }
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 32px;
+            margin-bottom: 32px;
+        }
+        .footer-section h4 {
+            font-weight: 600;
+            font-size: 14px;
+            color: #2B2B2B;
+            margin-bottom: 12px;
+        }
+        .footer-section a {
+            display: block;
+            font-size: 14px;
+            color: #666666;
+            text-decoration: none;
+            margin-bottom: 8px;
+            transition: color 0.2s;
+        }
+        .footer-section a:hover {
+            color: #2D6A5A;
+        }
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-top: 32px;
+            border-top: 1px solid #E8E5E0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            color: #888888;
+        }
+        .footer-bottom a {
+            color: #2D6A5A;
+            text-decoration: none;
+        }
+        .footer-bottom a:hover {
+            text-decoration: underline;
+        }
+        .print-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background-color: #2D6A5A;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            font-family: 'Inter', system-ui;
+        }
+        .print-btn:hover {
+            background-color: #1f4d3f;
+        }
+        .print-btn-outline {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background-color: white;
+            color: #2D6A5A;
+            border: 2px solid #2D6A5A;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Inter', system-ui;
+        }
+        .print-btn-outline:hover {
+            background-color: #E8F0ED;
+        }
+
+        /* Help tooltip */
+        .help-tip {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #E5E7EB;
+            color: #6B7280;
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+            flex-shrink: 0;
+            user-select: none;
+        }
+        .help-tip-bubble {
+            display: none;
+            position: absolute;
+            bottom: calc(100% + 8px);
+            left: 50%;
+            transform: translateX(-50%);
+            width: 260px;
+            background: #1F2937;
+            color: #F9FAFB;
+            font-size: 12px;
+            font-weight: 400;
+            line-height: 1.5;
+            padding: 10px 13px;
+            border-radius: 10px;
+            z-index: 100;
+            pointer-events: none;
+            white-space: normal;
+        }
+        .help-tip-bubble::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 6px solid transparent;
+            border-top-color: #1F2937;
+        }
+        .help-tip:hover .help-tip-bubble,
+        .help-tip:focus .help-tip-bubble {
+            display: block;
+        }
+
+        @media print {
+            nav, .progress-bar-container, .mark-reviewed-btn, .expand-icon, .task-status,
+            .print-actions, footer { display: none !important; }
+            body { background: white !important; }
+            .task-card { break-inside: avoid; box-shadow: none !important; border: 1px solid #ddd !important; border-radius: 8px !important; margin-bottom: 12px !important; border-left: 4px solid #2D6A5A !important; }
+            .task-detail { max-height: none !important; overflow: visible !important; padding-bottom: 16px !important; }
+            .task-detail.print-hidden { display: none !important; }
+            .task-header { padding: 12px 16px !important; }
+            .task-title { font-size: 14px !important; }
+            .task-detail-text { font-size: 12px !important; }
+            .section-header { margin-top: 24px !important; }
+            .page-title { font-size: 24px !important; }
+            .print-checklist-box { display: inline-block !important; width: 16px; height: 16px; border: 2px solid #333; border-radius: 3px; margin-right: 10px; vertical-align: middle; flex-shrink: 0; }
+            .task-icon { display: none !important; }
+        }
+        .print-checklist-box { display: none; }
+        .call-script {
+            background: #F0FDF4;
+            border: 1px solid #BBF7D0;
+            border-left: 4px solid #16A34A;
+            border-radius: 10px;
+            padding: 14px 16px;
+            margin: 14px 0;
+        }
+        .call-script-label {
+            font-size: 12px;
+            font-weight: 700;
+            color: #15803D;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .call-script-text {
+            font-size: 13px;
+            color: #166534;
+            line-height: 1.7;
+            font-style: italic;
+            white-space: pre-line;
+        }
+        .doc-locator-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 12px;
+            margin-top: 20px;
+        }
+        .doc-item {
+            background: white;
+            border: 1px solid #E8E5E0;
+            border-radius: 10px;
+            padding: 14px 16px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .doc-item:hover { border-color: #2D6A5A; }
+        .doc-item.found { border-color: #16A34A; background: #F0FDF4; }
+        .doc-checkbox {
+            width: 20px; height: 20px;
+            border: 2px solid #D1D5DB;
+            border-radius: 4px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            margin-top: 2px;
+        }
+        .doc-item.found .doc-checkbox {
+            background: #16A34A;
+            border-color: #16A34A;
+            color: white;
+            font-size: 12px;
+        }
+        .doc-name { font-size: 14px; font-weight: 600; color: #2B2B2B; }
+        .doc-note { font-size: 12px; color: #888; margin-top: 3px; }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="tw-nav">
+        <div class="tw-nav-inner">
+            <a href="index.html" class="tw-nav-logo">
+                <span class="tw-nav-logo-icon">🌿</span>
+                <span class="tw-nav-logo-text">Tendwell</span>
+            </a>
+            <div class="tw-nav-links">
+                <a href="index.html">Home</a>
+                <a href="guide.html" class="tw-active">Guide</a>
+                <a href="providers.html">Providers</a>
+                <a href="costs.html">Costs</a>
+                <a href="support.html">Support</a>
+                <a href="guide.html" class="tw-nav-cta">Get Help Now</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <div class="tw-page-header">
+        <span class="tw-page-header-label">Bay Area Bereavement Guide</span>
+        <h1>Your Step-by-Step Guide</h1>
+        <p>Everything you need to know, organized by when you need to know it. Click any task for detailed guidance.</p>
+    </div>
+
+    <!-- Main Content -->
+    <div style="max-width: 1200px; margin: 0 auto; padding: 48px 24px;">
+
+        <!-- Progress Bar -->
+        <div class="progress-bar-container">
+            <div class="progress-text"><span id="reviewed-count">0</span> of 27 tasks reviewed</div>
+            <div class="progress-fill">
+                <div class="progress-bar" id="progress-bar" style="width: 0%;"></div>
+            </div>
+        </div>
+
+        <!-- Print / Export / Share Actions -->
+        <div class="print-actions" style="display: flex; gap: 12px; margin-bottom: 32px; flex-wrap: wrap; align-items: center;">
+            <button class="print-btn" onclick="printChecklist()">🖨️ Print Checklist</button>
+            <button class="print-btn-outline" onclick="downloadChecklist()">📋 Download as Text</button>
+            <span style="display:inline-flex;align-items:center;gap:6px;">
+                <button class="print-btn-outline" onclick="shareChecklist()">📤 Delegate Tasks</button>
+                <span class="help-tip" tabindex="0">?
+                    <span class="help-tip-bubble">Check off tasks you've handled, then click Delegate Tasks to auto-generate an email — so family and friends know exactly what still needs doing.</span>
+                </span>
+            </span>
+            <span id="save-indicator" style="font-size:13px;color:#888;margin-left:4px;display:none;">✓ Progress saved</span>
+        </div>
+
+        <!-- Email Client Picker Modal -->
+        <div id="email-picker-overlay" onclick="closeEmailPicker()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:1000;backdrop-filter:blur(4px);"></div>
+        <div id="email-picker-modal" style="display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:1001;background:white;border-radius:20px;padding:32px;width:min(420px,90vw);box-shadow:0 20px 60px rgba(0,0,0,0.2);">
+            <h3 style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:#111827;margin:0 0 8px;">Delegate Tasks</h3>
+            <p style="font-size:13px;color:#6B7280;margin:0 0 4px;line-height:1.5;">We've prepared an email with your <strong style="color:#111827;">checklist progress</strong> — tasks still to do and what's already handled — so family and friends know exactly how they can help.</p>
+            <p style="font-size:13px;color:#6B7280;margin:0 0 20px;">Choose where to open and send it:</p>
+            <div style="display:flex;flex-direction:column;gap:10px;" id="email-picker-options">
+                <!-- options injected by JS -->
+            </div>
+            <button onclick="closeEmailPicker()" style="margin-top:20px;width:100%;padding:10px;border:1.5px solid #E5E7EB;border-radius:100px;background:transparent;color:#6B7280;font-size:14px;font-weight:500;cursor:pointer;">Cancel</button>
+        </div>
+
+        <!-- DOCUMENT LOCATOR SECTION -->
+        <div class="section-header">
+            <h2 class="section-title">📁 Document Locator</h2>
+            <p class="section-subtitle">Gather these before you start. Check each one off as you find it — or note where it is.</p>
+        </div>
+        <div style="background:white;border-radius:16px;padding:24px;box-shadow:0 1px 3px rgba(0,0,0,0.08);margin-bottom:48px;">
+            <p style="font-size:14px;color:#555;margin-bottom:20px;line-height:1.7;">You will need these documents many times across the weeks ahead — for the funeral home, SSA, insurance companies, banks, probate court, and more. Finding them now will save enormous time and stress later. <strong>Don't worry if you can't find everything immediately</strong> — an estate attorney can help locate missing items.</p>
+            <div class="doc-locator-grid" id="docGrid">
+                <div class="doc-item" onclick="toggleDoc(this)"><span class="doc-checkbox"></span><div><div class="doc-name">Will or Living Trust</div><div class="doc-note">Check home safe, filing cabinet, or attorney's office</div></div></div>
+                <div class="doc-item" onclick="toggleDoc(this)"><span class="doc-checkbox"></span><div><div class="doc-name">Death Certificates (10–15 copies)</div><div class="doc-note">Funeral home will order these — you'll need more than you think</div></div></div>
+                <div class="doc-item" onclick="toggleDoc(this)"><span class="doc-checkbox"></span><div><div class="doc-name">Birth Certificate</div><div class="doc-note">Vital records office can issue a copy if missing</div></div></div>
+                <div class="doc-item" onclick="toggleDoc(this)"><span class="doc-checkbox"></span><div><div class="doc-name">Social Security Card</div><div class="doc-note">The SSN is what matters — the card itself isn't required</div></div></div>
+                <div class="doc-item" onclick="toggleDoc(this)"><span class="doc-checkbox"></span><div><div class="doc-name">Marriage Certificate</div><div class="doc-note">Needed for survivor benefits, SSA, and estate</div></div></div>
+                <div class="doc-item" onclick="toggleDoc(this)"><span class="doc-checkbox"></span><div><div class="doc-name">Life Insurance Policies</div><div class="doc-note">Check files, email, and bank statements for premium payments</div></div></div>
+                <div class="doc-item" onclick="toggleDoc(this)"><span class="doc-checkbox"></span><div><div class="doc-name">Bank & Investment Statements</div><div class="doc-note">All accounts — checking, savings, brokerage, 401(k), IRA</div></div></div>
+                <div class="doc-item" onclick="toggleDoc(this)"><span class="doc-checkbox"></span><div><div class="doc-name">Property Deeds & Mortgage</div><div class="doc-note">For every real estate property owned</div></div></div>
+                <div class="doc-item" onclick="toggleDoc(this)"><span class="doc-checkbox"></span><div><div class="doc-name">Vehicle Titles</div><div class="doc-note">Car, boat, RV — needed for DMV transfer or sale</div></div></div>
+                <div class="doc-item" onclick="toggleDoc(this)"><span class="doc-checkbox"></span><div><div class="doc-name">Recent Tax Returns (2–3 years)</div><div class="doc-note">May reveal accounts, policies, or income sources</div></div></div>
+                <div class="doc-item" onclick="toggleDoc(this)"><span class="doc-checkbox"></span><div><div class="doc-name">Employer Benefits / HR Contacts</div><div class="doc-note">Group life insurance, pension, 401(k) beneficiary info</div></div></div>
+                <div class="doc-item" onclick="toggleDoc(this)"><span class="doc-checkbox"></span><div><div class="doc-name">Military Discharge Papers (DD-214)</div><div class="doc-note">Required for VA burial benefits — if lost, request at archives.gov</div></div></div>
+                <div class="doc-item" onclick="toggleDoc(this)"><span class="doc-checkbox"></span><div><div class="doc-name">Medicare / Medicaid Cards</div><div class="doc-note">Notify these programs of the death to stop coverage</div></div></div>
+                <div class="doc-item" onclick="toggleDoc(this)"><span class="doc-checkbox"></span><div><div class="doc-name">Passport</div><div class="doc-note">Surrender or retain in family records</div></div></div>
+                <div class="doc-item" onclick="toggleDoc(this)"><span class="doc-checkbox"></span><div><div class="doc-name">Outstanding Loan / Debt Statements</div><div class="doc-note">Mortgage, car loan, credit cards, medical bills</div></div></div>
+                <div class="doc-item" onclick="toggleDoc(this)"><span class="doc-checkbox"></span><div><div class="doc-name">Digital Account List</div><div class="doc-note">Passwords, email, social media, cloud storage logins</div></div></div>
+            </div>
+            <p style="font-size:13px;color:#888;margin-top:20px;">💡 Tip: Store copies of located documents in a single folder or binder. You'll be presenting these over and over to different institutions.</p>
+        </div>
+
+        <!-- SECTION 1: First 24 Hours -->
+        <div class="section-header">
+            <h2 class="section-title">⏱️ First 24 Hours</h2>
+            <p class="section-subtitle">Immediate actions that need to happen right away</p>
+        </div>
+
+        <div style="display: grid; gap: 16px; margin-bottom: 48px;">
+            <!-- Task 1 -->
+            <div class="task-card" data-task-id="1">
+                <div class="task-header" onclick="toggleTask(1)">
+                    <div class="task-icon">⚕️</div>
+                    <div class="task-content">
+                        <div class="task-title-section">
+                            <div class="task-title">Legal Pronouncement of Death</div>
+                            <div class="task-description">Obtain the official legal pronouncement</div>
+                        </div>
+                        <div class="task-status not-started" id="status-1">NOT STARTED</div>
+                    </div>
+                    <div class="expand-icon" id="icon-1">▼</div>
+                </div>
+                <div class="task-detail" id="detail-1">
+                    <div class="task-detail-text">
+                        If your loved one passed in a hospital or under hospice care, the attending physician will issue the pronouncement and sign the death certificate. If the death was unexpected or occurred at home, call 911 immediately — paramedics or a coroner will handle the legal pronouncement. Do not move the body until authorities or the funeral home arrive. If the death occurred under suspicious circumstances, law enforcement will be involved automatically.
+                    </div>
+                    <button class="mark-reviewed-btn" onclick="markReviewed(1)">Mark as reviewed</button>
+                </div>
+            </div>
+
+            <!-- Task 2 -->
+            <div class="task-card" data-task-id="2">
+                <div class="task-header" onclick="toggleTask(2)">
+                    <div class="task-icon">🏛️</div>
+                    <div class="task-content">
+                        <div class="task-title-section">
+                            <div class="task-title">Contact a Funeral Home</div>
+                            <div class="task-description">Arrange transport and begin planning</div>
+                        </div>
+                        <div class="task-status not-started" id="status-2">NOT STARTED</div>
+                    </div>
+                    <div class="expand-icon" id="icon-2">▼</div>
+                </div>
+                <div class="task-detail" id="detail-2">
+                    <div class="task-detail-text">
+                        The funeral home will coordinate transport of your loved one from the place of death to their facility. You do not need to choose a funeral home permanently at this stage — the initial transport can be arranged with any licensed funeral home, and you can transfer later if needed. Ask about their pricing (they are legally required to provide a General Price List under the FTC Funeral Rule). If cost is a concern, ask about direct cremation ($2,200 average) as the most affordable option. Bay Area funeral homes typically charge $2,200–$12,000 depending on services.
+                    </div>
+                    <div class="call-script">
+                        <div class="call-script-label">📞 What to say when you call</div>
+                        <div class="call-script-text">"Hi, I need to arrange transport for someone who has just passed away. My name is [your name]. The death occurred at [location — home, hospital, address]. Can you tell me your availability and the cost for transport? I'd also like to receive your General Price List — I understand you're required to provide it."</div>
+                    </div>
+                    <a href="providers.html" class="task-detail-link">Browse Bay Area Funeral Homes →</a>
+                    <button class="mark-reviewed-btn" onclick="markReviewed(2)">Mark as reviewed</button>
+                </div>
+            </div>
+
+            <!-- Task 3 -->
+            <div class="task-card" data-task-id="3">
+                <div class="task-header" onclick="toggleTask(3)">
+                    <div class="task-icon">👥</div>
+                    <div class="task-content">
+                        <div class="task-title-section">
+                            <div class="task-title">Notify Immediate Family</div>
+                            <div class="task-description">Reach out to family and close friends</div>
+                        </div>
+                        <div class="task-status not-started" id="status-3">NOT STARTED</div>
+                    </div>
+                    <div class="expand-icon" id="icon-3">▼</div>
+                </div>
+                <div class="task-detail" id="detail-3">
+                    <div class="task-detail-text">
+                        Start with the closest family members — spouse, children, parents, siblings — and then move outward to extended family and close friends. It's okay to ask one trusted person to help make calls on your behalf. Consider creating a group text or using a platform like CaringBridge to share updates without repeating yourself. If the deceased had a religious community, notify the clergy or spiritual leader who may help coordinate communication.
+                    </div>
+                    <button class="mark-reviewed-btn" onclick="markReviewed(3)">Mark as reviewed</button>
+                </div>
+            </div>
+
+            <!-- Task 4 -->
+            <div class="task-card" data-task-id="4">
+                <div class="task-header" onclick="toggleTask(4)">
+                    <div class="task-icon">📄</div>
+                    <div class="task-content">
+                        <div class="task-title-section">
+                            <div class="task-title">Locate Key Documents</div>
+                            <div class="task-description">Find the will, insurance policies, and estate papers</div>
+                        </div>
+                        <div class="task-status not-started" id="status-4">NOT STARTED</div>
+                    </div>
+                    <div class="expand-icon" id="icon-4">▼</div>
+                </div>
+                <div class="task-detail" id="detail-4">
+                    <div class="task-detail-text">
+                        Look for these critical documents: the will or living trust, life insurance policies, bank and investment account statements, Social Security card, birth certificate, marriage certificate, military discharge papers (DD-214 if veteran), property deeds, vehicle titles, and recent tax returns. Check the deceased's home safe, filing cabinet, desk, and safety deposit box. If the deceased had an attorney, contact them — they may have copies. Don't worry if you can't find everything immediately; the estate attorney can help locate missing documents.
+                    </div>
+                    <button class="mark-reviewed-btn" onclick="markReviewed(4)">Mark as reviewed</button>
+                </div>
+            </div>
+
+            <!-- Task 5 -->
+            <div class="task-card" data-task-id="5">
+                <div class="task-header" onclick="toggleTask(5)">
+                    <div class="task-icon">🔒</div>
+                    <div class="task-content">
+                        <div class="task-title-section">
+                            <div class="task-title">Secure the Property</div>
+                            <div class="task-description">Protect the home, vehicle, and belongings</div>
+                        </div>
+                        <div class="task-status not-started" id="status-5">NOT STARTED</div>
+                    </div>
+                    <div class="expand-icon" id="icon-5">▼</div>
+                </div>
+                <div class="task-detail" id="detail-5">
+                    <div class="task-detail-text">
+                        Lock the deceased's home and ensure it's secure. Remove any perishable food if no one will be staying there. Collect mail daily to prevent identity theft. If the deceased lived alone, consider having a family member stay at the home or ask a trusted neighbor to keep watch. Do not distribute any belongings or personal items yet — this should wait until the estate is formally settled. Notify the home insurance company that the property may be temporarily unoccupied.
+                    </div>
+                    <button class="mark-reviewed-btn" onclick="markReviewed(5)">Mark as reviewed</button>
+                </div>
+            </div>
+
+            <!-- Task 6 -->
+            <div class="task-card" data-task-id="6">
+                <div class="task-header" onclick="toggleTask(6)">
+                    <div class="task-icon">💼</div>
+                    <div class="task-content">
+                        <div class="task-title-section">
+                            <div class="task-title">Notify Employers</div>
+                            <div class="task-description">Contact the deceased's and your own employer</div>
+                        </div>
+                        <div class="task-status not-started" id="status-6">NOT STARTED</div>
+                    </div>
+                    <div class="expand-icon" id="icon-6">▼</div>
+                </div>
+                <div class="task-detail" id="detail-6">
+                    <div class="task-detail-text">
+                        Call the deceased's employer to notify them of the death. Ask about: any final paycheck or unpaid wages owed, life insurance benefits through their workplace (many employers provide a basic policy), pension or retirement account beneficiary procedures, and any personal belongings at their workplace. Also contact your own employer to arrange bereavement leave — most companies offer 3-5 days, and you may be able to use additional PTO or request unpaid leave if needed.
+                    </div>
+                    <div class="call-script">
+                        <div class="call-script-label">📞 What to say to the deceased's HR department</div>
+                        <div class="call-script-text">"Hello, I'm calling to notify you of the passing of [full name], who was an employee in [department/role]. They passed away on [date]. I need to speak with someone in HR about their final paycheck, any group life insurance benefits, retirement account beneficiary procedures, and how to collect their personal belongings. Who is the right person to speak with?"</div>
+                    </div>
+                    <button class="mark-reviewed-btn" onclick="markReviewed(6)">Mark as reviewed</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 2: Days 2–7 -->
+        <div class="section-header">
+            <h2 class="section-title">📅 Days 2–7</h2>
+            <p class="section-subtitle">Important planning and notification tasks</p>
+        </div>
+
+        <div style="display: grid; gap: 16px; margin-bottom: 48px;">
+            <!-- Task 7 -->
+            <div class="task-card" data-task-id="7">
+                <div class="task-header" onclick="toggleTask(7)">
+                    <div class="task-icon">🕊️</div>
+                    <div class="task-content">
+                        <div class="task-title-section">
+                            <div class="task-title">Arrange the Service</div>
+                            <div class="task-description">Plan the funeral, memorial, or celebration of life</div>
+                        </div>
+                        <div class="task-status not-started" id="status-7">NOT STARTED</div>
+                    </div>
+                    <div class="expand-icon" id="icon-7">▼</div>
+                </div>
+                <div class="task-detail" id="detail-7">
+                    <div class="task-detail-text">
+                        Work with your chosen funeral home to plan the service. Key decisions include: burial vs. cremation, type of ceremony (religious, secular, or celebration of life), venue (funeral home chapel, place of worship, outdoor venue, or private home), date and time, who will officiate, and music/readings. If the deceased left written wishes, follow them as closely as possible. Don't feel pressured to decide everything at once — it's okay to hold a simple immediate service and plan a larger memorial for later.
+                    </div>
+                    <button class="mark-reviewed-btn" onclick="markReviewed(7)">Mark as reviewed</button>
+                </div>
+            </div>
+
+            <!-- Task 8 -->
+            <div class="task-card" data-task-id="8">
+                <div class="task-header" onclick="toggleTask(8)">
+                    <div class="task-icon">📋</div>
+                    <div class="task-content">
+                        <div class="task-title-section">
+                            <div class="task-title">Order Death Certificates</div>
+                            <div class="task-description">Request 10-15 certified copies</div>
+                        </div>
+                        <div class="task-status not-started" id="status-8">NOT STARTED</div>
+                    </div>
+                    <div class="expand-icon" id="icon-8">▼</div>
+                </div>
+                <div class="task-detail" id="detail-8">
+                    <div class="task-detail-text">
+                        Order certified copies of the death certificate from your county's vital records office (the funeral home can usually handle this for you). You'll need more copies than you think — typically 10 to 15. Each institution (bank, insurance company, Social Security, DMV, etc.) will require an original certified copy. In California, certified copies cost approximately $21 for the first copy and $6 for each additional copy. The funeral home typically orders these as part of their services.
+                    </div>
+                    <button class="mark-reviewed-btn" onclick="markReviewed(8)">Mark as reviewed</button>
+                </div>
+            </div>
+
+            <!-- Task 9 -->
+            <div class="task-card" data-task-id="9">
+                <div class="task-header" onclick="toggleTask(9)">
+                    <div class="task-icon">✍️</div>
+                    <div class="task-content">
+                        <div class="task-title-section">
+                            <div class="task-title">Write the Obituary</div>
+                            <div class="task-description">Draft and publish a notice of passing</div>
+                        </div>
+                        <div class="task-status not-started" id="status-9">NOT STARTED</div>
+                    </div>
+                    <div class="expand-icon" id="icon-9">▼</div>
+                </div>
+                <div class="task-detail" id="detail-9">
+                    <div class="task-detail-text">
+                        An obituary typically includes: full legal name and any nicknames, date and place of birth, date and place of death, names of surviving family members, education and career highlights, hobbies and passions, details about the funeral/memorial service, and where to send donations in lieu of flowers (if applicable). You can publish in local newspapers (San Francisco Chronicle charges $300-600), on Legacy.com, and for free on social media. The funeral home can help with placement.
+                    </div>
+                    <div style="margin: 14px 0; display: flex; flex-wrap: wrap; gap: 10px;">
+                        <a href="https://www.legacy.com/obituaries/sfgate/" target="_blank" class="task-detail-link" style="background:#E8F0ED;padding:8px 14px;border-radius:8px;font-size:13px;">SF Chronicle →</a>
+                        <a href="https://www.legacy.com/obituaries/eastbaytimes/" target="_blank" class="task-detail-link" style="background:#E8F0ED;padding:8px 14px;border-radius:8px;font-size:13px;">East Bay Times →</a>
+                        <a href="https://www.legacy.com/obituaries/mercurynews/" target="_blank" class="task-detail-link" style="background:#E8F0ED;padding:8px 14px;border-radius:8px;font-size:13px;">San Jose Mercury News →</a>
+                        <a href="https://www.legacy.com/place-an-obituary/" target="_blank" class="task-detail-link" style="background:#E8F0ED;padding:8px 14px;border-radius:8px;font-size:13px;">Legacy.com (free) →</a>
+                    </div>
+                    <button class="mark-reviewed-btn" onclick="markReviewed(9)">Mark as reviewed</button>
+                </div>
+            </div>
+
+            <!-- Task 10 -->
+            <div class="task-card" data-task-id="10">
+                <div class="task-header" onclick="toggleTask(10)">
+                    <div class="task-icon">🛡️</div>
+                    <div class="task-content">
+                        <div class="task-title-section">
+                            <div class="task-title">Contact Life Insurance</div>
+                            <div class="task-description">File the initial claim</div>
+                        </div>
+                        <div class="task-status not-started" id="status-10">NOT STARTED</div>
+                    </div>
+                    <div class="expand-icon" id="icon-10">▼</div>
+                </div>
+                <div class="task-detail" id="detail-10">
+                    <div class="task-detail-text">
+                        Locate the life insurance policy (check the deceased's files, email, and bank statements for premium payments). Call the insurance company's claims line and have ready: the policy number, a certified death certificate, and the deceased's Social Security number. Most claims are paid within 30-60 days. If you can't find a policy, check with the deceased's employer (workplace policies are common), search the NAIC Life Insurance Policy Locator at https://eapps.naic.org/life-policy-locator, or check old tax returns for premium deductions.
+                    </div>
+                    <div class="call-script">
+                        <div class="call-script-label">📞 What to say to the insurance company</div>
+                        <div class="call-script-text">"Hi, I'm calling to report the death of a policyholder and begin a claim. The policyholder's name is [full name] and the policy number is [number]. They passed away on [date]. I am the [beneficiary / executor / spouse]. Can you walk me through the claims process and tell me exactly what documentation you need? I also want to confirm the beneficiary on file."</div>
+                    </div>
+                    <button class="mark-reviewed-btn" onclick="markReviewed(10)">Mark as reviewed</button>
+                </div>
+            </div>
+
+            <!-- Task 11 -->
+            <div class="task-card" data-task-id="11">
+                <div class="task-header" onclick="toggleTask(11)">
+                    <div class="task-icon">🏛️</div>
+                    <div class="task-content">
+                        <div class="task-title-section">
+                            <div class="task-title">Notify Social Security</div>
+                            <div class="task-description">Stop benefits and apply for survivor benefits</div>
+                        </div>
+                        <div class="task-status not-started" id="status-11">NOT STARTED</div>
+                    </div>
+                    <div class="expand-icon" id="icon-11">▼</div>
+                </div>
+                <div class="task-detail" id="detail-11">
+                    <div class="task-detail-text">
+                        Call the Social Security Administration at 1-800-772-1213 (TTY 1-800-325-0778). The funeral home may report the death automatically, but confirm with SSA directly. If the deceased was receiving Social Security benefits, any payment received for the month of death or after must be returned. Surviving spouses may be eligible for a one-time death benefit of $255 and ongoing survivor benefits. Bring the death certificate, Social Security numbers for both the deceased and the survivor, and marriage certificate.
+                    </div>
+                    <div class="call-script">
+                        <div class="call-script-label">📞 What to say to Social Security (1-800-772-1213)</div>
+                        <div class="call-script-text">"Hi, I'm calling to report the death of a Social Security recipient. The deceased's name is [full name] and their Social Security number is [xxx-xx-xxxx]. They passed away on [date]. I want to confirm that benefits have been stopped. I am the [surviving spouse / child / executor]. I'd also like to understand what survivor benefits I may be eligible for and how to apply."</div>
+                    </div>
+                    <a href="tel:1-800-772-1213" class="task-detail-phone">Call SSA: 1-800-772-1213</a>
+                    <button class="mark-reviewed-btn" onclick="markReviewed(11)">Mark as reviewed</button>
+                </div>
+            </div>
+
+            <!-- Task 12 -->
+            <div class="task-card" data-task-id="12">
+                <div class="task-header" onclick="toggleTask(12)">
+                    <div class="task-icon">🌸</div>
+                    <div class="task-content">
+                        <div class="task-title-section">
+                            <div class="task-title">Arrange Flowers & Catering</div>
+                            <div class="task-description">Order sympathy arrangements and plan the gathering</div>
+                        </div>
+                        <div class="task-status not-started" id="status-12">NOT STARTED</div>
+                    </div>
+                    <div class="expand-icon" id="icon-12">▼</div>
+                </div>
+                <div class="task-detail" id="detail-12">
+                    <div class="task-detail-text">
+                        Sympathy flower arrangements typically range from $75 for a small bouquet to $300+ for standing sprays and casket pieces. Many Bay Area florists offer same-day delivery to funeral homes. For the post-service gathering (repast, wake, or shiva), consider catering for the expected number of guests. Options range from simple deli trays ($8-15/person) to full catering ($25-50/person). Many communities organize meal trains — don't hesitate to accept help.
+                    </div>
+                    <a href="providers.html" class="task-detail-link">Browse Bay Area Florists →</a>
+                    <button class="mark-reviewed-btn" onclick="markReviewed(12)">Mark as reviewed</button>
+                </div>
+            </div>
+
+            <!-- Task 13 -->
+            <div class="task-card" data-task-id="13">
+                <div class="task-header" onclick="toggleTask(13)">
+                    <div class="task-icon">💝</div>
+                    <div class="task-content">
+                        <div class="task-title-section">
+                            <div class="task-title">Set Up a Memorial Fund</div>
+                            <div class="task-description">Create a fundraising page if needed</div>
+                        </div>
+                        <div class="task-status not-started" id="status-13">NOT STARTED</div>
+                    </div>
+                    <div class="expand-icon" id="icon-13">▼</div>
+                </div>
+                <div class="task-detail" id="detail-13">
+                    <div class="task-detail-text">
+                        If funeral costs are a concern, there is absolutely no shame in asking for help. GoFundMe reports that funeral fundraisers raise an average of $4,500 and are among the most successful campaign types on the platform. Be specific about costs in your campaign description and share it through social media and family group chats. Alternatively, many funeral homes can set up a memorial donation fund directed to a charity in the deceased's name.
+                    </div>
+                    <a href="https://www.gofundme.com/c/funeral-fundraising" class="task-detail-link" target="_blank">Start a GoFundMe →</a>
+                    <button class="mark-reviewed-btn" onclick="markReviewed(13)">Mark as reviewed</button>
+                </div>
+            </div>
+
+            <!-- Task 14 -->
+            <div class="task-card" data-task-id="14">
+                <div class="task-header" onclick="toggleTask(14)">
+                    <div class="task-icon">🏦</div>
+                    <div class="task-content">
+                        <div class="task-title-section">
+                            <div class="task-title">Notify Financial Institutions</div>
+                            <div class="task-description">Contact banks, credit cards, and investment accounts</div>
+                        </div>
+                        <div class="task-status not-started" id="status-14">NOT STARTED</div>
+                    </div>
+                    <div class="expand-icon" id="icon-14">▼</div>
+                </div>
+                <div class="task-detail" id="detail-14">
+                    <div class="task-detail-text">
+                        Contact each bank, credit union, and credit card company where the deceased held accounts. You'll typically need a certified death certificate and proof that you're the executor or next of kin. Ask about: joint accounts (these typically pass to the surviving owner), individual accounts (these will be frozen and become part of the estate), automatic payments set up on the accounts, and any outstanding balances. Do NOT pay any debts from your own funds — the estate is responsible for the deceased's debts, not you personally.
+                    </div>
+                    <div class="call-script">
+                        <div class="call-script-label">📞 What to say to each bank or financial institution</div>
+                        <div class="call-script-text">"Hello, I'm calling to notify you of the death of an account holder. The account holder's name is [full name] and they passed away on [date]. I am the [executor / next of kin / surviving joint owner]. I need to understand the process for: freezing or accessing the account, identifying any automatic payments that need to be cancelled, and transferring or closing the account. Can you connect me with your estate services department?"</div>
+                    </div>
+                    <button class="mark-reviewed-btn" onclick="markReviewed(14)">Mark as reviewed</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 3: Weeks 2–4 -->
+        <div class="section-header">
+            <h2 class="section-title">📆 Weeks 2–4</h2>
+            <p class="section-subtitle">Legal, financial, and administrative follow-up</p>
+        </div>
+
+        <div style="display: grid; gap: 16px; margin-bottom: 48px;">
+            <!-- Task 15 -->
+            <div class="task-card" data-task-id="15">
+                <div class="task-header" onclick="toggleTask(15)">
+                    <div class="task-icon">📝</div>
+                    <div class="task-content">
+                        <div class="task-title-section">
+                            <div class="task-title">File Life Insurance Claim</div>
+                            <div class="task-description">Submit the formal claim with documentation</div>
+                        </div>
+                        <div class="task-status not-started" id="status-15">NOT STARTED</div>
+                    </div>
+                    <div class="expand-icon" id="icon-15">▼</div>
+                </div>
+                <div class="task-detail" id="detail-15">
+                    <div class="task-detail-text">
+                        If you haven't already filed, gather the policy document, a certified death certificate, and the claim form from the insurance company. Most insurers allow you to file by mail, fax, or online. Benefits are typically paid within 30-60 days of receiving all required documentation. If the claim is denied or delayed, contact your state's Department of Insurance. If the policy is large, consider consulting a financial advisor before deciding how to receive the payout (lump sum vs. annuity).
+                    </div>
+                    <button class="mark-reviewed-btn" onclick="markReviewed(15)">Mark as reviewed</button>
+                </div>
+            </div>
+
+            <!-- Task 16 -->
+            <div class="task-card" data-task-id="16">
+                <div class="task-header" onclick="toggleTask(16)">
+                    <div class="task-icon">⚖️</div>
+                    <div class="task-content">
+                        <div class="task-title-section">
+                            <div class="task-title">Contact an Estate Attorney</div>
+                            <div class="task-description">Begin the probate or trust settlement process</div>
+                        </div>
+                        <div class="task-status not-started" id="status-16">NOT STARTED</div>
+                    </div>
+                    <div class="expand-icon" id="icon-16">▼</div>
+                </div>
+                <div class="task-detail" id="detail-16">
+                    <div class="task-detail-text">
+                        If the deceased had a trust, an attorney can help you settle it without going through probate court — this is faster and more private. If there's only a will (or no estate plan), probate will likely be required. California probate typically takes 9-18 months and costs 4-7% of the estate's value in fees. Many Bay Area estate attorneys offer a free initial consultation. Bring the will/trust, death certificate, and a list of the deceased's assets and debts.
+                    </div>
+                    <a href="providers.html" class="task-detail-link">Find Estate Attorneys →</a>
+                    <button class="mark-reviewed-btn" onclick="markReviewed(16)">Mark as reviewed</button>
+                </div>
+            </div>
+
+            <!-- Task 17 -->
+            <div class="task-card" data-task-id="17">
+                <div class="task-header" onclick="toggleTask(17)">
+                    <div class="task-icon">🚗</div>
+                    <div class="task-content">
+                        <div class="task-title-section">
+                            <div class="task-title">Cancel the Driver's License</div>
+                            <div class="task-description">Notify the DMV and handle vehicle registration</div>
+                        </div>
+                        <div class="task-status not-started" id="status-17">NOT STARTED</div>
+                    </div>
+                    <div class="expand-icon" id="icon-17">▼</div>
+                </div>
+                <div class="task-detail" id="detail-17">
+                    <div class="task-detail-text">
+                        Visit the California DMV or submit by mail: a certified death certificate, the deceased's driver's license (if available), and a completed REG 5 form for vehicle transfer. If the vehicle was jointly owned, it can transfer to the surviving owner with a new title. If there's an outstanding auto loan, contact the lender — the estate may need to continue payments or negotiate the loan. Consider whether the family wants to keep, sell, or donate the vehicle.
+                    </div>
+                    <button class="mark-reviewed-btn" onclick="markReviewed(17)">Mark as reviewed</button>
+                </div>
+            </div>
+
+            <!-- Task 18 -->
+            <div class="task-card" data-task-id="18">
+                <div class="task-header" onclick="toggleTask(18)">
+                    <div class="task-icon">📱</div>
+                    <div class="task-content">
+                        <div class="task-title-section">
+                            <div class="task-title">Cancel Utilities & Subscriptions</div>
+                            <div class="task-description">Transfer or close recurring services</div>
+                        </div>
+                        <div class="task-status not-started" id="status-18">NOT STARTED</div>
+                    </div>
+                    <div class="expand-icon" id="icon-18">▼</div>
+                </div>
+                <div class="task-detail" id="detail-18">
+                    <div class="task-detail-text">
+                        Make a comprehensive list of all recurring payments and subscriptions. Check bank statements and credit card bills for the past 3 months to catch everything. Common items to cancel or transfer: utilities (PG&E, water, garbage), internet and phone, streaming services (Netflix, Spotify, etc.), gym memberships, magazine subscriptions, Amazon Prime, cloud storage, and any other auto-pay services. Some companies will issue refunds for unused portions; always ask.
+                    </div>
+                    <div class="call-script">
+                        <div class="call-script-label">📞 What to say to utilities and subscription companies</div>
+                        <div class="call-script-text">"Hi, I'm calling to cancel an account. The account holder, [full name], passed away on [date]. The account number is [number] and the service address is [address]. I have a death certificate available if required. I'd like to: cancel the service effective [date], receive confirmation in writing, and inquire about any refund for unused portions of a prepaid period. Who can help me with this?"</div>
+                    </div>
+                    <button class="mark-reviewed-btn" onclick="markReviewed(18)">Mark as reviewed</button>
+                </div>
+            </div>
+
+            <!-- Task 19 -->
+            <div class="task-card" data-task-id="19">
+                <div class="task-header" onclick="toggleTask(19)">
+                    <div class="task-icon">📬</div>
+                    <div class="task-content">
+                        <div class="task-title-section">
+                            <div class="task-title">Forward Mail</div>
+                            <div class="task-description">Set up USPS mail forwarding</div>
+                        </div>
+                        <div class="task-status not-started" id="status-19">NOT STARTED</div>
+                    </div>
+                    <div class="expand-icon" id="icon-19">▼</div>
+                </div>
+                <div class="task-detail" id="detail-19">
+                    <div class="task-detail-text">
+                        Visit your local post office or go to usps.com to set up mail forwarding from the deceased's address to yours (or the executor's address). This costs $1.10 online for identity verification. Mail forwarding lasts 12 months for most mail and 12 months for packages. This is important for catching any bills, financial statements, or legal notices that arrive. Watch for any unfamiliar correspondence — it may reveal accounts or obligations you weren't aware of.
+                    </div>
+                    <button class="mark-reviewed-btn" onclick="markReviewed(19)">Mark as reviewed</button>
+                </div>
+            </div>
+
+            <!-- Task 20 -->
+            <div class="task-card" data-task-id="20">
+                <div class="task-header" onclick="toggleTask(20)">
+                    <div class="task-icon">📊</div>
+                    <div class="task-content">
+                        <div class="task-title-section">
+                            <div class="task-title">Plan for Taxes</div>
+                            <div class="task-description">Consult an accountant about the final tax return</div>
+                        </div>
+                        <div class="task-status not-started" id="status-20">NOT STARTED</div>
+                    </div>
+                    <div class="expand-icon" id="icon-20">▼</div>
+                </div>
+                <div class="task-detail" id="detail-20">
+                    <div class="task-detail-text">
+                        The deceased's final federal and state tax returns must be filed for the year of death. If the deceased was married, the surviving spouse can file a joint return for that year. You may also need to file an estate tax return (Form 706) if the estate exceeds the federal exemption ($13.61 million in 2024). California does not have a state estate tax. A CPA or tax attorney can help identify deductions (medical expenses, funeral costs) and ensure compliance. The filing deadline is April 15 of the year following death.
+                    </div>
+                    <button class="mark-reviewed-btn" onclick="markReviewed(20)">Mark as reviewed</button>
+                </div>
+            </div>
+
+            <!-- Task 21 -->
+            <div class="task-card" data-task-id="21">
+                <div class="task-header" onclick="toggleTask(21)">
+                    <div class="task-icon">🎖️</div>
+                    <div class="task-content">
+                        <div class="task-title-section">
+                            <div class="task-title">File for Veteran Benefits</div>
+                            <div class="task-description">Apply for VA burial benefits if applicable</div>
+                        </div>
+                        <div class="task-status not-started" id="status-21">NOT STARTED</div>
+                    </div>
+                    <div class="expand-icon" id="icon-21">▼</div>
+                </div>
+                <div class="task-detail" id="detail-21">
+                    <div class="task-detail-text">
+                        If the deceased was a veteran, the surviving family may be eligible for: a burial allowance ($2,000+ for service-connected death, $948 for non-service-connected), a free burial in a national cemetery, a government headstone or marker (free), a Presidential Memorial Certificate, and a burial flag. Contact the VA at 1-800-827-1000 or visit va.gov. You'll need the DD-214 discharge papers, death certificate, and marriage certificate (if applying as spouse). Many veterans' service organizations (VFW, American Legion) offer free assistance with claims.
+                    </div>
+                    <div class="call-script">
+                        <div class="call-script-label">📞 What to say to the VA (1-800-827-1000)</div>
+                        <div class="call-script-text">"Hello, I'm calling to inquire about burial and survivor benefits for a recently deceased veteran. The veteran's name is [full name]. They served in the [Army/Navy/Air Force/Marines/Coast Guard] and were discharged on [approximate date]. They passed away on [date]. I am their [spouse/child/family member]. I have a copy of their DD-214 discharge papers. Can you tell me what benefits are available, which ones I'm eligible for, and walk me through the application process?"</div>
+                    </div>
+                    <a href="tel:1-800-827-1000" class="task-detail-phone">Call VA: 1-800-827-1000</a>
+                    <button class="mark-reviewed-btn" onclick="markReviewed(21)">Mark as reviewed</button>
+                </div>
+            </div>
+
+            <!-- Task 22 -->
+            <div class="task-card" data-task-id="22">
+                <div class="task-header" onclick="toggleTask(22)">
+                    <div class="task-icon">🏠</div>
+                    <div class="task-content">
+                        <div class="task-title-section">
+                            <div class="task-title">Update Property Titles</div>
+                            <div class="task-description">Transfer deeds, titles, and registrations</div>
+                        </div>
+                        <div class="task-status not-started" id="status-22">NOT STARTED</div>
+                    </div>
+                    <div class="expand-icon" id="icon-22">▼</div>
+                </div>
+                <div class="task-detail" id="detail-22">
+                    <div class="task-detail-text">
+                        Real property (homes, land) held in a trust can be transferred by the trustee recording a new deed. Property held in joint tenancy passes automatically to the surviving owner — file an Affidavit of Death of Joint Tenant with the county recorder. Property held solely by the deceased will go through probate. For vehicles, use the DMV REG 5 form. For bank and investment accounts, contact each institution with a death certificate and proof of authority (Letters Testamentary from probate court or a Certification of Trust). Keep records of everything.
+                    </div>
+                    <button class="mark-reviewed-btn" onclick="markReviewed(22)">Mark as reviewed</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 4: Months 2–6 -->
+        <div class="section-header">
+            <h2 class="section-title">🌱 Months 2–6</h2>
+            <p class="section-subtitle">Estate settlement and personal healing</p>
+        </div>
+
+        <div style="display: grid; gap: 16px; margin-bottom: 48px;">
+            <!-- Task 23 -->
+            <div class="task-card" data-task-id="23">
+                <div class="task-header" onclick="toggleTask(23)">
+                    <div class="task-icon">💳</div>
+                    <div class="task-content">
+                        <div class="task-title-section">
+                            <div class="task-title">Settle Outstanding Debts</div>
+                            <div class="task-description">Work with the estate to resolve loans and obligations</div>
+                        </div>
+                        <div class="task-status not-started" id="status-23">NOT STARTED</div>
+                    </div>
+                    <div class="expand-icon" id="icon-23">▼</div>
+                </div>
+                <div class="task-detail" id="detail-23">
+                    <div class="task-detail-text">
+                        Important: In most cases, you are NOT personally responsible for the deceased's debts. The estate pays debts from its assets. If creditors contact you, do not agree to pay anything from your own funds — refer them to the estate executor. Secured debts (mortgage, car loan) are tied to the asset; the estate can continue paying, sell the asset, or let the lender reclaim it. Unsecured debts (credit cards, medical bills) are paid from estate assets; if the estate doesn't have enough, those debts may go unpaid. Beware of debt collectors who pressure family members illegally.
+                    </div>
+                    <div class="call-script">
+                        <div class="call-script-label">📞 What to say if a creditor calls you</div>
+                        <div class="call-script-text">"Thank you for calling. I want to let you know that [full name] has passed away. I am not the executor or administrator of the estate, and I am not personally responsible for this debt. Please direct all further correspondence in writing to the estate executor, [name], at [address]. I am unable to authorize any payments or make any commitments on behalf of the estate at this time."
+
+Note: Under the FDCPA, debt collectors cannot legally pressure family members to pay a deceased person's debts from their own funds. If a collector is aggressive, you can report them to the CFPB at consumerfinance.gov.</div>
+                    </div>
+                    <button class="mark-reviewed-btn" onclick="markReviewed(23)">Mark as reviewed</button>
+                </div>
+            </div>
+
+            <!-- Task 24 -->
+            <div class="task-card" data-task-id="24">
+                <div class="task-header" onclick="toggleTask(24)">
+                    <div class="task-icon">📦</div>
+                    <div class="task-content">
+                        <div class="task-title-section">
+                            <div class="task-title">Distribute Assets</div>
+                            <div class="task-description">Follow the will or trust to distribute belongings</div>
+                        </div>
+                        <div class="task-status not-started" id="status-24">NOT STARTED</div>
+                    </div>
+                    <div class="expand-icon" id="icon-24">▼</div>
+                </div>
+                <div class="task-detail" id="detail-24">
+                    <div class="task-detail-text">
+                        Distribution should only happen after all debts, taxes, and administrative expenses are paid. If there's a will, follow its instructions. If there's no will, California's intestacy laws determine who inherits (generally: spouse first, then children, then parents, then siblings). For sentimental items not mentioned in the will, consider holding a family meeting to discuss fair distribution. Document everything distributed and have recipients sign acknowledgment forms. If disputes arise, a mediator can be less expensive and less damaging to family relationships than litigation.
+                    </div>
+                    <button class="mark-reviewed-btn" onclick="markReviewed(24)">Mark as reviewed</button>
+                </div>
+            </div>
+
+            <!-- Task 25 -->
+            <div class="task-card" data-task-id="25">
+                <div class="task-header" onclick="toggleTask(25)">
+                    <div class="task-icon">📑</div>
+                    <div class="task-content">
+                        <div class="task-title-section">
+                            <div class="task-title">File the Final Tax Return</div>
+                            <div class="task-description">Submit federal and state returns for the year of death</div>
+                        </div>
+                        <div class="task-status not-started" id="status-25">NOT STARTED</div>
+                    </div>
+                    <div class="expand-icon" id="icon-25">▼</div>
+                </div>
+                <div class="task-detail" id="detail-25">
+                    <div class="task-detail-text">
+                        The final Form 1040 covers January 1 through the date of death. Report all income earned during that period. A surviving spouse can file jointly for the year of death and may qualify for 'qualifying surviving spouse' status for up to two additional years. The executor or administrator signs the return on behalf of the deceased (write 'DECEASED' and the date of death at the top of the return). If a refund is due, file Form 1310 to claim it. Attach a copy of the death certificate.
+                    </div>
+                    <button class="mark-reviewed-btn" onclick="markReviewed(25)">Mark as reviewed</button>
+                </div>
+            </div>
+
+            <!-- Task 26 -->
+            <div class="task-card" data-task-id="26">
+                <div class="task-header" onclick="toggleTask(26)">
+                    <div class="task-icon">💻</div>
+                    <div class="task-content">
+                        <div class="task-title-section">
+                            <div class="task-title">Handle Social Media Accounts</div>
+                            <div class="task-description">Memorialize or close digital accounts</div>
+                        </div>
+                        <div class="task-status not-started" id="status-26">NOT STARTED</div>
+                    </div>
+                    <div class="expand-icon" id="icon-26">▼</div>
+                </div>
+                <div class="task-detail" id="detail-26">
+                    <div class="task-detail-text">
+                        Facebook allows you to memorialize the account (adds 'Remembering' before the name) or delete it — visit facebook.com/help/contact/305593649477238. Instagram also offers memorialization or removal. Google has an Inactive Account Manager that may have been set up. For email accounts, you may need a court order to access them. Cancel any social media accounts the deceased wouldn't have wanted to remain active. Also close or transfer: email accounts, cloud storage (iCloud, Google Drive, Dropbox), domain registrations, and cryptocurrency wallets (if the keys can be located).
+                    </div>
+                    <button class="mark-reviewed-btn" onclick="markReviewed(26)">Mark as reviewed</button>
+                </div>
+            </div>
+
+            <!-- Task 27 -->
+            <div class="task-card" data-task-id="27">
+                <div class="task-header" onclick="toggleTask(27)">
+                    <div class="task-icon">💚</div>
+                    <div class="task-content">
+                        <div class="task-title-section">
+                            <div class="task-title">Seek Grief Support</div>
+                            <div class="task-description">Take care of yourself — it's not optional, it's essential</div>
+                        </div>
+                        <div class="task-status not-started" id="status-27">NOT STARTED</div>
+                    </div>
+                    <div class="expand-icon" id="icon-27">▼</div>
+                </div>
+                <div class="task-detail" id="detail-27">
+                    <div class="task-detail-text">
+                        Grief doesn't follow a timeline. Weeks or months after the logistics are handled, the emotional weight often hits hardest. Please consider: individual therapy with a grief-trained counselor, a grief support group (sharing with others who understand is powerful), your primary care physician if grief is affecting your sleep, appetite, or daily functioning, and crisis resources if you're having thoughts of self-harm (988 Suicide & Crisis Lifeline — call or text 988). The Bay Area has excellent grief support resources, many of them free.
+                    </div>
+                    <a href="support.html" class="task-detail-link">View Bay Area Grief Support →</a>
+                    <a href="tel:988" class="task-detail-phone">Crisis Line: 988</a>
+                    <button class="mark-reviewed-btn" onclick="markReviewed(27)">Mark as reviewed</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="tw-footer">
+        <div class="tw-footer-inner">
+            <div class="tw-footer-grid">
+                <div>
+                    <div class="tw-footer-brand-name">🌿 Tendwell</div>
+                    <p class="tw-footer-tagline">Making end-of-life logistics accessible and clear for Bay Area families. Free to use, always.</p>
+                </div>
+                <div>
+                    <div class="tw-footer-col-title">Pages</div>
+                    <ul class="tw-footer-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="guide.html">Guide</a></li>
+                        <li><a href="providers.html">Providers</a></li>
+                        <li><a href="costs.html">Costs</a></li>
+                        <li><a href="support.html">Support</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="tw-footer-col-title">Resources</div>
+                    <ul class="tw-footer-links">
+                        <li><a href="glossary.html">Glossary</a></li>
+                        <li><a href="faq.html">FAQ</a></li>
+                        <li><a href="mailto:hello@tendwell.com">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="tw-footer-col-title">Disclaimer</div>
+                    <p class="tw-footer-disclaimer">Tendwell does not endorse any provider listed on this site. All listings are for informational purposes only. Always verify credentials directly with providers.</p>
+                </div>
+            </div>
+            <div class="tw-footer-bottom">
+                <span>© 2026 Tendwell. A free community resource.</span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Task state tracking
+        const taskState = {};
+        for (let i = 1; i <= 27; i++) {
+            taskState[i] = {
+                expanded: false,
+                reviewed: false
+            };
+        }
+
+        // Load saved progress from localStorage on page load
+        function loadProgress() {
+            try {
+                const saved = localStorage.getItem('tendwell_progress');
+                if (saved) {
+                    const savedState = JSON.parse(saved);
+                    for (let i = 1; i <= 27; i++) {
+                        if (savedState[i] && savedState[i].reviewed) {
+                            taskState[i].reviewed = true;
+                            const card = document.querySelector(`[data-task-id="${i}"]`);
+                            const statusBadge = document.getElementById(`status-${i}`);
+                            if (card && statusBadge) {
+                                card.classList.add('reviewed');
+                                statusBadge.classList.remove('not-started');
+                                statusBadge.classList.add('reviewed');
+                                statusBadge.textContent = 'REVIEWED ✓';
+                            }
+                        }
+                    }
+                    updateProgress();
+                    const count = Object.values(savedState).filter(s => s && s.reviewed).length;
+                    if (count > 0) {
+                        const indicator = document.getElementById('save-indicator');
+                        if (indicator) {
+                            indicator.textContent = `✓ ${count} tasks saved from your last visit`;
+                            indicator.style.display = 'inline';
+                        }
+                    }
+                }
+            } catch(e) { /* localStorage not available */ }
+        }
+
+        // Save progress to localStorage
+        function saveProgress() {
+            try {
+                localStorage.setItem('tendwell_progress', JSON.stringify(taskState));
+                const indicator = document.getElementById('save-indicator');
+                if (indicator) {
+                    const count = Object.values(taskState).filter(s => s && s.reviewed).length;
+                    indicator.textContent = `✓ ${count} task${count !== 1 ? 's' : ''} saved`;
+                    indicator.style.display = 'inline';
+                }
+            } catch(e) { /* localStorage not available */ }
+        }
+
+        // Share checklist via email
+        function shareChecklist() {
+            const reviewed = [];
+            const pending = [];
+            const taskTitles = {
+                1:'Legal Pronouncement of Death', 2:'Contact a Funeral Home', 3:'Notify Immediate Family',
+                4:'Locate Key Documents', 5:'Secure the Property', 6:'Notify Employers',
+                7:'Arrange the Service', 8:'Order Death Certificates', 9:'Write the Obituary',
+                10:'Contact Life Insurance', 11:'Notify Social Security', 12:'Arrange Flowers & Catering',
+                13:'Set Up a Memorial Fund', 14:'Notify Financial Institutions', 15:'File Life Insurance Claim',
+                16:'Contact an Estate Attorney', 17:'Cancel the Driver\'s License', 18:'Cancel Utilities & Subscriptions',
+                19:'Forward Mail', 20:'Plan for Taxes', 21:'File for Veteran Benefits',
+                22:'Update Property Titles', 23:'Settle Outstanding Debts', 24:'Distribute Assets',
+                25:'File the Final Tax Return', 26:'Handle Social Media Accounts', 27:'Seek Grief Support'
+            };
+            for (let i = 1; i <= 27; i++) {
+                if (taskState[i].reviewed) reviewed.push(`✓ ${taskTitles[i]}`);
+                else pending.push(`☐ ${taskTitles[i]}`);
+            }
+
+            const body = `Hi,
+
+I'm using Tendwell to manage the arrangements after our recent loss. There is a lot to handle and I'd appreciate your help with some of these tasks.
+
+TENDWELL CHECKLIST — ${reviewed.length} of 27 completed
+
+STILL TO DO:
+${pending.join('\n')}
+
+${reviewed.length > 0 ? `ALREADY HANDLED:\n${reviewed.join('\n')}\n` : ''}
+You can view the full guide with detailed instructions at: ${window.location.href}
+
+Thank you for your support.`;
+
+            const subject = encodeURIComponent('Help needed: our family checklist on Tendwell');
+            const bodyEncoded = encodeURIComponent(body);
+
+            const clients = [
+                {
+                    label: 'Gmail',
+                    emoji: '📧',
+                    url: `https://mail.google.com/mail/?view=cm&su=${subject}&body=${bodyEncoded}`,
+                    newTab: true
+                },
+                {
+                    label: 'Outlook / Hotmail',
+                    emoji: '📨',
+                    url: `https://outlook.live.com/mail/0/deeplink/compose?subject=${subject}&body=${bodyEncoded}`,
+                    newTab: true
+                },
+                {
+                    label: 'Yahoo Mail',
+                    emoji: '📩',
+                    url: `https://compose.mail.yahoo.com/?subject=${subject}&body=${bodyEncoded}`,
+                    newTab: true
+                },
+                {
+                    label: 'Apple Mail / Default app',
+                    emoji: '✉️',
+                    url: `mailto:?subject=${subject}&body=${bodyEncoded}`,
+                    newTab: false
+                }
+            ];
+
+            // Store clients and body globally — avoids URL serialization into onclick attributes
+            window._emailClients = clients;
+            window._shareBody = body;
+
+            const optionsEl = document.getElementById('email-picker-options');
+            optionsEl.innerHTML = clients.map((c, i) => `
+                <button onclick="openEmailClient(${i})"
+                    style="display:flex;align-items:center;gap:12px;width:100%;padding:13px 16px;border:1.5px solid #E5E7EB;border-radius:12px;background:white;cursor:pointer;font-size:15px;font-weight:500;color:#111827;text-align:left;transition:border-color 0.15s,background 0.15s;"
+                    onmouseover="this.style.borderColor='#2D6A5A';this.style.background='#F0F7F4'"
+                    onmouseout="this.style.borderColor='#E5E7EB';this.style.background='white'">
+                    <span style="width:22px;font-size:18px;">${c.emoji}</span>
+                    ${c.label}
+                </button>
+            `).join('') + `
+                <button id="copy-btn" onclick="copyShareText()"
+                    style="display:flex;align-items:center;gap:12px;width:100%;padding:13px 16px;border:1.5px dashed #D1D5DB;border-radius:12px;background:#FAFAF8;cursor:pointer;font-size:15px;font-weight:500;color:#6B7280;text-align:left;transition:border-color 0.15s;"
+                    onmouseover="this.style.borderColor='#9CA3AF'"
+                    onmouseout="this.style.borderColor='#D1D5DB'">
+                    <span style="width:22px;font-size:18px;">📋</span>
+                    Copy text to clipboard
+                </button>`;
+
+            document.getElementById('email-picker-overlay').style.display = 'block';
+            document.getElementById('email-picker-modal').style.display = 'block';
+            gtag('event', 'checklist_shared');
+        }
+
+        function openEmailClient(index) {
+            const c = window._emailClients[index];
+            if (c.newTab) window.open(c.url, '_blank');
+            else window.location.href = c.url;
+            closeEmailPicker();
+        }
+
+        function copyShareText() {
+            navigator.clipboard.writeText(window._shareBody || '').then(() => {
+                const btn = document.getElementById('copy-btn');
+                btn.innerHTML = '<span style="width:22px;font-size:18px;">✓</span> Copied to clipboard!';
+                btn.style.borderColor = '#2D6A5A';
+                btn.style.color = '#2D6A5A';
+                setTimeout(() => closeEmailPicker(), 1400);
+            });
+        }
+
+        function closeEmailPicker() {
+            document.getElementById('email-picker-overlay').style.display = 'none';
+            document.getElementById('email-picker-modal').style.display = 'none';
+        }
+
+        // Toggle task expansion
+        function toggleTask(taskId) {
+            const detail = document.getElementById(`detail-${taskId}`);
+            const icon = document.getElementById(`icon-${taskId}`);
+            const card = document.querySelector(`[data-task-id="${taskId}"]`);
+
+            taskState[taskId].expanded = !taskState[taskId].expanded;
+
+            if (taskState[taskId].expanded) {
+                detail.classList.add('expanded');
+                icon.classList.add('expanded');
+
+                // Track expansion in GA4
+                gtag('event', 'guide_task_expanded', {
+                    'task_id': taskId
+                });
+            } else {
+                detail.classList.remove('expanded');
+                icon.classList.remove('expanded');
+            }
+        }
+
+        // Mark task as reviewed
+        function markReviewed(taskId) {
+            taskState[taskId].reviewed = !taskState[taskId].reviewed;
+            const card = document.querySelector(`[data-task-id="${taskId}"]`);
+            const statusBadge = document.getElementById(`status-${taskId}`);
+
+            if (taskState[taskId].reviewed) {
+                card.classList.add('reviewed');
+                statusBadge.classList.remove('not-started');
+                statusBadge.classList.add('reviewed');
+                statusBadge.textContent = 'REVIEWED ✓';
+            } else {
+                card.classList.remove('reviewed');
+                statusBadge.classList.remove('reviewed');
+                statusBadge.classList.add('not-started');
+                statusBadge.textContent = 'NOT STARTED';
+            }
+
+            updateProgress();
+            saveProgress();
+
+            // Track review in GA4
+            gtag('event', 'guide_task_marked_reviewed', {
+                'task_id': taskId
+            });
+        }
+
+        // Print checklist
+        function printChecklist() {
+            // Expand all details for printing
+            document.querySelectorAll('.task-detail').forEach(d => d.classList.add('expanded'));
+            // Add print checkbox placeholders
+            document.querySelectorAll('.task-header').forEach(h => {
+                if (!h.querySelector('.print-checklist-box')) {
+                    const box = document.createElement('span');
+                    box.className = 'print-checklist-box';
+                    h.insertBefore(box, h.firstChild);
+                }
+            });
+            window.print();
+            gtag('event', 'checklist_printed');
+        }
+
+        // Download checklist as text file
+        function downloadChecklist() {
+            const sections = document.querySelectorAll('.section-header');
+            let text = 'TENDWELL — STEP-BY-STEP GUIDE\n';
+            text += 'Your after-loss checklist for the Bay Area\n';
+            text += '='.repeat(50) + '\n\n';
+
+            sections.forEach(section => {
+                const title = section.querySelector('.section-title')?.textContent || '';
+                const subtitle = section.querySelector('.section-subtitle')?.textContent || '';
+                text += title + '\n';
+                text += subtitle + '\n';
+                text += '-'.repeat(40) + '\n';
+
+                // Get the next sibling grid containing task cards
+                let grid = section.nextElementSibling;
+                if (grid) {
+                    grid.querySelectorAll('.task-card').forEach(card => {
+                        const taskTitle = card.querySelector('.task-title')?.textContent || '';
+                        const taskDesc = card.querySelector('.task-description')?.textContent || '';
+                        const detailText = card.querySelector('.task-detail-text')?.textContent?.trim() || '';
+                        text += '\n[ ] ' + taskTitle + '\n';
+                        text += '    ' + taskDesc + '\n';
+                        if (detailText) {
+                            text += '    ' + detailText.replace(/\n/g, '\n    ') + '\n';
+                        }
+                    });
+                }
+                text += '\n';
+            });
+
+            text += '\n' + '='.repeat(50) + '\n';
+            text += 'Generated by Tendwell — tendwell.com\n';
+            text += 'A free community resource for families.\n';
+
+            const blob = new Blob([text], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'Tendwell_Checklist.txt';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            gtag('event', 'checklist_downloaded');
+        }
+
+        // Update progress bar
+        function updateProgress() {
+            let reviewedCount = 0;
+            for (let i = 1; i <= 27; i++) {
+                if (taskState[i].reviewed) {
+                    reviewedCount++;
+                }
+            }
+
+            const progressPercentage = (reviewedCount / 27) * 100;
+            document.getElementById('progress-bar').style.width = progressPercentage + '%';
+            document.getElementById('reviewed-count').textContent = reviewedCount;
+        }
+
+        // Document locator toggle
+        function toggleDoc(el) {
+            el.classList.toggle('found');
+            const box = el.querySelector('.doc-checkbox');
+            box.textContent = el.classList.contains('found') ? '✓' : '';
+            saveDocProgress();
+        }
+
+        function saveDocProgress() {
+            try {
+                const items = document.querySelectorAll('.doc-item');
+                const docState = Array.from(items).map(el => el.classList.contains('found'));
+                localStorage.setItem('tendwell_docs', JSON.stringify(docState));
+            } catch(e) {}
+        }
+
+        function loadDocProgress() {
+            try {
+                const saved = localStorage.getItem('tendwell_docs');
+                if (saved) {
+                    const docState = JSON.parse(saved);
+                    const items = document.querySelectorAll('.doc-item');
+                    items.forEach((el, i) => {
+                        if (docState[i]) {
+                            el.classList.add('found');
+                            el.querySelector('.doc-checkbox').textContent = '✓';
+                        }
+                    });
+                }
+            } catch(e) {}
+        }
+
+        // Initialize: load saved progress when page loads
+        window.addEventListener('DOMContentLoaded', () => {
+            loadProgress();
+            loadDocProgress();
+        });
+    </script>
+</body>
+</html>

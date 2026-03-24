@@ -1,0 +1,1706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bay Area Providers | Tendwell</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts - Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="tendwell.css">
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+    <!-- GA4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-PLACEHOLDER"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-PLACEHOLDER');
+    </script>
+
+    <style>
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: #F5F2ED;
+        }
+
+        .card-hover {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+        }
+
+        .filter-pill {
+            transition: all 0.2s ease;
+            border: 2px solid #E5E1DC;
+            background-color: white;
+            color: #666;
+            padding: 10px 16px;
+            border-radius: 24px;
+            font-weight: 500;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .filter-pill.active {
+            background-color: #2D6A5A;
+            color: white;
+            border-color: #2D6A5A;
+        }
+
+        .filter-pill.active.funeral-homes {
+            background-color: #2D6A5A;
+        }
+
+        .filter-pill.active.florists {
+            background-color: #1565A8;
+        }
+
+        .filter-pill.active.estate-attorneys {
+            background-color: #D97706;
+        }
+
+        .filter-pill.active.grief-support {
+            background-color: #7C3AED;
+        }
+
+        .filter-pill.active.caterers {
+            background-color: #DC2626;
+        }
+
+        .filter-pill.active.celebrants {
+            background-color: #0891B2;
+        }
+
+        .provider-card {
+            border-left: 4px solid #ccc;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .provider-card.funeral-homes {
+            border-left-color: #2D6A5A;
+        }
+
+        .provider-card.florists {
+            border-left-color: #1565A8;
+        }
+
+        .provider-card.estate-attorneys {
+            border-left-color: #D97706;
+        }
+
+        .provider-card.grief-support {
+            border-left-color: #7C3AED;
+        }
+
+        .provider-card.caterers {
+            border-left-color: #DC2626;
+        }
+
+        .provider-card.celebrants {
+            border-left-color: #0891B2;
+        }
+
+        .provider-name {
+            font-size: 17px;
+            font-weight: 700;
+            color: #2D6A5A;
+            margin-bottom: 8px;
+        }
+
+        .provider-address {
+            font-size: 13px;
+            color: #888;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+
+        .provider-rating {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .provider-rating-stars {
+            color: #D97706;
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .provider-rating-count {
+            color: #999;
+            font-size: 13px;
+        }
+
+        .provider-phone {
+            font-size: 16px;
+            font-weight: 600;
+            color: #2D6A5A;
+            margin-bottom: 10px;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .provider-phone:hover {
+            text-decoration: underline;
+        }
+
+        .provider-description {
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 12px;
+            line-height: 1.4;
+            flex-grow: 1;
+        }
+
+        .provider-links {
+            display: flex;
+            gap: 12px;
+            margin-top: auto;
+        }
+
+        .provider-link {
+            font-size: 13px;
+            color: #2D6A5A;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s ease;
+            flex: 1;
+            text-align: center;
+        }
+
+        .provider-link:hover {
+            color: #1F4D42;
+            text-decoration: underline;
+        }
+
+        #map {
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .leaflet-popup-content-wrapper {
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .leaflet-popup-tip {
+            background-color: white;
+        }
+
+        .popup-content {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .popup-header {
+            font-weight: 700;
+            color: #2D6A5A;
+            margin-bottom: 8px;
+            font-size: 15px;
+        }
+
+        .popup-text {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 4px;
+            line-height: 1.4;
+        }
+
+        .popup-text a {
+            color: #2D6A5A;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .popup-text a:hover {
+            text-decoration: underline;
+        }
+
+        .fade-out {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .fade-in {
+            opacity: 1;
+            transition: opacity 0.3s ease;
+            pointer-events: auto;
+        }
+
+        @media (max-width: 768px) {
+            #map {
+                height: 350px !important;
+            }
+        }
+
+        footer {
+            background-color: #1A2744;
+        }
+
+        footer h3,
+        footer h4 {
+            color: white;
+        }
+
+        footer p,
+        footer a {
+            color: #D1D5DB;
+        }
+
+        footer a:hover {
+            color: white;
+        }
+
+        footer .footer-column-title {
+            font-weight: 600;
+            color: white;
+            margin-bottom: 16px;
+            font-size: 14px;
+        }
+
+        footer .footer-link {
+            color: #D1D5DB;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.2s ease;
+        }
+
+        footer .footer-link:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            font-size: 13px;
+            color: #9CA3AF;
+            padding-top: 24px;
+            border-top: 1px solid #374151;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="tw-nav">
+        <div class="tw-nav-inner">
+            <a href="index.html" class="tw-nav-logo">
+                <span class="tw-nav-logo-icon">🌿</span>
+                <span class="tw-nav-logo-text">Tendwell</span>
+            </a>
+            <div class="tw-nav-links">
+                <a href="index.html">Home</a>
+                <a href="guide.html">Guide</a>
+                <a href="providers.html" class="tw-active">Providers</a>
+                <a href="costs.html">Costs</a>
+                <a href="support.html">Support</a>
+                <a href="guide.html" class="tw-nav-cta">Get Help Now</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <div class="tw-page-header">
+        <span class="tw-page-header-label">Bay Area Directory</span>
+        <h1>Bay Area Providers</h1>
+        <p>Vetted local services to help you through every step. Filter by category and explore the map.</p>
+    </div>
+
+    <!-- Count + Disclaimer -->
+    <div style="max-width:1200px;margin:0 auto;padding:28px 32px 0;">
+        <p style="font-size:14px;color:#6B7280;margin-bottom:16px;" id="provider-count">Showing 91 providers across the Bay Area</p>
+        <div style="padding:16px 20px;background:#FFFBEB;border:1px solid #FDE68A;border-radius:12px;display:flex;gap:12px;align-items:flex-start;max-width:820px;">
+            <span style="font-size:20px;flex-shrink:0;line-height:1.4;">ℹ️</span>
+            <div>
+                <p style="font-size:13px;color:#78350F;line-height:1.7;margin:0;">
+                    <strong>A note on this directory:</strong> Tendwell does not endorse, recommend, or have any financial relationship with any provider listed here. This directory is provided as free, directional guidance to help ease the overwhelming process of navigating loss — not as a substitute for your own judgment. We encourage you to verify credentials, read reviews, and compare pricing directly with any provider before engaging their services.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filter Buttons -->
+    <section style="border-bottom:1px solid #E8E5E0;padding:32px 24px;">
+        <div style="max-width:1200px;margin:0 auto;">
+            <div style="display:flex;flex-wrap:wrap;gap:12px;">
+                <button class="filter-pill active" data-category="all" onclick="filterByCategory('all')">
+                    All
+                </button>
+                <button class="filter-pill funeral-homes" data-category="funeral-homes" onclick="filterByCategory('funeral-homes')">
+                    Funeral Homes (24)
+                </button>
+                <button class="filter-pill florists" data-category="florists" onclick="filterByCategory('florists')">
+                    Florists (16)
+                </button>
+                <button class="filter-pill estate-attorneys" data-category="estate-attorneys" onclick="filterByCategory('estate-attorneys')">
+                    Estate Attorneys (11)
+                </button>
+                <button class="filter-pill grief-support" data-category="grief-support" onclick="filterByCategory('grief-support')">
+                    Grief Support (15)
+                </button>
+                <button class="filter-pill caterers" data-category="caterers" onclick="filterByCategory('caterers')">
+                    Caterers (15)
+                </button>
+                <button class="filter-pill celebrants" data-category="celebrants" onclick="filterByCategory('celebrants')">
+                    Celebrants & Officiants (10)
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Map -->
+    <section style="padding:48px 24px;">
+        <div style="max-width:1200px;margin:0 auto;">
+            <div id="map" style="height:500px;width:100%;margin-bottom:32px;"></div>
+        </div>
+    </section>
+
+    <!-- Provider Cards Grid -->
+    <section style="padding:48px 24px 80px;max-width:1200px;margin:0 auto;">
+        <div id="provider-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:24px;">
+            <!-- Cards will be inserted here -->
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="tw-footer">
+        <div class="tw-footer-inner">
+            <div class="tw-footer-grid">
+                <div>
+                    <div class="tw-footer-brand-name">🌿 Tendwell</div>
+                    <p class="tw-footer-tagline">Making end-of-life logistics accessible and clear for Bay Area families. Free to use, always.</p>
+                </div>
+                <div>
+                    <div class="tw-footer-col-title">Pages</div>
+                    <ul class="tw-footer-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="guide.html">Guide</a></li>
+                        <li><a href="providers.html">Providers</a></li>
+                        <li><a href="costs.html">Costs</a></li>
+                        <li><a href="support.html">Support</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="tw-footer-col-title">Resources</div>
+                    <ul class="tw-footer-links">
+                        <li><a href="glossary.html">Glossary</a></li>
+                        <li><a href="faq.html">FAQ</a></li>
+                        <li><a href="mailto:hello@tendwell.com">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="tw-footer-col-title">Disclaimer</div>
+                    <p class="tw-footer-disclaimer">Tendwell does not endorse any provider listed on this site. All listings are for informational purposes only. Always verify credentials directly with providers.</p>
+                </div>
+            </div>
+            <div class="tw-footer-bottom">
+                <span>© 2026 Tendwell. A free community resource.</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <script>
+        // Provider Data - 91 providers across 6 categories (full Bay Area coverage: SF, Peninsula, South Bay, East Bay)
+        const providers = [
+            // Funeral Homes (10)
+            {
+                id: 'fh1',
+                name: 'Duggan\'s Serra Mortuary',
+                address: '500 Westlake Ave, Daly City, CA 94014',
+                phone: '(650) 756-4500',
+                rating: 4.6,
+                reviews: '248 reviews',
+                desc: 'Full-service funeral home with spacious facilities. Traditional and cremation.',
+                category: 'funeral-homes',
+                lat: 37.6879,
+                lng: -122.4702
+            },
+            {
+                id: 'fh2',
+                name: 'Sinai Memorial Chapel',
+                address: '1501 Divisadero St, San Francisco, CA 94115',
+                phone: '(415) 921-3636',
+                rating: 4.8,
+                reviews: '189 reviews',
+                desc: 'Serving the Jewish community since 1903. Full traditional and cremation.',
+                category: 'funeral-homes',
+                lat: 37.7847,
+                lng: -122.4397
+            },
+            {
+                id: 'fh3',
+                name: 'Cypress Lawn',
+                address: '1370 El Camino Real, Colma, CA 94014',
+                phone: '(650) 550-8800',
+                rating: 4.5,
+                reviews: '312 reviews',
+                desc: 'Historic cemetery and funeral home. Beautiful grounds.',
+                category: 'funeral-homes',
+                lat: 37.6761,
+                lng: -122.4544
+            },
+            {
+                id: 'fh4',
+                name: 'Neptune Society',
+                address: '1850 Gateway Blvd, Concord, CA 94520',
+                phone: '(925) 827-8940',
+                rating: 4.3,
+                reviews: '156 reviews',
+                desc: 'Cremation specialists serving 125,000+ families. Affordable.',
+                category: 'funeral-homes',
+                lat: 37.9735,
+                lng: -122.0539
+            },
+            {
+                id: 'fh5',
+                name: 'Chapel of the Chimes Oakland',
+                address: '4499 Piedmont Ave, Oakland, CA 94611',
+                phone: '(510) 654-0123',
+                rating: 4.7,
+                reviews: '267 reviews',
+                desc: 'Julia Morgan-designed landmark. Full funeral and cremation.',
+                category: 'funeral-homes',
+                lat: 37.8327,
+                lng: -122.2527
+            },
+            {
+                id: 'fh6',
+                name: 'Skylawn Memorial Park',
+                address: 'Hwy 92 at Skyline Blvd, San Mateo, CA 94402',
+                phone: '(650) 349-4411',
+                rating: 4.4,
+                reviews: '134 reviews',
+                desc: 'Peaceful hilltop setting with panoramic Bay views.',
+                category: 'funeral-homes',
+                lat: 37.5558,
+                lng: -122.3558
+            },
+            {
+                id: 'fh7',
+                name: 'Grissom\'s Chapel & Mortuary',
+                address: '267 E Lewelling Blvd, San Lorenzo, CA 94580',
+                phone: '(510) 278-2800',
+                rating: 4.8,
+                reviews: '203 reviews',
+                desc: 'Family-owned since 1974. Private onsite crematory. No-pressure service.',
+                category: 'funeral-homes',
+                lat: 37.6785,
+                lng: -122.1244
+            },
+            {
+                id: 'fh8',
+                name: 'Chapel of the Chimes Hayward',
+                address: '32992 Mission Blvd, Hayward, CA 94544',
+                phone: '(510) 471-3363',
+                rating: 4.5,
+                reviews: '178 reviews',
+                desc: 'Full-service funeral home and memorial park in the East Bay.',
+                category: 'funeral-homes',
+                lat: 37.5541,
+                lng: -121.9652
+            },
+            {
+                id: 'fh9',
+                name: 'Fremont Chapel of the Roses',
+                address: '1940 Peralta Blvd, Fremont, CA 94536',
+                phone: '(510) 797-1900',
+                rating: 4.6,
+                reviews: '221 reviews',
+                desc: 'Family-run since 1965. Traditional funerals, cremations, memorials.',
+                category: 'funeral-homes',
+                lat: 37.5483,
+                lng: -121.9789
+            },
+            {
+                id: 'fh10',
+                name: 'Fouché\'s Hudson Funeral Home',
+                address: '4443 Market St, Oakland, CA 94608',
+                phone: '(510) 654-8011',
+                rating: 4.7,
+                reviews: '145 reviews',
+                desc: 'Community-focused Oakland mortuary. Personalized, compassionate care.',
+                category: 'funeral-homes',
+                lat: 37.8262,
+                lng: -122.2639
+            },
+
+            // Florists (6)
+            {
+                id: 'fl1',
+                name: 'Finer Flora',
+                address: 'San Francisco, CA',
+                phone: '(415) 735-3366',
+                rating: 4.9,
+                reviews: '87 reviews',
+                desc: 'Sympathy specialists since 2014. Free delivery to all funeral homes.',
+                category: 'florists',
+                lat: 37.7749,
+                lng: -122.4194
+            },
+            {
+                id: 'fl2',
+                name: 'Elizabeth\'s Flowers',
+                address: '2107 Fillmore St, San Francisco, CA 94115',
+                phone: '(415) 922-7651',
+                rating: 4.7,
+                reviews: '156 reviews',
+                desc: 'Family-owned. Same-day sympathy delivery across SF and Bay Area.',
+                category: 'florists',
+                lat: 37.7900,
+                lng: -122.4340
+            },
+            {
+                id: 'fl3',
+                name: 'Abigail\'s Flowers',
+                address: 'San Francisco, CA',
+                phone: '(415) 781-1718',
+                rating: 4.6,
+                reviews: '92 reviews',
+                desc: 'Delivers to all Bay Area funeral homes. Personalized sympathy arrangements.',
+                category: 'florists',
+                lat: 37.7879,
+                lng: -122.4074
+            },
+            {
+                id: 'fl4',
+                name: 'Flowers of the Valley',
+                address: 'San Francisco, CA',
+                phone: '(415) 882-7581',
+                rating: 4.5,
+                reviews: '68 reviews',
+                desc: 'Premium sourced flowers. Custom memorial and sympathy designs.',
+                category: 'florists',
+                lat: 37.7694,
+                lng: -122.4262
+            },
+            {
+                id: 'fl5',
+                name: 'Farmgirl Flowers',
+                address: '901 16th St, San Francisco, CA 94107',
+                phone: '(855) 202-3817',
+                rating: 4.4,
+                reviews: '342 reviews',
+                desc: 'Sustainable, locally sourced arrangements. Same-day Bay Area delivery.',
+                category: 'florists',
+                lat: 37.7665,
+                lng: -122.3958
+            },
+            {
+                id: 'fl6',
+                name: 'BloomNation SF',
+                address: 'San Francisco, CA',
+                phone: '(213) 394-3107',
+                rating: 4.5,
+                reviews: '215 reviews',
+                desc: 'Marketplace connecting to local florists. Compare sympathy arrangements.',
+                category: 'florists',
+                lat: 37.7849,
+                lng: -122.4094
+            },
+
+            // Estate Attorneys (6)
+            {
+                id: 'ea1',
+                name: 'Jay Greene, Attorney & CPA',
+                address: 'San Francisco, CA',
+                phone: '(415) 752-7100',
+                rating: 4.8,
+                reviews: '43 reviews',
+                desc: 'Estate planning, probate, and elder law. CPA background brings financial expertise.',
+                category: 'estate-attorneys',
+                lat: 37.7749,
+                lng: -122.4494
+            },
+            {
+                id: 'ea2',
+                name: 'Talbot Law, PC',
+                address: 'San Francisco, CA',
+                phone: '(415) 648-5765',
+                rating: 4.7,
+                reviews: '38 reviews',
+                desc: 'Complex probates, trust litigation, conservatorship, and estate planning.',
+                category: 'estate-attorneys',
+                lat: 37.7599,
+                lng: -122.4148
+            },
+            {
+                id: 'ea3',
+                name: 'Law Office of Matthew J. Tuller',
+                address: 'San Rafael, CA',
+                phone: '(415) 491-2310',
+                rating: 4.6,
+                reviews: '29 reviews',
+                desc: 'Estate planning and trust settlement serving Marin and greater Bay Area.',
+                category: 'estate-attorneys',
+                lat: 37.9735,
+                lng: -122.5311
+            },
+            {
+                id: 'ea4',
+                name: 'Bay Area Probate & Estate Law',
+                address: 'Oakland, CA',
+                phone: '(510) 540-4580',
+                rating: 4.5,
+                reviews: '35 reviews',
+                desc: 'Full-service probate and estate administration.',
+                category: 'estate-attorneys',
+                lat: 37.8044,
+                lng: -122.2712
+            },
+            {
+                id: 'ea5',
+                name: 'Temmerman, Cilley & Kohlmann',
+                address: 'San Jose, CA',
+                phone: '(408) 998-9500',
+                rating: 4.7,
+                reviews: '52 reviews',
+                desc: 'Trusted estate planning and probate since 1979. South Bay specialists.',
+                category: 'estate-attorneys',
+                lat: 37.3382,
+                lng: -121.8863
+            },
+            {
+                id: 'ea6',
+                name: 'Barr & Young Attorneys',
+                address: 'Walnut Creek, CA',
+                phone: '(925) 935-9600',
+                rating: 4.6,
+                reviews: '41 reviews',
+                desc: 'East Bay estate planning, probate, and trust administration.',
+                category: 'estate-attorneys',
+                lat: 37.9100,
+                lng: -122.0651
+            },
+
+            // Grief Support (7)
+            {
+                id: 'gs1',
+                name: 'JFCS Grief & Bereavement',
+                address: 'San Francisco & Marin',
+                phone: '(415) 449-1212',
+                rating: 4.9,
+                reviews: '67 reviews',
+                desc: 'Individual and group counseling. All faiths welcome. Free and sliding-scale.',
+                category: 'grief-support',
+                lat: 37.7849,
+                lng: -122.3994
+            },
+            {
+                id: 'gs2',
+                name: 'By the Bay Health',
+                address: 'San Francisco',
+                phone: '(415) 526-5699',
+                rating: 4.8,
+                reviews: '54 reviews',
+                desc: 'Hospice and grief support. Community groups open to all. Free.',
+                category: 'grief-support',
+                lat: 37.7604,
+                lng: -122.3886
+            },
+            {
+                id: 'gs3',
+                name: 'KARA Grief Support',
+                address: 'Palo Alto',
+                phone: '(650) 321-5272',
+                rating: 4.8,
+                reviews: '89 reviews',
+                desc: 'Support groups for children, teens, and adults. All services free.',
+                category: 'grief-support',
+                lat: 37.4419,
+                lng: -122.1430
+            },
+            {
+                id: 'gs4',
+                name: 'Bay Area CBT Center',
+                address: 'San Francisco',
+                phone: '(415) 310-5142',
+                rating: 4.7,
+                reviews: '112 reviews',
+                desc: 'Integrative grief therapy. CBT, mindfulness, and acceptance approaches.',
+                category: 'grief-support',
+                lat: 37.7879,
+                lng: -122.4074
+            },
+            {
+                id: 'gs5',
+                name: 'Sutter Health Bereavement',
+                address: 'San Francisco & Marin',
+                phone: '(855) 259-0943',
+                rating: 4.6,
+                reviews: '45 reviews',
+                desc: 'Free individual and group support for anyone grieving.',
+                category: 'grief-support',
+                lat: 37.7861,
+                lng: -122.4105
+            },
+            {
+                id: 'gs6',
+                name: 'The Compassionate Friends — Bay Area',
+                address: 'Multiple Bay Area Locations',
+                phone: '(877) 969-0010',
+                rating: 4.8,
+                reviews: '78 reviews',
+                desc: 'Peer support after the death of a child. Chapters in SF, Oakland, San Jose.',
+                category: 'grief-support',
+                lat: 37.7550,
+                lng: -122.4000
+            },
+            {
+                id: 'gs7',
+                name: 'Pathways Hospice Grief Support',
+                address: 'Sunnyvale, CA',
+                phone: '(888) 755-7855',
+                rating: 4.7,
+                reviews: '56 reviews',
+                desc: 'Free grief groups and individual counseling. Sunnyvale, South SF, Oakland.',
+                category: 'grief-support',
+                lat: 37.3688,
+                lng: -122.0363
+            },
+
+            // Caterers (7)
+            {
+                id: 'ct1',
+                name: 'AWG Private Chefs',
+                address: 'San Francisco Bay Area',
+                phone: '(877) 753-2727',
+                rating: 4.9,
+                reviews: '134 reviews',
+                desc: 'Memorial catering specialists for 20+ years. Full-service and drop-off options.',
+                category: 'caterers',
+                lat: 37.7849,
+                lng: -122.4294
+            },
+            {
+                id: 'ct2',
+                name: 'A Tasteful Affair',
+                address: 'Pleasanton, CA',
+                phone: '(925) 485-3288',
+                rating: 4.7,
+                reviews: '98 reviews',
+                desc: 'Full-service memorial catering serving Oakland, SF, San Jose, and Napa.',
+                category: 'caterers',
+                lat: 37.6624,
+                lng: -121.8747
+            },
+            {
+                id: 'ct3',
+                name: 'OZ Catering',
+                address: 'San Francisco, CA',
+                phone: '(415) 282-4665',
+                rating: 4.6,
+                reviews: '187 reviews',
+                desc: '30+ years in SF. Memorial menus, full-service or drop-off. Short notice available.',
+                category: 'caterers',
+                lat: 37.7510,
+                lng: -122.4150
+            },
+            {
+                id: 'ct4',
+                name: 'Taste Catering & Event Planning',
+                address: 'San Francisco, CA',
+                phone: '(415) 552-8104',
+                rating: 4.7,
+                reviews: '223 reviews',
+                desc: 'Elegant memorial receptions. Multiple venue options across SF.',
+                category: 'caterers',
+                lat: 37.7650,
+                lng: -122.4194
+            },
+            {
+                id: 'ct5',
+                name: 'CaterCow',
+                address: 'San Francisco Bay Area',
+                phone: '(415) 851-4769',
+                rating: 4.5,
+                reviews: '312 reviews',
+                desc: 'Bay Area catering marketplace. Compare caterers, order online, delivery included.',
+                category: 'caterers',
+                lat: 37.7749,
+                lng: -122.3994
+            },
+            {
+                id: 'ct6',
+                name: 'La Cocina Municipal Marketplace',
+                address: '101 Hyde St, San Francisco, CA 94102',
+                phone: '(415) 824-2729',
+                rating: 4.6,
+                reviews: '145 reviews',
+                desc: 'Diverse food entrepreneurs. Cultural catering for memorial gatherings.',
+                category: 'caterers',
+                lat: 37.7815,
+                lng: -122.4157
+            },
+            {
+                id: 'ct7',
+                name: 'El Molino Central',
+                address: '11 Central Ave, Sonoma, CA 95476',
+                phone: '(707) 939-1010',
+                rating: 4.7,
+                reviews: '267 reviews',
+                desc: 'Authentic Mexican catering for memorial gatherings. Family-style service.',
+                category: 'caterers',
+                lat: 38.2919,
+                lng: -122.4580
+            },
+
+            // --- SOUTH BAY: Funeral Homes ---
+            {
+                id: 'fh11',
+                name: 'Lima Family Mortuaries',
+                address: '1580 Almaden Rd, San Jose, CA 95125',
+                phone: '(408) 573-3288',
+                rating: 4.8,
+                reviews: '312 reviews',
+                desc: 'South Bay\'s largest family-owned mortuary group. Full-service, cremation, and pre-planning.',
+                category: 'funeral-homes',
+                lat: 37.3001,
+                lng: -121.8940
+            },
+            {
+                id: 'fh12',
+                name: 'Oak Hill Memorial Park & Funeral',
+                address: '300 Curtner Ave, San Jose, CA 95125',
+                phone: '(408) 297-2447',
+                rating: 4.6,
+                reviews: '278 reviews',
+                desc: 'Beautiful memorial park with full funeral services. Traditional, cremation, and green burial.',
+                category: 'funeral-homes',
+                lat: 37.3012,
+                lng: -121.8963
+            },
+            {
+                id: 'fh13',
+                name: 'Darling Fischer Funeral Home',
+                address: '1100 Mowry Ave, Fremont, CA 94536',
+                phone: '(510) 791-4800',
+                rating: 4.7,
+                reviews: '194 reviews',
+                desc: 'Serving the South Bay and Tri-Cities area since 1902. Multiple chapel locations.',
+                category: 'funeral-homes',
+                lat: 37.5524,
+                lng: -121.9850
+            },
+            {
+                id: 'fh14',
+                name: 'Peninsula Funeral Home',
+                address: '1977 Lawrence Expy, Santa Clara, CA 95051',
+                phone: '(408) 246-3580',
+                rating: 4.5,
+                reviews: '143 reviews',
+                desc: 'Family-run funeral home serving Santa Clara and Silicon Valley for over 40 years.',
+                category: 'funeral-homes',
+                lat: 37.3527,
+                lng: -121.9738
+            },
+            {
+                id: 'fh15',
+                name: 'Continental Funeral Home',
+                address: '4201 Charter Park Dr, San Jose, CA 95136',
+                phone: '(408) 972-1010',
+                rating: 4.4,
+                reviews: '167 reviews',
+                desc: 'Bilingual services in English and Spanish. Serving diverse South Bay communities.',
+                category: 'funeral-homes',
+                lat: 37.2760,
+                lng: -121.8783
+            },
+            {
+                id: 'fh16',
+                name: 'Alpha & Omega Funeral Services',
+                address: '310 N Capitol Ave, San Jose, CA 95133',
+                phone: '(408) 251-1900',
+                rating: 4.6,
+                reviews: '88 reviews',
+                desc: 'Compassionate, affordable services for all communities. Vietnamese and English speaking.',
+                category: 'funeral-homes',
+                lat: 37.3663,
+                lng: -121.8560
+            },
+            {
+                id: 'fh17',
+                name: 'Roller & Hapgood & Tinney Funeral Home',
+                address: '94 E Main Ave, Morgan Hill, CA 95037',
+                phone: '(408) 779-2500',
+                rating: 4.8,
+                reviews: '109 reviews',
+                desc: 'Serving south Santa Clara County since 1929. Traditional, cremation, and celebration of life.',
+                category: 'funeral-homes',
+                lat: 37.1297,
+                lng: -121.6547
+            },
+
+            // --- SOUTH BAY: Florists ---
+            {
+                id: 'fl7',
+                name: 'Almaden Valley Florist',
+                address: '6748 Almaden Expy, San Jose, CA 95120',
+                phone: '(408) 997-5566',
+                rating: 4.8,
+                reviews: '203 reviews',
+                desc: 'South Bay sympathy specialist. Same-day delivery to all San Jose funeral homes.',
+                category: 'florists',
+                lat: 37.2514,
+                lng: -121.8680
+            },
+            {
+                id: 'fl8',
+                name: 'Flowers by Cina',
+                address: '515 W El Camino Real, Sunnyvale, CA 94087',
+                phone: '(408) 738-2462',
+                rating: 4.7,
+                reviews: '176 reviews',
+                desc: 'Sunnyvale\'s trusted florist for 25+ years. Beautiful sympathy arrangements, same-day delivery.',
+                category: 'florists',
+                lat: 37.3713,
+                lng: -122.0355
+            },
+            {
+                id: 'fl9',
+                name: 'J\'s Flowers',
+                address: '3628 Snell Ave, San Jose, CA 95136',
+                phone: '(408) 266-8884',
+                rating: 4.6,
+                reviews: '142 reviews',
+                desc: 'Custom funeral and sympathy arrangements. Serving East and South San Jose.',
+                category: 'florists',
+                lat: 37.2799,
+                lng: -121.8348
+            },
+            {
+                id: 'fl10',
+                name: 'Los Gatos Flowers',
+                address: '15 N Santa Cruz Ave, Los Gatos, CA 95030',
+                phone: '(408) 354-1088',
+                rating: 4.9,
+                reviews: '118 reviews',
+                desc: 'Premium sympathy and memorial florals. Serving Los Gatos, Saratoga, and Campbell.',
+                category: 'florists',
+                lat: 37.2358,
+                lng: -121.9820
+            },
+            {
+                id: 'fl11',
+                name: 'Mountain View Florist',
+                address: '265 Castro St, Mountain View, CA 94041',
+                phone: '(650) 967-9393',
+                rating: 4.6,
+                reviews: '95 reviews',
+                desc: 'Serving the South Bay and Peninsula. Sympathy and memorial arrangements with same-day delivery.',
+                category: 'florists',
+                lat: 37.3861,
+                lng: -122.0825
+            },
+
+            // --- SOUTH BAY: Estate Attorneys ---
+            {
+                id: 'ea7',
+                name: 'Sweeney Probate Law',
+                address: '96 N Third St, Suite 500, San Jose, CA 95112',
+                phone: '(408) 294-8887',
+                rating: 4.8,
+                reviews: '61 reviews',
+                desc: 'San Jose probate and estate administration specialists. Free initial consultation.',
+                category: 'estate-attorneys',
+                lat: 37.3393,
+                lng: -121.8934
+            },
+            {
+                id: 'ea8',
+                name: 'Wilcox Miller & Nelson',
+                address: '1500 The Alameda, San Jose, CA 95126',
+                phone: '(408) 295-1492',
+                rating: 4.7,
+                reviews: '47 reviews',
+                desc: 'Trusts, wills, estate planning, and probate. Serving Silicon Valley families for 35 years.',
+                category: 'estate-attorneys',
+                lat: 37.3300,
+                lng: -121.9142
+            },
+            {
+                id: 'ea9',
+                name: 'Law Office of Gloria D. Chan',
+                address: '6203 San Ignacio Ave, San Jose, CA 95119',
+                phone: '(408) 287-8787',
+                rating: 4.6,
+                reviews: '34 reviews',
+                desc: 'Estate planning and elder law. Bilingual English/Mandarin services for South Bay families.',
+                category: 'estate-attorneys',
+                lat: 37.2575,
+                lng: -121.8731
+            },
+
+            // --- SOUTH BAY: Grief Support ---
+            {
+                id: 'gs8',
+                name: 'Bill Wilson Center',
+                address: '3490 The Alameda, Santa Clara, CA 95050',
+                phone: '(408) 243-0222',
+                rating: 4.7,
+                reviews: '78 reviews',
+                desc: 'Grief and trauma support for children, teens, and families. Sliding-scale fees.',
+                category: 'grief-support',
+                lat: 37.3527,
+                lng: -121.9610
+            },
+            {
+                id: 'gs9',
+                name: 'El Camino Health Grief Support',
+                address: '2500 Grant Rd, Mountain View, CA 94040',
+                phone: '(650) 988-8522',
+                rating: 4.8,
+                reviews: '92 reviews',
+                desc: 'Free community grief groups for adults and children. South Bay locations available.',
+                category: 'grief-support',
+                lat: 37.3980,
+                lng: -122.1000
+            },
+            {
+                id: 'gs10',
+                name: 'Good Samaritan Grief Support',
+                address: '2425 Samaritan Dr, San Jose, CA 95124',
+                phone: '(408) 559-2237',
+                rating: 4.7,
+                reviews: '65 reviews',
+                desc: 'Hospital-based grief support program. Individual counseling and group sessions, all are welcome.',
+                category: 'grief-support',
+                lat: 37.2630,
+                lng: -121.9286
+            },
+            {
+                id: 'gs11',
+                name: 'Sunnyvale Counseling Center',
+                address: '130 S Murphy Ave, Sunnyvale, CA 94086',
+                phone: '(408) 737-0121',
+                rating: 4.6,
+                reviews: '53 reviews',
+                desc: 'Licensed therapists specializing in grief and bereavement. Sliding-scale fees available.',
+                category: 'grief-support',
+                lat: 37.3710,
+                lng: -122.0353
+            },
+
+            // --- SOUTH BAY: Caterers ---
+            {
+                id: 'ct8',
+                name: 'Green Events Catering',
+                address: 'San Jose, CA',
+                phone: '(408) 457-4330',
+                rating: 4.7,
+                reviews: '134 reviews',
+                desc: 'South Bay memorial catering specialists. Full-service and drop-off. 24hr notice accepted.',
+                category: 'caterers',
+                lat: 37.3382,
+                lng: -121.8863
+            },
+            {
+                id: 'ct9',
+                name: 'Zanotto\'s Market & Catering',
+                address: '1357 Lincoln Ave, San Jose, CA 95125',
+                phone: '(408) 264-3825',
+                rating: 4.8,
+                reviews: '287 reviews',
+                desc: 'Family grocery and catering. Popular for memorial receptions. Custom deli platters.',
+                category: 'caterers',
+                lat: 37.3096,
+                lng: -121.9024
+            },
+            {
+                id: 'ct10',
+                name: 'Cupertino Catering & Events',
+                address: 'Cupertino, CA',
+                phone: '(408) 446-1100',
+                rating: 4.6,
+                reviews: '98 reviews',
+                desc: 'Full-service catering for Silicon Valley memorial gatherings. Multicultural menus available.',
+                category: 'caterers',
+                lat: 37.3229,
+                lng: -122.0322
+            },
+            {
+                id: 'ct11',
+                name: 'Oak & Fork Catering',
+                address: 'Sunnyvale, CA',
+                phone: '(408) 738-9090',
+                rating: 4.5,
+                reviews: '76 reviews',
+                desc: 'Farm-to-table catering serving the South Bay and Peninsula. Custom memorial menus.',
+                category: 'caterers',
+                lat: 37.3780,
+                lng: -122.0127
+            },
+
+            // --- SOUTH BAY: Celebrants & Officiants ---
+            {
+                id: 'cb7',
+                name: 'Interfaith Council of Santa Clara County',
+                address: 'San Jose, CA',
+                phone: '(408) 293-4555',
+                rating: 4.7,
+                reviews: '48 reviews',
+                desc: 'Connects families to clergy and officiants of all faiths across the South Bay.',
+                category: 'celebrants',
+                lat: 37.3382,
+                lng: -121.8863
+            },
+            {
+                id: 'cb8',
+                name: 'Rev. Gail Collins-Ranadive',
+                address: 'Santa Cruz / South Bay',
+                phone: '(831) 425-1797',
+                rating: 4.9,
+                reviews: '37 reviews',
+                desc: 'UCC minister specializing in meaningful, non-traditional celebrations of life. Travels to South Bay.',
+                category: 'celebrants',
+                lat: 37.0500,
+                lng: -122.0300
+            },
+            {
+                id: 'cb9',
+                name: 'Silicon Valley Memorial Ceremonies',
+                address: 'Sunnyvale, CA',
+                phone: '(408) 505-4884',
+                rating: 4.8,
+                reviews: '29 reviews',
+                desc: 'Secular and interfaith celebrants for personalized memorials. Serves all of Silicon Valley.',
+                category: 'celebrants',
+                lat: 37.3750,
+                lng: -122.0412
+            },
+
+            // ============================
+            // EAST BAY PROVIDERS (researched from live sources)
+            // ============================
+
+            // East Bay: Funeral Homes
+            {
+                id: 'eb_fh1',
+                name: 'C.P. Bannon Mortuary',
+                address: '6800 International Blvd, Oakland, CA 94621',
+                phone: '(510) 632-1011',
+                rating: 4.5,
+                reviews: '118 reviews',
+                desc: 'Non-denominational funeral home and cremation in East Oakland. Open 24/7. 10 min from OAK airport.',
+                category: 'funeral-homes',
+                lat: 37.7460,
+                lng: -122.1990
+            },
+            {
+                id: 'eb_fh2',
+                name: 'Deer Creek Funeral Service — Walnut Creek',
+                address: '1200 Mt. Diablo Blvd, Walnut Creek, CA 94596',
+                phone: '(925) 934-9000',
+                rating: 4.7,
+                reviews: '203 reviews',
+                desc: 'Affordable cremation and full funeral services serving Walnut Creek, Concord, and Pleasant Hill.',
+                category: 'funeral-homes',
+                lat: 37.9061,
+                lng: -122.0660
+            },
+            {
+                id: 'eb_fh3',
+                name: 'Deer Creek Funeral Service — Castro Valley',
+                address: '20630 Redwood Rd, Castro Valley, CA 94546',
+                phone: '(510) 317-7890',
+                rating: 4.6,
+                reviews: '178 reviews',
+                desc: 'Family-focused funeral and cremation services for Castro Valley, San Leandro, and Hayward.',
+                category: 'funeral-homes',
+                lat: 37.6963,
+                lng: -122.0861
+            },
+            {
+                id: 'eb_fh4',
+                name: 'Deer Creek Funeral Service — Dublin',
+                address: '7440 San Ramon Rd, Dublin, CA 94568',
+                phone: '(925) 803-7733',
+                rating: 4.6,
+                reviews: '144 reviews',
+                desc: 'Tri-Valley cremation and burial specialists serving Dublin, Pleasanton, San Ramon, and Livermore.',
+                category: 'funeral-homes',
+                lat: 37.7021,
+                lng: -121.9357
+            },
+            {
+                id: 'eb_fh5',
+                name: 'Sunset View Cemetery & Mortuary',
+                address: '101 Colusa Ave, El Cerrito, CA 94530',
+                phone: '(510) 525-5111',
+                rating: 4.8,
+                reviews: '245 reviews',
+                desc: 'Hilltop cemetery and mortuary serving the North East Bay. Beautiful grounds. Open 7 days a week.',
+                category: 'funeral-homes',
+                lat: 37.9076,
+                lng: -122.3133
+            },
+            {
+                id: 'eb_fh6',
+                name: "Stewart's Rose Manor Funeral Service",
+                address: '3331 Macdonald Ave, Richmond, CA 94805',
+                phone: '(510) 235-9143',
+                rating: 4.7,
+                reviews: '97 reviews',
+                desc: 'Community-rooted funeral home in Richmond. Personalized, dignified services for all backgrounds.',
+                category: 'funeral-homes',
+                lat: 37.9367,
+                lng: -122.3466
+            },
+            {
+                id: 'eb_fh7',
+                name: 'Berge-Pappas-Smith Chapel of the Angels',
+                address: '40842 Fremont Blvd, Fremont, CA 94538',
+                phone: '(510) 656-1226',
+                rating: 4.8,
+                reviews: '312 reviews',
+                desc: 'Full-service funeral home and on-site crematory in central Fremont. Serving all of Alameda County.',
+                category: 'funeral-homes',
+                lat: 37.5240,
+                lng: -121.9900
+            },
+
+            // East Bay: Florists
+            {
+                id: 'eb_fl1',
+                name: 'From the Heart Florist',
+                address: '1016 Webster St, Oakland, CA 94607',
+                phone: '(510) 986-1818',
+                rating: 4.8,
+                reviews: '156 reviews',
+                desc: "Oakland's premier sympathy florist. Same-day delivery across the East Bay to funeral homes and residences.",
+                category: 'florists',
+                lat: 37.8065,
+                lng: -122.2701
+            },
+            {
+                id: 'eb_fl2',
+                name: 'Orchid Florist',
+                address: '1768 Solano Ave, Berkeley, CA 94707',
+                phone: '(510) 528-9320',
+                rating: 4.7,
+                reviews: '167 reviews',
+                desc: 'Berkeley florist specializing in elegant sympathy and funeral arrangements. Same-day East Bay delivery.',
+                category: 'florists',
+                lat: 37.8844,
+                lng: -122.2754
+            },
+            {
+                id: 'eb_fl3',
+                name: "Lee's Florist & Nursery",
+                address: '1420 University Ave, Berkeley, CA 94702',
+                phone: '(510) 843-0502',
+                rating: 4.9,
+                reviews: '234 reviews',
+                desc: 'Berkeley institution since 1946. Specializes in funeral work with same-day delivery to all local funeral homes.',
+                category: 'florists',
+                lat: 37.8703,
+                lng: -122.2928
+            },
+            {
+                id: 'eb_fl4',
+                name: '6 Star Florist and Gifts Corina',
+                address: 'Hayward, CA 94544',
+                phone: '(925) 695-4570',
+                rating: 4.8,
+                reviews: '257 reviews',
+                desc: 'Head designer Corina has 20+ years experience. Sympathy arrangements delivered to Hayward, Fremont, Oakland.',
+                category: 'florists',
+                lat: 37.6688,
+                lng: -122.0808
+            },
+            {
+                id: 'eb_fl5',
+                name: 'Flower Shop by Nina',
+                address: '5255 Mowry Ave, Fremont, CA 94538',
+                phone: '(510) 793-6200',
+                rating: 4.7,
+                reviews: '191 reviews',
+                desc: 'Fremont florist who works directly with funeral homes to ensure timely, beautiful arrangements.',
+                category: 'florists',
+                lat: 37.5546,
+                lng: -121.9826
+            },
+
+            // East Bay: Estate Attorneys
+            {
+                id: 'eb_ea1',
+                name: 'Davidson Estate Law',
+                address: '1300 Clay St, Ste 600, Oakland, CA 94612',
+                phone: '(510) 527-6774',
+                rating: 4.9,
+                reviews: '123 reviews',
+                desc: 'Oakland estate planning and probate law firm since 1975. Trusted counsel for Bay Area families.',
+                category: 'estate-attorneys',
+                lat: 37.8050,
+                lng: -122.2720
+            },
+            {
+                id: 'eb_ea2',
+                name: 'East Bay Probate & Trust Administration',
+                address: '1999 Harrison St, 18th Fl, Oakland, CA 94612',
+                phone: '(510) 406-7084',
+                rating: 4.8,
+                reviews: '67 reviews',
+                desc: 'Attorney Mike Broad — Oakland probate and trust specialist since 1986. Full estate administration.',
+                category: 'estate-attorneys',
+                lat: 37.8082,
+                lng: -122.2678
+            },
+
+            // East Bay: Grief Support
+            {
+                id: 'eb_gs1',
+                name: 'Hospice East Bay',
+                address: '3470 Buskirk Ave, Pleasant Hill, CA 94523',
+                phone: '(925) 887-5678',
+                rating: 4.9,
+                reviews: '305 reviews',
+                desc: 'Free bereavement support open to the entire East Bay community — individual counseling, innovative programs for children and adults.',
+                category: 'grief-support',
+                lat: 37.9494,
+                lng: -122.0562
+            },
+            {
+                id: 'eb_gs2',
+                name: 'Contra Costa Crisis Center',
+                address: 'Walnut Creek, CA 94598',
+                phone: '(925) 939-1916',
+                rating: 4.7,
+                reviews: '88 reviews',
+                desc: 'Individual and group grief counseling in Walnut Creek and surrounding areas. 24-hour crisis line: call 211.',
+                category: 'grief-support',
+                lat: 37.9050,
+                lng: -122.0700
+            },
+            {
+                id: 'eb_gs3',
+                name: 'Kaiser Permanente Grief Support — East Bay',
+                address: 'Oakland / Richmond / Alameda',
+                phone: '(510) 752-4076',
+                rating: 4.7,
+                reviews: '142 reviews',
+                desc: 'Free bereavement coordinator and grief support groups. Serving Oakland, Richmond, and Alameda communities.',
+                category: 'grief-support',
+                lat: 37.8044,
+                lng: -122.2300
+            },
+            {
+                id: 'eb_gs4',
+                name: 'Kaiser Permanente Grief Support — Diablo Area',
+                address: 'Walnut Creek / Pleasanton / Antioch',
+                phone: '(925) 229-7817',
+                rating: 4.7,
+                reviews: '117 reviews',
+                desc: 'Free grief support coordinator for Diablo and Tri-Valley communities. Walnut Creek, Pleasanton, Antioch.',
+                category: 'grief-support',
+                lat: 37.8800,
+                lng: -121.9700
+            },
+
+            // East Bay: Caterers
+            {
+                id: 'eb_ct1',
+                name: 'Aurora Catering Company',
+                address: 'Castro Valley, CA 94546',
+                phone: '(510) 582-9529',
+                rating: 4.8,
+                reviews: '248 reviews',
+                desc: 'Family-owned East Bay caterer with full-service memorial reception options. Delivery throughout the Bay Area.',
+                category: 'caterers',
+                lat: 37.6963,
+                lng: -122.0861
+            },
+            {
+                id: 'eb_ct2',
+                name: 'Market Hall Caterers',
+                address: '5655 College Ave, Ste 201, Oakland, CA 94618',
+                phone: '(510) 250-6001',
+                rating: 4.8,
+                reviews: '342 reviews',
+                desc: 'Award-winning Oakland caterer. Elegant drop-off and full-service memorial receptions.',
+                category: 'caterers',
+                lat: 37.8386,
+                lng: -122.2511
+            },
+            {
+                id: 'eb_ct3',
+                name: 'Culinary Excellence Catering',
+                address: '8210 Capwell Dr, Oakland, CA 94621',
+                phone: '(510) 644-0612',
+                rating: 4.7,
+                reviews: '236 reviews',
+                desc: '30+ year Oakland institution. Full-service memorial events with floral, lighting, and staffing options.',
+                category: 'caterers',
+                lat: 37.7490,
+                lng: -122.2010
+            },
+            {
+                id: 'eb_ct4',
+                name: 'Pleasanton Catering Company',
+                address: '915 Main St, Pleasanton, CA 94566',
+                phone: '(877) 789-4377',
+                rating: 4.6,
+                reviews: '119 reviews',
+                desc: 'Tri-Valley caterer serving Dublin, Livermore, San Ramon, Danville, and Castro Valley for memorial gatherings.',
+                category: 'caterers',
+                lat: 37.6590,
+                lng: -121.8755
+            },
+
+            // East Bay: Celebrants
+            {
+                id: 'eb_cb1',
+                name: 'Oakland Center for Spiritual Living',
+                address: '4130 Fairmount Ave, Oakland, CA 94602',
+                phone: '(510) 547-1979',
+                rating: 4.8,
+                reviews: '76 reviews',
+                desc: 'Spiritual facility offering inclusive, non-denominational memorial services for East Bay families.',
+                category: 'celebrants',
+                lat: 37.8180,
+                lng: -122.2200
+            },
+
+            // Celebrants & Officiants (6)
+            {
+                id: 'cb1',
+                name: 'Cynthia Garvey, Certified Celebrant',
+                address: 'San Francisco, CA',
+                phone: '(415) 505-1956',
+                rating: 4.9,
+                reviews: '34 reviews',
+                desc: 'Non-denominational ceremonies. Personalized memorials and celebrations of life.',
+                category: 'celebrants',
+                lat: 37.7749,
+                lng: -122.4394
+            },
+            {
+                id: 'cb2',
+                name: 'SF Interfaith Council',
+                address: 'San Francisco, CA',
+                phone: '(415) 775-4635',
+                rating: 4.7,
+                reviews: '28 reviews',
+                desc: 'Multi-faith ministers, rabbis, imams, and spiritual leaders for all traditions.',
+                category: 'celebrants',
+                lat: 37.7880,
+                lng: -122.4200
+            },
+            {
+                id: 'cb3',
+                name: 'Rev. Megan Rohrer',
+                address: 'San Francisco, CA',
+                phone: '(415) 863-3893',
+                rating: 4.8,
+                reviews: '42 reviews',
+                desc: 'Inclusive Lutheran pastor. LGBTQ+ affirming ceremonies and memorials.',
+                category: 'celebrants',
+                lat: 37.7700,
+                lng: -122.4300
+            },
+            {
+                id: 'cb4',
+                name: 'Bay Area Funeral Consumers Association',
+                address: 'San Francisco Bay Area',
+                phone: '(510) 407-8655',
+                rating: 4.6,
+                reviews: '56 reviews',
+                desc: 'Non-profit helping families plan affordable, meaningful services.',
+                category: 'celebrants',
+                lat: 37.8100,
+                lng: -122.2700
+            },
+            {
+                id: 'cb5',
+                name: 'Heart and Soul Ceremonies',
+                address: 'Oakland, CA',
+                phone: '(510) 593-2447',
+                rating: 4.8,
+                reviews: '31 reviews',
+                desc: 'Customized memorial ceremonies honoring diverse cultural traditions.',
+                category: 'celebrants',
+                lat: 37.8044,
+                lng: -122.2712
+            },
+            {
+                id: 'cb6',
+                name: 'Zen Hospice Project',
+                address: 'San Francisco, CA',
+                phone: '(415) 863-2910',
+                rating: 4.9,
+                reviews: '73 reviews',
+                desc: 'Contemplative end-of-life care. Buddhist-inspired but welcoming all traditions.',
+                category: 'celebrants',
+                lat: 37.7650,
+                lng: -122.4230
+            }
+        ];
+
+        const categoryColors = {
+            'funeral-homes': '#2D6A5A',
+            'florists': '#1565A8',
+            'estate-attorneys': '#D97706',
+            'grief-support': '#7C3AED',
+            'caterers': '#DC2626',
+            'celebrants': '#0891B2'
+        };
+
+        let map;
+        let markers = {};
+        let currentFilter = 'all';
+
+        // Initialize Map
+        function initMap() {
+            map = L.map('map').setView([37.58, -122.08], 9);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors',
+                maxZoom: 19
+            }).addTo(map);
+
+            // Add Markers
+            providers.forEach(provider => {
+                const color = categoryColors[provider.category];
+
+                const markerHtml = `
+                    <div style="width:32px;height:32px;border-radius:50%;background-color:${color};border:2px solid white;display:flex;align-items:center;justify-content:center;cursor:pointer;font-weight:bold;color:white;font-size:14px;box-shadow:0 2px 4px rgba(0,0,0,0.2);">●</div>
+                `;
+
+                const marker = L.divIcon({
+                    html: markerHtml,
+                    iconSize: [32, 32],
+                    className: 'custom-marker'
+                });
+
+                const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(provider.name + ' ' + provider.address)}`;
+
+                const popupContent = `
+                    <div class="popup-content" style="min-width:200px;">
+                        <div class="popup-header">${provider.name}</div>
+                        <div class="popup-text">${provider.address}</div>
+                        <div class="popup-text"><a href="tel:${provider.phone.replace(/[^0-9]/g, '')}">${provider.phone}</a></div>
+                        <div class="popup-text">★ ${provider.rating} <span style="color:#999;">(${provider.reviews})</span></div>
+                        <div class="popup-text"><a href="${mapsUrl}" target="_blank">View on Google Maps →</a></div>
+                    </div>
+                `;
+
+                const leafletMarker = L.marker([provider.lat, provider.lng], { icon: marker })
+                    .bindPopup(popupContent)
+                    .addTo(map);
+
+                markers[provider.id] = {
+                    marker: leafletMarker,
+                    category: provider.category
+                };
+
+                leafletMarker.on('click', () => {
+                    gtag('event', 'marker_click', {
+                        provider_name: provider.name,
+                        category: provider.category
+                    });
+                });
+            });
+        }
+
+        // Render Provider Cards
+        function renderCards(filter = 'all') {
+            const grid = document.getElementById('provider-grid');
+            const filteredProviders = filter === 'all'
+                ? providers
+                : providers.filter(p => p.category === filter);
+
+            const countText = filter === 'all'
+                ? 'Showing 91 providers across the Bay Area'
+                : `Showing ${filteredProviders.length} providers`;
+            document.getElementById('provider-count').textContent = countText;
+
+            grid.innerHTML = filteredProviders.map(provider => {
+                const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(provider.name + ' ' + provider.address)}`;
+                const phoneClean = provider.phone.replace(/[^0-9]/g, '');
+
+                return `
+                    <div class="provider-card card-hover ${provider.category}">
+                        <div class="provider-name">${provider.name}</div>
+                        <div class="provider-address">${provider.address}</div>
+                        <div class="provider-rating">
+                            <span class="provider-rating-stars">★ ${provider.rating}</span>
+                            <span class="provider-rating-count">${provider.reviews}</span>
+                        </div>
+                        <a href="tel:${phoneClean}" class="provider-phone">${provider.phone}</a>
+                        <div class="provider-description">${provider.desc}</div>
+                        <div class="provider-links">
+                            <a href="tel:${phoneClean}" class="provider-link">Call</a>
+                            <a href="${mapsUrl}" target="_blank" class="provider-link">View on Google Maps →</a>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Filter by Category
+        function filterByCategory(category) {
+            currentFilter = category;
+
+            // Update active button
+            document.querySelectorAll('.filter-pill').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`[data-category="${category}"]`).classList.add('active');
+
+            // Track filter click
+            gtag('event', 'filter_click', {
+                filter_category: category
+            });
+
+            // Update markers visibility
+            Object.keys(markers).forEach(markerId => {
+                const markerObj = markers[markerId];
+                if (category === 'all' || markerObj.category === category) {
+                    markerObj.marker.addTo(map);
+                    if (markerObj.marker.getElement()) {
+                        markerObj.marker.getElement().classList.remove('fade-out');
+                        markerObj.marker.getElement().classList.add('fade-in');
+                    }
+                } else {
+                    markerObj.marker.remove();
+                    if (markerObj.marker.getElement()) {
+                        markerObj.marker.getElement().classList.add('fade-out');
+                    }
+                }
+            });
+
+            // Update cards
+            renderCards(category);
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            initMap();
+            renderCards();
+        });
+    </script>
+</body>
+</html>

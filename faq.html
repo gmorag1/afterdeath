@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frequently Asked Questions — Tendwell</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="tendwell.css">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-PLACEHOLDER"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-PLACEHOLDER');
+    </script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html, body {
+            font-family: Inter, system-ui, -apple-system, sans-serif;
+            background: #F5F2ED;
+            color: #2B2B2B;
+            line-height: 1.6;
+        }
+
+        /* Navigation */
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background: rgba(245, 242, 237, 0.92);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid #E8E5E0;
+        }
+        nav > div {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .nav-logo {
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .nav-logo-icon { font-size: 24px; }
+        .nav-logo-text { font-weight: 700; font-size: 22px; color: #2D6A5A; }
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            font-size: 15px;
+            font-weight: 500;
+        }
+        .nav-links a {
+            color: #2B2B2B;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+        .nav-links a:hover,
+        .nav-links a.active { color: #2D6A5A; }
+        .nav-links a.active { font-weight: 600; }
+
+        /* Page Header */
+        .page-header {
+            background: #2D6A5A;
+            padding: 56px 24px 48px;
+            text-align: center;
+        }
+        .page-header h1 {
+            font-size: 42px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 12px;
+        }
+        .page-header p {
+            font-size: 17px;
+            color: rgba(255,255,255,0.8);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .main-content {
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 48px 24px 80px;
+        }
+
+        /* Category tabs */
+        .category-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 40px;
+        }
+        .cat-tab {
+            padding: 8px 18px;
+            border-radius: 100px;
+            font-size: 14px;
+            font-weight: 500;
+            border: 1.5px solid #E8E5E0;
+            background: white;
+            color: #555;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .cat-tab:hover,
+        .cat-tab.active {
+            background: #2D6A5A;
+            border-color: #2D6A5A;
+            color: white;
+        }
+
+        /* Category sections */
+        .faq-category {
+            margin-bottom: 48px;
+        }
+        .category-heading {
+            font-size: 20px;
+            font-weight: 700;
+            color: #2B2B2B;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .category-heading-icon {
+            font-size: 22px;
+        }
+
+        /* FAQ accordion items */
+        .faq-item {
+            background: white;
+            border: 1px solid #E8E5E0;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            overflow: hidden;
+            transition: box-shadow 0.2s;
+        }
+        .faq-item:hover { box-shadow: 0 2px 12px rgba(0,0,0,0.07); }
+        .faq-item.open { box-shadow: 0 4px 16px rgba(45,106,90,0.12); border-color: #B7D8D3; }
+
+        .faq-question {
+            width: 100%;
+            text-align: left;
+            padding: 20px 24px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-family: Inter, system-ui;
+            font-size: 16px;
+            font-weight: 600;
+            color: #2B2B2B;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 16px;
+            line-height: 1.45;
+        }
+        .faq-question:hover { color: #2D6A5A; }
+        .faq-chevron {
+            flex-shrink: 0;
+            font-size: 12px;
+            color: #888;
+            margin-top: 4px;
+            transition: transform 0.25s;
+            display: inline-block;
+        }
+        .faq-item.open .faq-chevron { transform: rotate(180deg); color: #2D6A5A; }
+
+        .faq-answer {
+            display: none;
+            padding: 0 24px 22px;
+            font-size: 15px;
+            color: #555;
+            line-height: 1.7;
+        }
+        .faq-answer.open { display: block; }
+
+        .faq-answer p { margin-bottom: 12px; }
+        .faq-answer p:last-child { margin-bottom: 0; }
+        .faq-answer strong { color: #2B2B2B; }
+        .faq-answer a { color: #2D6A5A; }
+
+        .answer-tip {
+            margin-top: 12px;
+            padding: 12px 16px;
+            background: #F0FAF7;
+            border-left: 3px solid #2D6A5A;
+            border-radius: 0 8px 8px 0;
+            font-size: 14px;
+            color: #1A5248;
+        }
+        .answer-callout {
+            margin-top: 12px;
+            padding: 12px 16px;
+            background: #FFFBEB;
+            border-left: 3px solid #F59E0B;
+            border-radius: 0 8px 8px 0;
+            font-size: 14px;
+            color: #78350F;
+        }
+
+        /* Still have questions CTA */
+        .still-questions {
+            text-align: center;
+            background: white;
+            border: 1px solid #E8E5E0;
+            border-radius: 16px;
+            padding: 40px 32px;
+            margin-top: 48px;
+        }
+        .still-questions h3 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .still-questions p {
+            color: #888;
+            margin-bottom: 20px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 13px 26px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            text-decoration: none;
+            background: #2D6A5A;
+            color: white;
+            transition: background 0.2s;
+        }
+        .btn:hover { background: #245649; }
+
+        @media (max-width: 640px) {
+            .page-header h1 { font-size: 30px; }
+            .nav-links { gap: 16px; font-size: 13px; }
+            .faq-question { font-size: 15px; padding: 16px 18px; }
+            .faq-answer { padding: 0 18px 18px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="tw-nav">
+        <div class="tw-nav-inner">
+            <a href="index.html" class="tw-nav-logo">
+                <span class="tw-nav-logo-icon">🌿</span>
+                <span class="tw-nav-logo-text">Tendwell</span>
+            </a>
+            <div class="tw-nav-links">
+                <a href="index.html">Home</a>
+                <a href="guide.html">Guide</a>
+                <a href="providers.html">Providers</a>
+                <a href="costs.html">Costs</a>
+                <a href="support.html">Support</a>
+                <a href="guide.html" class="tw-nav-cta">Get Help Now</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <div class="tw-page-header">
+        <span class="tw-page-header-label">Common Questions</span>
+        <h1>Frequently Asked Questions</h1>
+        <p>Honest answers to the questions most people are afraid to ask — or don't know to ask.</p>
+    </div>
+
+    <div class="main-content">
+
+        <!-- Category Tabs -->
+        <div class="category-tabs">
+            <button class="cat-tab active" onclick="filterCategory('all', this)">All Questions</button>
+            <button class="cat-tab" onclick="filterCategory('first-steps', this)">First Steps</button>
+            <button class="cat-tab" onclick="filterCategory('funeral', this)">Funeral &amp; Burial</button>
+            <button class="cat-tab" onclick="filterCategory('legal', this)">Legal &amp; Estate</button>
+            <button class="cat-tab" onclick="filterCategory('financial', this)">Financial</button>
+            <button class="cat-tab" onclick="filterCategory('grief', this)">Grief &amp; Family</button>
+        </div>
+
+        <!-- ——— FIRST STEPS ——— -->
+        <div class="faq-category" data-category="first-steps">
+            <div class="category-heading">
+                <span class="category-heading-icon">🚨</span> First Steps
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFaq(this)">
+                    What do I do in the first hour after someone dies?
+                    <span class="faq-chevron">▼</span>
+                </button>
+                <div class="faq-answer">
+                    <p>Take a breath. You don't have to do everything at once. Here's what actually matters in the first hour:</p>
+                    <p><strong>If the death was unexpected or traumatic</strong> (accident, sudden illness, or you're unsure of the cause), call 911 immediately. Do not move the body. A medical examiner will be involved.</p>
+                    <p><strong>If the death was expected</strong> (hospice, known terminal illness, elderly and declining), you don't need to call 911. You have a few hours before you need to call a funeral home. Use that time to gather yourself, contact family, and locate any pre-arranged funeral plans.</p>
+                    <p>The body is safe for several hours at room temperature. You don't need to rush to make calls immediately.</p>
+                    <div class="answer-tip">💡 Go to our <a href="guide.html">Step-by-Step Guide</a> for a full first-72-hours checklist.</div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFaq(this)">
+                    Do I need to call 911 when someone dies at home?
+                    <span class="faq-chevron">▼</span>
+                </button>
+                <div class="faq-answer">
+                    <p><strong>It depends.</strong> In California:</p>
+                    <p><strong>Call 911 if:</strong> the death was unexpected, sudden, unexplained, or potentially related to trauma, accident, or crime. Police and a medical examiner must investigate these deaths.</p>
+                    <p><strong>You do not need to call 911 if:</strong> the person was under hospice care or had a terminal illness with a doctor's supervision, and the death was expected. In this case, call the hospice nurse (if applicable) and then the funeral home directly.</p>
+                    <p>If you're unsure — call 911 anyway. They will guide you from there.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFaq(this)">
+                    How many death certificates do I need to order?
+                    <span class="faq-chevron">▼</span>
+                </button>
+                <div class="faq-answer">
+                    <p><strong>Order more than you think you need — most families need 8 to 12 certified copies.</strong></p>
+                    <p>Each institution you deal with (banks, insurance companies, government agencies, title companies) will typically ask for an original certified copy — not a photocopy. You cannot reuse them.</p>
+                    <p>Here's a rough breakdown of who will ask for one: Social Security Administration (1), each bank or investment account (1 each), life insurance policy (1 each), employer for benefits claim (1), DMV for vehicle transfer (1), property deed transfer (1), IRS/estate taxes (1–2), personal records.</p>
+                    <p>In California, certified copies cost approximately $21 each from the county vital records office. It is far cheaper and easier to order them all at once through the funeral home than to reorder them later.</p>
+                    <div class="answer-tip">💡 The funeral home will order them for you as part of their services. When they ask how many, say 10–12 unless the estate is very simple.</div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFaq(this)">
+                    Who do I need to notify first?
+                    <span class="faq-chevron">▼</span>
+                </button>
+                <div class="faq-answer">
+                    <p>In the first 24 hours, prioritize these notifications:</p>
+                    <p><strong>Immediate family</strong> — Spouse, children, parents, and siblings. A phone call is appropriate; texts feel impersonal for this kind of news.</p>
+                    <p><strong>Hospice or doctor</strong> — If they were under medical care, they need to be notified to sign the death certificate.</p>
+                    <p><strong>Funeral home</strong> — To arrange pickup and transport of the body.</p>
+                    <p>Everything else — Social Security, employer, banks, insurance — can wait a few days. Focus on family and logistics first.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ——— FUNERAL & BURIAL ——— -->
+        <div class="faq-category" data-category="funeral">
+            <div class="category-heading">
+                <span class="category-heading-icon">🕯️</span> Funeral &amp; Burial
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFaq(this)">
+                    Do I legally need a funeral home in California?
+                    <span class="faq-chevron">▼</span>
+                </button>
+                <div class="faq-answer">
+                    <p><strong>For cremation or embalming: yes.</strong> Only a licensed California funeral establishment may cremate or embalm a body.</p>
+                    <p><strong>For home burial: technically possible but very difficult.</strong> California allows home burial on private property in rural, unincorporated areas under specific conditions — but zoning laws, county regulations, and deed restrictions usually make it impractical, especially in the Bay Area.</p>
+                    <p>For most families, using a licensed funeral home for at least transportation and cremation/burial paperwork is the practical choice. You are not required to purchase any specific services beyond the basics.</p>
+                    <div class="answer-tip">💡 Under the FTC Funeral Rule, you can buy only what you want — no package required. Always ask for the itemized price list.</div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFaq(this)">
+                    What is the difference between a funeral, a memorial service, and a celebration of life?
+                    <span class="faq-chevron">▼</span>
+                </button>
+                <div class="faq-answer">
+                    <p><strong>Funeral</strong> — A service held with the body present, typically within a few days of death. May include viewing/visitation. Usually more formal and traditionally structured.</p>
+                    <p><strong>Memorial service</strong> — A service held without the body present, often after cremation or burial. Can be held days, weeks, or even months after death. More flexible in location, timing, and format.</p>
+                    <p><strong>Celebration of life</strong> — A less formal gathering focused on honoring the person's life, personality, and legacy rather than mourning their loss. Often held in a meaningful location (park, restaurant, home). No formal rules.</p>
+                    <p>There is no right choice — the right format is whatever feels authentic to the person and meaningful to the people who loved them.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFaq(this)">
+                    How long do I have to decide on burial vs. cremation?
+                    <span class="faq-chevron">▼</span>
+                </button>
+                <div class="faq-answer">
+                    <p>California law requires the body to be refrigerated or embalmed within 24 hours of death if it is not going to be buried or cremated immediately. Funeral homes handle this automatically.</p>
+                    <p>Realistically, you have <strong>a few days</strong> to make a decision. Funeral homes typically store bodies for up to 5–7 days without issue while families make arrangements.</p>
+                    <p>If the death is under investigation by a medical examiner, you may not be able to proceed until their review is complete — which can take days to weeks.</p>
+                    <div class="answer-callout">⚠️ If someone had previously expressed strong preferences about burial vs. cremation — even informally — try to honor those wishes. Courts have upheld documented wishes even when they conflict with next-of-kin preferences.</div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFaq(this)">
+                    What can I do with cremated remains in California?
+                    <span class="faq-chevron">▼</span>
+                </button>
+                <div class="faq-answer">
+                    <p>California gives families significant flexibility with cremated remains:</p>
+                    <p><strong>Keep at home</strong> — Legal, and very common. No permit required to keep ashes at home.</p>
+                    <p><strong>Bury in a cemetery</strong> — Many cemeteries have designated areas for cremated remains, often at lower cost than traditional burial.</p>
+                    <p><strong>Place in a columbarium niche</strong> — An above-ground compartment at a cemetery or mausoleum. Allows for a fixed memorial location.</p>
+                    <p><strong>Scatter</strong> — California allows scattering at sea (3+ nautical miles offshore, with an EPA permit), in the open ocean, in designated cemetery scatter gardens, or on private land with the landowner's permission. Scattering in parks, on public land, or in rivers/lakes is generally not legal without special permits.</p>
+                    <p><strong>Divide among family members</strong> — Completely legal. Families sometimes share remains among multiple family members.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFaq(this)">
+                    Can the funeral home require me to buy a casket from them?
+                    <span class="faq-chevron">▼</span>
+                </button>
+                <div class="faq-answer">
+                    <p><strong>No.</strong> Under the Federal Trade Commission's Funeral Rule, funeral homes must accept caskets purchased elsewhere and cannot charge you a "handling fee" for doing so.</p>
+                    <p>Caskets can be purchased from third-party retailers, warehouse clubs like Costco, or online — often at significantly lower cost. If you purchase elsewhere, simply arrange delivery to the funeral home before the service.</p>
+                    <p>For cremation, an "alternative container" (typically a simple cardboard or wood box) must be used if no casket is purchased — and funeral homes are required to offer this option.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFaq(this)">
+                    Are veterans entitled to free burial benefits?
+                    <span class="faq-chevron">▼</span>
+                </button>
+                <div class="faq-answer">
+                    <p><strong>Yes — eligible veterans and their spouses qualify for significant free burial benefits.</strong></p>
+                    <p>Benefits may include: free burial in a national cemetery (there are several in the Bay Area), a government-furnished headstone or marker, a burial flag, and a Presidential Memorial Certificate.</p>
+                    <p>Veterans who die from a service-connected condition are entitled to an additional burial allowance. Some non-service-connected deaths also qualify for a partial burial allowance.</p>
+                    <p>To access benefits, you'll need the veteran's DD-214 discharge papers. The funeral home can typically file on your behalf. Call the National Cemetery Scheduling Office at <a href="tel:18005351117">1-800-535-1117</a>.</p>
+                    <div class="answer-tip">💡 Don't wait until the last minute — national cemetery availability requires advance planning, especially in the Bay Area.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ——— LEGAL & ESTATE ——— -->
+        <div class="faq-category" data-category="legal">
+            <div class="category-heading">
+                <span class="category-heading-icon">⚖️</span> Legal &amp; Estate
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFaq(this)">
+                    What if there is no will?
+                    <span class="faq-chevron">▼</span>
+                </button>
+                <div class="faq-answer">
+                    <p>When someone dies without a will in California, they are said to have died "intestate." The state's intestate succession laws determine who inherits — roughly in this order: surviving spouse or domestic partner, then children, then parents, then siblings, then extended family.</p>
+                    <p>The estate will typically still need to go through probate court, which appoints an administrator (usually a family member) to handle the process. The administrator has the same role as an executor but is court-appointed rather than named in a will.</p>
+                    <p>Assets like bank accounts with beneficiary designations, retirement accounts, and jointly owned property pass outside of this process — they transfer directly regardless of whether there was a will.</p>
+                    <div class="answer-callout">⚠️ Without a will, a judge cannot honor informal wishes ("he always said he wanted the house to go to his daughter"). The formula is applied strictly.</div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFaq(this)">
+                    How does probate work in California, and how long does it take?
+                    <span class="faq-chevron">▼</span>
+                </button>
+                <div class="faq-answer">
+                    <p>Probate is the court process of validating a will, settling debts, and distributing an estate. In California, it is generally required when the estate has assets over $184,500 (as of 2024) that aren't held in a trust, jointly owned, or designated with a named beneficiary.</p>
+                    <p><strong>The process typically works like this:</strong> The executor files a petition with the probate court → the court validates the will and appoints the executor → a notice is published to creditors (4-month period) → debts and taxes are paid → remaining assets are distributed → the court closes the estate.</p>
+                    <p><strong>Timeline:</strong> At minimum 9 months. More realistically, 12–18 months for a straightforward estate. Complex estates with disputes or real estate can take 2–3 years or more.</p>
+                    <p><strong>Cost:</strong> California uses a statutory fee scale — attorney and executor fees combined are typically 4–7% of the estate's gross value (not net value, meaning debts aren't subtracted for this calculation).</p>
+                    <div class="answer-tip">💡 Many Bay Area families use living trusts specifically to avoid California's lengthy and expensive probate process.</div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFaq(this)">
+                    Do I need an estate attorney?
+                    <span class="faq-chevron">▼</span>
+                </button>
+                <div class="faq-answer">
+                    <p>It depends on the complexity of the estate.</p>
+                    <p><strong>You probably don't need an attorney if:</strong> the estate is small (under $184,500 in probate assets), all major assets already have beneficiary designations, and there are no disputes among heirs.</p>
+                    <p><strong>You probably should hire one if:</strong> the estate owns real estate, there are significant debts, there are business interests, there are minor children involved, there is a dispute among heirs, or the estate must go through probate.</p>
+                    <p>Many estate attorneys offer a free or low-cost initial consultation. Even if you end up handling most tasks yourself, an hour with an attorney at the beginning can save you costly mistakes later.</p>
+                    <div class="answer-tip">💡 See our <a href="providers.html">Providers page</a> for estate attorneys in the Bay Area, many of whom offer free initial consultations.</div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFaq(this)">
+                    What happens to a mortgage or car loan after death?
+                    <span class="faq-chevron">▼</span>
+                </button>
+                <div class="faq-answer">
+                    <p><strong>The debt does not disappear.</strong> Loans and debts are the responsibility of the estate — they are paid from estate assets before anything is distributed to heirs.</p>
+                    <p><strong>Mortgage:</strong> If the home passes to a surviving spouse or heir who wants to keep it, they must continue making mortgage payments. Under federal law (the Garn-St. Germain Act), a surviving spouse or child who inherits a home can assume the mortgage without it being called due — they don't have to refinance immediately.</p>
+                    <p><strong>Car loan:</strong> Similarly, whoever inherits the vehicle becomes responsible for the remaining loan balance. If no one wants to keep the car, it can be sold and the loan paid off from the proceeds.</p>
+                    <p><strong>Credit card debt:</strong> The estate is responsible. Surviving family members are generally NOT personally responsible for a deceased person's individual credit card debt — unless they were a joint account holder (not just an authorized user).</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFaq(this)">
+                    Who is responsible for the deceased person's debts?
+                    <span class="faq-chevron">▼</span>
+                </button>
+                <div class="faq-answer">
+                    <p><strong>The estate is responsible — not the family members personally (with exceptions).</strong></p>
+                    <p>If the estate doesn't have enough assets to cover all debts, creditors typically receive a partial payment based on priority rules, and the remaining debt is written off. Heirs don't inherit debt beyond the value of what they inherit.</p>
+                    <p><strong>Exceptions where you could be personally liable:</strong> You co-signed the loan, you are a joint account holder on a credit card or bank account, you live in a community property state and the debt was incurred during marriage (California is a community property state — this matters for spouses), or you personally guaranteed a business debt.</p>
+                    <div class="answer-callout">⚠️ Be cautious about debt collectors who pressure surviving family members to pay debts they're not legally responsible for. This is a known predatory practice. You may want to consult an attorney if you're being pressured.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ——— FINANCIAL ——— -->
+        <div class="faq-category" data-category="financial">
+            <div class="category-heading">
+                <span class="category-heading-icon">💰</span> Financial
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFaq(this)">
+                    How do I access bank accounts after someone dies?
+                    <span class="faq-chevron">▼</span>
+                </button>
+                <div class="faq-answer">
+                    <p>It depends on how the account was set up:</p>
+                    <p><strong>Joint account with right of survivorship</strong> — The surviving joint holder maintains full access immediately. Bring the death certificate to the bank to remove the deceased person's name.</p>
+                    <p><strong>Account with a Pay-on-Death (POD) beneficiary</strong> — The named beneficiary can claim the account by presenting a death certificate and their own ID directly to the bank. No probate required.</p>
+                    <p><strong>Account in the deceased's name only, with no beneficiary</strong> — The account is a probate asset. Access requires either Letters Testamentary (from probate court) or, for small estates, a Small Estate Affidavit (if total probate assets are under $184,500). This typically takes weeks to months.</p>
+                    <div class="answer-tip">💡 Most banks will release limited funds (often up to $500–$5,000) to cover funeral and burial expenses even before probate is completed. Ask the bank about their specific policy.</div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFaq(this)">
+                    How do I claim life insurance?
+                    <span class="faq-chevron">▼</span>
+                </button>
+                <div class="faq-answer">
+                    <p>Life insurance does not go through probate — it pays directly to named beneficiaries. Here's how to claim it:</p>
+                    <p><strong>1. Find the policy.</strong> Look for documents at home, in safe deposit boxes, or in email/digital records. If you can't find the policy, try the MIB Group's policy locator service at <a href="https://www.mib.com" target="_blank" rel="noopener">mib.com</a>.</p>
+                    <p><strong>2. Call the insurance company</strong> and request a claim form. They will walk you through their specific process.</p>
+                    <p><strong>3. Submit the claim form</strong> along with a certified death certificate.</p>
+                    <p><strong>4. Receive payment.</strong> Most claims are paid within 30–60 days of submitting a complete claim. You can typically choose to receive the payout as a lump sum or as installment payments.</p>
+                    <p>There is generally no deadline to file a life insurance claim, but don't delay unnecessarily.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFaq(this)">
+                    What happens to Social Security payments after death?
+                    <span class="faq-chevron">▼</span>
+                </button>
+                <div class="faq-answer">
+                    <p>Social Security payments stop upon death. Importantly:</p>
+                    <p><strong>Any payment received after death must be returned.</strong> Social Security pays in arrears — the payment received in a given month covers the previous month. If the deceased person received a payment in the month they died (or after), it must be returned to the SSA. Banks are required to return these payments if notified.</p>
+                    <p><strong>Report the death as soon as possible.</strong> Call SSA at 1-800-772-1213, or the funeral home will typically notify them as part of their process.</p>
+                    <p><strong>Surviving spouse benefits:</strong> A surviving spouse may be entitled to survivor benefits — including a one-time $255 death payment and ongoing monthly benefits, depending on age and work history. Contact SSA to apply; it doesn't happen automatically.</p>
+                    <div class="answer-tip">💡 The SSA one-time death payment of $255 must be applied for — it doesn't come automatically. Surviving spouses and dependent children are eligible.</div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFaq(this)">
+                    Do I need to file a final tax return for the deceased?
+                    <span class="faq-chevron">▼</span>
+                </button>
+                <div class="faq-answer">
+                    <p><strong>Yes, in most cases.</strong> A final individual income tax return (Form 1040) must be filed for the year of death, covering income earned from January 1 through the date of death. The deadline is April 15 of the following year.</p>
+                    <p>If the estate earns income after death (interest, dividends, rental income), a separate estate income tax return (Form 1041) may be required.</p>
+                    <p>A federal estate tax return (Form 706) is only required if the estate exceeds $13.61 million (2024). The vast majority of estates do not owe federal estate tax. California does not have a separate state estate tax.</p>
+                    <p>A CPA or estate attorney who handles tax matters can be invaluable here, especially if the deceased had a business, investment property, or complex finances.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFaq(this)">
+                    How much does a funeral actually cost in the Bay Area?
+                    <span class="faq-chevron">▼</span>
+                </button>
+                <div class="faq-answer">
+                    <p>Bay Area costs are higher than national averages. Here's a realistic breakdown:</p>
+                    <p><strong>Direct cremation (no service):</strong> $2,200 – $3,500. The most affordable option. You receive the ashes and can hold a memorial separately.</p>
+                    <p><strong>Cremation with a service:</strong> $4,500 – $8,000. Includes a viewing or memorial at the funeral home, with cremation afterward.</p>
+                    <p><strong>Traditional burial:</strong> $9,000 – $16,000+. Casket, preparation, funeral service, and cemetery plot (plots alone in the Bay Area often run $3,000–$10,000+).</p>
+                    <p><strong>Green/natural burial:</strong> $3,500 – $7,000. Growing in popularity in the Bay Area.</p>
+                    <div class="answer-tip">💡 Use our <a href="costs.html">Cost Estimator</a> to build a personalized cost estimate based on your situation.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ——— GRIEF & FAMILY ——— -->
+        <div class="faq-category" data-category="grief">
+            <div class="category-heading">
+                <span class="category-heading-icon">💙</span> Grief &amp; Family
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFaq(this)">
+                    How do I tell children that someone has died?
+                    <span class="faq-chevron">▼</span>
+                </button>
+                <div class="faq-answer">
+                    <p>There is no perfect script, but experts consistently recommend a few things:</p>
+                    <p><strong>Use clear, honest language.</strong> Words like "died" and "death" are better than euphemisms like "passed away," "gone to sleep," or "lost." Young children can misunderstand euphemisms in frightening ways (a child told grandma "went to sleep" may become afraid of sleeping).</p>
+                    <p><strong>Keep it simple and age-appropriate.</strong> Young children (under 5) need only basic information: "Grandma's body stopped working and she died. We won't see her anymore, but we will always remember her and love her."</p>
+                    <p><strong>Let them ask questions.</strong> Children process grief in bursts, often returning to questions days or weeks later. That's normal.</p>
+                    <p><strong>Include them if they want to be included.</strong> Allowing children to attend services (with preparation and their own choice) helps them understand and process the reality of death.</p>
+                    <p><strong>Reassure them they are safe.</strong> Children often worry about who will take care of them after a death. Address this directly.</p>
+                    <div class="answer-tip">💡 The website WhenPetsDie.org (yes, it applies to human loss too) and books like "The Invisible String" by Patrice Karst are excellent resources for children's grief.</div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFaq(this)">
+                    Is it normal to feel nothing (or feel relieved) after a death?
+                    <span class="faq-chevron">▼</span>
+                </button>
+                <div class="faq-answer">
+                    <p><strong>Yes, both are completely normal.</strong></p>
+                    <p>Grief does not follow a predictable path. Many people feel numb or emotionally flat in the immediate aftermath of a death — this is a common protective response, not a sign that you didn't care. The emotions often come in waves, sometimes weeks or months later.</p>
+                    <p>Feeling relief after a death — particularly when someone suffered through a long illness or a difficult relationship — is also very common and doesn't mean you didn't love them. Relief and grief can coexist.</p>
+                    <p>There is no "right" way to grieve. If your experience doesn't match what you expected or what you see in others, that's okay.</p>
+                    <div class="answer-tip">💡 If you're struggling with unexpected or complicated feelings, grief counselors and support groups can be genuinely helpful. See our <a href="support.html">Support page</a> for Bay Area resources.</div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFaq(this)">
+                    How do I handle family conflict over funeral decisions?
+                    <span class="faq-chevron">▼</span>
+                </button>
+                <div class="faq-answer">
+                    <p>Family conflict after a death is extremely common — grief is raw, and people process it differently. A few things that help:</p>
+                    <p><strong>Clarify who has legal authority.</strong> Under California law, the next of kin (in a specific order: spouse/domestic partner, adult children, parents, siblings) has legal authority to make disposition decisions if no pre-arranged plan exists. Knowing who has final say can prevent prolonged standoffs.</p>
+                    <p><strong>Look for any written wishes.</strong> Did the deceased leave any written instructions, even informal ones? Letters, messages, or notes expressing preferences carry significant moral weight, even if not legally binding.</p>
+                    <p><strong>Separate funeral decisions from estate decisions.</strong> Arguments about who gets what can contaminate funeral planning. Try to compartmentalize: make the immediate funeral decisions first, then address the estate separately.</p>
+                    <p><strong>Give people tasks that match their needs.</strong> People who need to "do something" to cope can be given specific responsibilities — writing the obituary, arranging catering, creating a photo display — rather than being left to stew.</p>
+                    <p>If conflict is severe, a family mediator (often available through grief counseling organizations) can help.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFaq(this)">
+                    How long does grief last?
+                    <span class="faq-chevron">▼</span>
+                </button>
+                <div class="faq-answer">
+                    <p>There is no set timeline, and anyone who tells you there is — including the old "5 stages of grief" model — is oversimplifying. Grief is not linear and does not have an end date.</p>
+                    <p>For most people, the acute, overwhelming phase of grief gradually softens over months to years. But grief often resurfaces — at anniversaries, holidays, major life events, or randomly. That is normal and healthy, not a sign that something is wrong with you or that you "should be over it."</p>
+                    <p><strong>When to seek professional support:</strong> If grief is interfering with your ability to function, sleep, eat, or care for yourself or others weeks or months after the loss; if you're experiencing thoughts of self-harm; or if the loss was traumatic (sudden, violent, or a suicide). These are signs that professional grief support would help.</p>
+                    <div class="answer-tip">💡 See our <a href="support.html">Support page</a> for grief counselors, support groups, and hotlines in the Bay Area.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Still have questions CTA -->
+        <div class="still-questions">
+            <div style="font-size:32px;margin-bottom:12px;">💬</div>
+            <h3>Still have questions?</h3>
+            <p>Tendwell is a free community resource. If there's something you need that isn't covered here, we'd love to hear from you.</p>
+            <a href="mailto:hello@tendwell.com" class="btn">Email us a question</a>
+        </div>
+
+    </div><!-- end main-content -->
+
+    <!-- Footer -->
+    <footer class="tw-footer">
+        <div class="tw-footer-inner">
+            <div class="tw-footer-grid">
+                <div>
+                    <div class="tw-footer-brand-name">🌿 Tendwell</div>
+                    <p class="tw-footer-tagline">Making end-of-life logistics accessible and clear for Bay Area families. Free to use, always.</p>
+                </div>
+                <div>
+                    <div class="tw-footer-col-title">Pages</div>
+                    <ul class="tw-footer-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="guide.html">Guide</a></li>
+                        <li><a href="providers.html">Providers</a></li>
+                        <li><a href="costs.html">Costs</a></li>
+                        <li><a href="support.html">Support</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="tw-footer-col-title">Resources</div>
+                    <ul class="tw-footer-links">
+                        <li><a href="glossary.html">Glossary</a></li>
+                        <li><a href="faq.html">FAQ</a></li>
+                        <li><a href="mailto:hello@tendwell.com">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="tw-footer-col-title">Disclaimer</div>
+                    <p class="tw-footer-disclaimer">Tendwell does not endorse any provider listed on this site. All listings are for informational purposes only. Always verify credentials directly with providers.</p>
+                </div>
+            </div>
+            <div class="tw-footer-bottom">
+                <span>© 2026 Tendwell. A free community resource.</span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function toggleFaq(btn) {
+            const item = btn.closest('.faq-item');
+            const answer = item.querySelector('.faq-answer');
+            const isOpen = item.classList.contains('open');
+
+            // Close all
+            document.querySelectorAll('.faq-item.open').forEach(el => {
+                el.classList.remove('open');
+                el.querySelector('.faq-answer').classList.remove('open');
+            });
+
+            // Open this one if it was closed
+            if (!isOpen) {
+                item.classList.add('open');
+                answer.classList.add('open');
+                gtag('event', 'faq_expanded', { question: btn.textContent.trim().slice(0, 80) });
+            }
+        }
+
+        function filterCategory(cat, tab) {
+            // Update active tab
+            document.querySelectorAll('.cat-tab').forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+
+            // Show/hide categories
+            document.querySelectorAll('.faq-category').forEach(section => {
+                if (cat === 'all' || section.dataset.category === cat) {
+                    section.style.display = '';
+                } else {
+                    section.style.display = 'none';
+                }
+            });
+
+            // Close all open items on filter change
+            document.querySelectorAll('.faq-item.open').forEach(el => {
+                el.classList.remove('open');
+                el.querySelector('.faq-answer').classList.remove('open');
+            });
+        }
+    </script>
+</body>
+</html>

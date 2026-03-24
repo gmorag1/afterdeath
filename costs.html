@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Understanding the Costs | Tendwell</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="tendwell.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'GA_MEASUREMENT_ID');
+    </script>
+    <style>
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        body {
+            background-color: #F5F2ED;
+        }
+        .card {
+            background-color: white;
+            border-radius: 16px;
+        }
+        .primary-text {
+            color: #2D6A5A;
+        }
+        .primary-bg {
+            background-color: #2D6A5A;
+        }
+        .nav-link {
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .nav-link:hover {
+            color: #2D6A5A;
+        }
+        .nav-link.active {
+            color: #2D6A5A;
+            font-weight: 600;
+        }
+        .price-amount {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2D6A5A;
+            line-height: 1.2;
+        }
+        .cost-card {
+            display: flex;
+            flex-direction: column;
+        }
+        .callout-box {
+            border-left: 5px solid #2D6A5A;
+            padding: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="tw-nav">
+        <div class="tw-nav-inner">
+            <a href="index.html" class="tw-nav-logo">
+                <span class="tw-nav-logo-icon">🌿</span>
+                <span class="tw-nav-logo-text">Tendwell</span>
+            </a>
+            <div class="tw-nav-links">
+                <a href="index.html">Home</a>
+                <a href="guide.html">Guide</a>
+                <a href="providers.html">Providers</a>
+                <a href="costs.html" class="tw-active">Costs</a>
+                <a href="support.html">Support</a>
+                <a href="guide.html" class="tw-nav-cta">Get Help Now</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <div class="tw-page-header">
+        <span class="tw-page-header-label">Bay Area Cost Guide</span>
+        <h1>Understanding the Costs</h1>
+        <p>Funeral expenses can feel overwhelming, especially when they come without warning. Here's what to expect in the Bay Area.</p>
+    </div>
+
+    <!-- Cost Estimator Tool -->
+    <section class="py-16 px-6" style="background:white;">
+        <div class="max-w-3xl mx-auto">
+            <div style="text-align:center;margin-bottom:40px;">
+                <h2 style="font-size:28px;font-weight:700;color:#2D6A5A;margin-bottom:10px;">Estimate Your Costs</h2>
+                <p style="font-size:15px;color:#666;line-height:1.7;">Answer a few questions to get a Bay Area cost estimate. These are typical ranges — always get quotes directly from providers.</p>
+            </div>
+
+            <div style="background:#F5F2ED;border-radius:20px;padding:32px;">
+
+                <!-- Q1: Type of service -->
+                <div style="margin-bottom:24px;">
+                    <label style="font-size:14px;font-weight:600;color:#2B2B2B;display:block;margin-bottom:10px;">1. What type of service are you planning?</label>
+                    <div style="display:flex;flex-wrap:wrap;gap:10px;" id="q1">
+                        <button class="est-btn active" onclick="selectOpt(this,'q1','cremation')" data-val="cremation">Direct Cremation</button>
+                        <button class="est-btn" onclick="selectOpt(this,'q1','cremation-service')" data-val="cremation-service">Cremation + Service</button>
+                        <button class="est-btn" onclick="selectOpt(this,'q1','burial')" data-val="burial">Traditional Burial</button>
+                        <button class="est-btn" onclick="selectOpt(this,'q1','green')" data-val="green">Green / Natural Burial</button>
+                    </div>
+                </div>
+
+                <!-- Q2: Service size -->
+                <div style="margin-bottom:24px;">
+                    <label style="font-size:14px;font-weight:600;color:#2B2B2B;display:block;margin-bottom:10px;">2. Approximate number of guests at the service?</label>
+                    <div style="display:flex;flex-wrap:wrap;gap:10px;" id="q2">
+                        <button class="est-btn active" onclick="selectOpt(this,'q2','small')" data-val="small">Under 25</button>
+                        <button class="est-btn" onclick="selectOpt(this,'q2','medium')" data-val="medium">25–75</button>
+                        <button class="est-btn" onclick="selectOpt(this,'q2','large')" data-val="large">75–150</button>
+                        <button class="est-btn" onclick="selectOpt(this,'q2','xlarge')" data-val="xlarge">150+</button>
+                    </div>
+                </div>
+
+                <!-- Q3: Extras -->
+                <div style="margin-bottom:28px;">
+                    <label style="font-size:14px;font-weight:600;color:#2B2B2B;display:block;margin-bottom:10px;">3. Which of these do you plan to include? (select all that apply)</label>
+                    <div style="display:flex;flex-wrap:wrap;gap:10px;" id="q3">
+                        <button class="est-btn-toggle" onclick="toggleExtra(this)" data-extra="flowers" data-cost="400">Flowers / Arrangements</button>
+                        <button class="est-btn-toggle" onclick="toggleExtra(this)" data-extra="catering" data-cost="800">Catering / Repast</button>
+                        <button class="est-btn-toggle" onclick="toggleExtra(this)" data-extra="obituary" data-cost="450">Newspaper Obituary</button>
+                        <button class="est-btn-toggle" onclick="toggleExtra(this)" data-extra="celebrant" data-cost="600">Officiant / Celebrant</button>
+                        <button class="est-btn-toggle" onclick="toggleExtra(this)" data-extra="headstone" data-cost="2200">Headstone / Marker</button>
+                        <button class="est-btn-toggle" onclick="toggleExtra(this)" data-extra="attorney" data-cost="3500">Estate Attorney</button>
+                    </div>
+                </div>
+
+                <!-- Result -->
+                <div style="background:white;border-radius:14px;padding:24px;border:2px solid #2D6A5A;">
+                    <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:16px;">
+                        <div>
+                            <div style="font-size:13px;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">Estimated Bay Area Total</div>
+                            <div id="est-total" style="font-size:40px;font-weight:700;color:#2D6A5A;line-height:1;">$2,200 – $3,500</div>
+                            <div id="est-range-label" style="font-size:13px;color:#888;margin-top:6px;">Direct cremation, small gathering</div>
+                        </div>
+                        <a href="providers.html" style="display:inline-block;background:#2D6A5A;color:white;text-decoration:none;padding:12px 20px;border-radius:10px;font-size:14px;font-weight:600;align-self:center;">Find Providers →</a>
+                    </div>
+                    <div id="est-breakdown" style="margin-top:20px;padding-top:20px;border-top:1px solid #E8E5E0;display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;"></div>
+                    <p style="font-size:12px;color:#aaa;margin-top:16px;">These are estimated Bay Area ranges based on 2024–2025 market data. Actual costs vary by provider. Always request an itemized General Price List before committing.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <style>
+        .est-btn {
+            padding: 10px 18px; border-radius: 8px; font-size: 14px; font-weight: 500;
+            border: 2px solid #E5E1DC; background: white; color: #555; cursor: pointer; transition: all 0.2s;
+            font-family: 'Inter', sans-serif;
+        }
+        .est-btn.active { border-color: #2D6A5A; background: #E8F0ED; color: #2D6A5A; font-weight: 600; }
+        .est-btn-toggle {
+            padding: 10px 18px; border-radius: 8px; font-size: 14px; font-weight: 500;
+            border: 2px solid #E5E1DC; background: white; color: #555; cursor: pointer; transition: all 0.2s;
+            font-family: 'Inter', sans-serif;
+        }
+        .est-btn-toggle.selected { border-color: #2D6A5A; background: #E8F0ED; color: #2D6A5A; font-weight: 600; }
+    </style>
+
+    <script>
+        const serviceRanges = {
+            cremation:         { lo: 2200,  hi: 3500,  label: 'Direct cremation' },
+            'cremation-service': { lo: 4500,  hi: 8000,  label: 'Cremation with service' },
+            burial:            { lo: 9000,  hi: 16000, label: 'Traditional funeral + burial' },
+            green:             { lo: 3500,  hi: 7000,  label: 'Green / natural burial' }
+        };
+        const guestAdd = { small: 0, medium: 500, large: 1200, xlarge: 2500 };
+        let selectedService = 'cremation';
+        let selectedGuests = 'small';
+        const selectedExtras = {};
+
+        function selectOpt(btn, group, val) {
+            document.querySelectorAll(`#${group} .est-btn`).forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            if (group === 'q1') selectedService = val;
+            if (group === 'q2') selectedGuests = val;
+            updateEstimate();
+        }
+
+        function toggleExtra(btn) {
+            const key = btn.dataset.extra;
+            const cost = parseInt(btn.dataset.cost);
+            if (selectedExtras[key]) { delete selectedExtras[key]; btn.classList.remove('selected'); }
+            else { selectedExtras[key] = cost; btn.classList.add('selected'); }
+            updateEstimate();
+        }
+
+        function updateEstimate() {
+            const base = serviceRanges[selectedService];
+            const gAdd = guestAdd[selectedGuests];
+            const extraTotal = Object.values(selectedExtras).reduce((a, b) => a + b, 0);
+            const lo = base.lo + Math.round(gAdd * 0.8) + Math.round(extraTotal * 0.85);
+            const hi = base.hi + Math.round(gAdd * 1.2) + Math.round(extraTotal * 1.15);
+
+            document.getElementById('est-total').textContent =
+                '$' + lo.toLocaleString() + ' – $' + hi.toLocaleString();
+
+            const guestLabel = { small:'small gathering', medium:'~50 guests', large:'~100 guests', xlarge:'150+ guests' };
+            const extraNames = { flowers:'Flowers', catering:'Catering', obituary:'Obituary', celebrant:'Officiant', headstone:'Headstone', attorney:'Attorney' };
+            const extras = Object.keys(selectedExtras).map(k => extraNames[k]).join(', ');
+            document.getElementById('est-range-label').textContent =
+                base.label + ', ' + guestLabel[selectedGuests] + (extras ? ', + ' + extras : '');
+
+            // Breakdown
+            const bd = document.getElementById('est-breakdown');
+            const lines = [
+                { label: 'Funeral Home / Service', lo: base.lo, hi: base.hi },
+                { label: 'Guest-related costs', lo: Math.round(gAdd*0.8), hi: Math.round(gAdd*1.2) }
+            ];
+            Object.entries(selectedExtras).forEach(([k, v]) => {
+                lines.push({ label: extraNames[k], lo: Math.round(v*0.85), hi: Math.round(v*1.15) });
+            });
+            bd.innerHTML = lines.filter(l => l.hi > 0).map(l =>
+                `<div style="font-size:13px;color:#555;">
+                    <span style="font-weight:600;color:#2B2B2B;">${l.label}</span><br>
+                    $${l.lo.toLocaleString()} – $${l.hi.toLocaleString()}
+                </div>`
+            ).join('');
+        }
+    </script>
+
+    <!-- Section 1: What Things Actually Cost -->
+    <section class="py-16 px-6">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl font-bold primary-text mb-12 text-center">What Things Actually Cost</h2>
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- Card 1: Traditional Funeral + Burial -->
+                <div class="card cost-card p-8 shadow-sm">
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Traditional Funeral + Burial</h3>
+                    <div class="price-amount mb-4">$8,300 – $16,000</div>
+                    <p class="text-gray-600 leading-relaxed">Includes viewing, ceremony, casket, embalming, hearse, burial plot, and headstone. The national median is $8,300 for the service; cemetery costs add $4,000–$8,000.</p>
+                </div>
+
+                <!-- Card 2: Cremation with Service -->
+                <div class="card cost-card p-8 shadow-sm">
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Cremation with Service</h3>
+                    <div class="price-amount mb-4">$4,000 – $7,000</div>
+                    <p class="text-gray-600 leading-relaxed">Includes a memorial ceremony, cremation, and an urn. Growing in popularity — over 60% of Californians now choose cremation.</p>
+                </div>
+
+                <!-- Card 3: Direct Cremation -->
+                <div class="card cost-card p-8 shadow-sm">
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Direct Cremation</h3>
+                    <div class="price-amount mb-4">$1,500 – $3,000</div>
+                    <p class="text-gray-600 leading-relaxed">The most affordable option. No viewing or ceremony. The body is cremated, and ashes are returned to the family. A memorial can be held later at any time.</p>
+                </div>
+
+                <!-- Card 4: Flowers -->
+                <div class="card cost-card p-8 shadow-sm">
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Flowers</h3>
+                    <div class="price-amount mb-4">$200 – $1,500</div>
+                    <p class="text-gray-600 leading-relaxed">Sympathy bouquets start around $75. Standing sprays and casket pieces range from $200–$500+. Total floral costs depend on how many arrangements are ordered.</p>
+                </div>
+
+                <!-- Card 5: Catering / Reception -->
+                <div class="card cost-card p-8 shadow-sm">
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Catering / Reception</h3>
+                    <div class="price-amount mb-4">$500 – $5,000</div>
+                    <p class="text-gray-600 leading-relaxed">Post-service gatherings range from simple deli trays ($8–15/person) to full catering ($25–50/person). For 50 guests, budget $500–$2,500.</p>
+                </div>
+
+                <!-- Card 6: Estate & Probate Attorney -->
+                <div class="card cost-card p-8 shadow-sm">
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Estate & Probate Attorney</h3>
+                    <div class="price-amount mb-4">$3,000 – $15,000+</div>
+                    <p class="text-gray-600 leading-relaxed">California probate costs 4–7% of estate value. A $500,000 estate: $13,000+ in legal and executor fees. Trusts avoid probate entirely.</p>
+                </div>
+
+                <!-- Card 7: Death Certificates -->
+                <div class="card cost-card p-8 shadow-sm">
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Death Certificates</h3>
+                    <div class="price-amount mb-4">$100 – $350</div>
+                    <p class="text-gray-600 leading-relaxed">California charges ~$21 for the first certified copy and ~$6 for each additional. Order 10–15 copies.</p>
+                </div>
+
+                <!-- Card 8: Obituary -->
+                <div class="card cost-card p-8 shadow-sm">
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Obituary</h3>
+                    <div class="price-amount mb-4">$0 – $600</div>
+                    <p class="text-gray-600 leading-relaxed">Free on social media and some online platforms. Newspaper obituaries (SF Chronicle) cost $300–$600+.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 2: You Have Options -->
+    <section class="py-16 px-6">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold primary-text mb-3">You Have Options</h2>
+                <p class="text-xl text-gray-600">Financial Help Is Available</p>
+                <p class="text-lg text-gray-600 leading-relaxed mt-4">You don't have to figure this out alone. Here are real options that help thousands of families every year.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Card 1: Funeral Home Payment Plans -->
+                <div class="card p-8 shadow-sm">
+                    <div class="text-4xl mb-4">🏛️</div>
+                    <h3 class="text-xl font-bold primary-text mb-4">Funeral Home Payment Plans</h3>
+                    <p class="text-gray-600 leading-relaxed">Many funeral homes offer interest-free payment plans that spread costs over 6–12 months. Always ask — most don't advertise this. Under the FTC Funeral Rule, funeral homes are required to give you an itemized price list. You have the right to choose only the services you want.</p>
+                </div>
+
+                <!-- Card 2: Government Assistance -->
+                <div class="card p-8 shadow-sm">
+                    <div class="text-4xl mb-4">🏛️</div>
+                    <h3 class="text-xl font-bold primary-text mb-4">Government Assistance</h3>
+                    <p class="text-gray-600 leading-relaxed mb-4">FEMA Funeral Assistance: If the death was COVID-related, FEMA may reimburse up to $9,000 in funeral expenses. Social Security Death Benefit: A one-time $255 payment for surviving spouses. County Indigent Burial Programs: San Francisco, Alameda, and other Bay Area counties offer assistance for families who cannot afford funeral costs.</p>
+                    <div class="mt-4 pt-4 border-t border-gray-200">
+                        <p class="text-sm font-semibold primary-text mb-2">FEMA: <a href="tel:844-684-6333" class="underline hover:no-underline">844-684-6333</a></p>
+                    </div>
+                </div>
+
+                <!-- Card 3: Veteran Benefits -->
+                <div class="card p-8 shadow-sm">
+                    <div class="text-4xl mb-4">🎖️</div>
+                    <h3 class="text-xl font-bold primary-text mb-4">Veteran Benefits</h3>
+                    <p class="text-gray-600 leading-relaxed mb-4">The VA provides: burial allowance up to $2,000+ (service-connected death) or $948 (non-service-connected), free burial in a national cemetery (Golden Gate National Cemetery in San Bruno), free government headstone or marker, burial flag, and Presidential Memorial Certificate.</p>
+                    <div class="mt-4 pt-4 border-t border-gray-200">
+                        <p class="text-sm font-semibold primary-text">VA: <a href="tel:1-800-827-1000" class="underline hover:no-underline">1-800-827-1000</a></p>
+                    </div>
+                </div>
+
+                <!-- Card 4: Community Fundraising -->
+                <div class="card p-8 shadow-sm">
+                    <div class="text-4xl mb-4">💚</div>
+                    <h3 class="text-xl font-bold primary-text mb-4">Community Fundraising</h3>
+                    <p class="text-gray-600 leading-relaxed mb-4">GoFundMe funeral campaigns raise an average of $4,500 and are among the most supported campaign types. Be specific about costs, share on social media, and update donors. There is no shame in asking your community for help during the hardest time of your life.</p>
+                    <div class="mt-4 pt-4 border-t border-gray-200">
+                        <a href="https://www.gofundme.com/c/funeral-fundraising" target="_blank" class="text-sm font-semibold primary-text underline hover:no-underline">Start a GoFundMe →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 3: Protect Yourself -->
+    <section class="py-16 px-6">
+        <div class="max-w-4xl mx-auto">
+            <div class="card callout-box shadow-sm">
+                <h2 class="text-2xl font-bold primary-text mb-6">Know Your Rights</h2>
+                <ul class="space-y-4">
+                    <li class="flex gap-4">
+                        <span class="text-xl primary-text font-bold flex-shrink-0">✓</span>
+                        <span class="text-gray-700">Under the FTC Funeral Rule, funeral homes must provide an itemized General Price List.</span>
+                    </li>
+                    <li class="flex gap-4">
+                        <span class="text-xl primary-text font-bold flex-shrink-0">✓</span>
+                        <span class="text-gray-700">You are not required to purchase a casket from the funeral home — you can buy one elsewhere.</span>
+                    </li>
+                    <li class="flex gap-4">
+                        <span class="text-xl primary-text font-bold flex-shrink-0">✓</span>
+                        <span class="text-gray-700">You can decline embalming in most cases.</span>
+                    </li>
+                    <li class="flex gap-4">
+                        <span class="text-xl primary-text font-bold flex-shrink-0">✓</span>
+                        <span class="text-gray-700">You have the right to choose only the services you want.</span>
+                    </li>
+                    <li class="flex gap-4">
+                        <span class="text-xl primary-text font-bold flex-shrink-0">✓</span>
+                        <span class="text-gray-700">Never feel pressured to spend more than you can afford — your loved one would not want that.</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="tw-footer">
+        <div class="tw-footer-inner">
+            <div class="tw-footer-grid">
+                <div>
+                    <div class="tw-footer-brand-name">🌿 Tendwell</div>
+                    <p class="tw-footer-tagline">Making end-of-life logistics accessible and clear for Bay Area families. Free to use, always.</p>
+                </div>
+                <div>
+                    <div class="tw-footer-col-title">Pages</div>
+                    <ul class="tw-footer-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="guide.html">Guide</a></li>
+                        <li><a href="providers.html">Providers</a></li>
+                        <li><a href="costs.html">Costs</a></li>
+                        <li><a href="support.html">Support</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="tw-footer-col-title">Resources</div>
+                    <ul class="tw-footer-links">
+                        <li><a href="glossary.html">Glossary</a></li>
+                        <li><a href="faq.html">FAQ</a></li>
+                        <li><a href="mailto:hello@tendwell.com">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="tw-footer-col-title">Disclaimer</div>
+                    <p class="tw-footer-disclaimer">Tendwell does not endorse any provider listed on this site. All listings are for informational purposes only. Always verify credentials directly with providers.</p>
+                </div>
+            </div>
+            <div class="tw-footer-bottom">
+                <span>© 2026 Tendwell. A free community resource.</span>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

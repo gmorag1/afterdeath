@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tendwell — Compassionate Guidance When It Matters Most</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="tendwell.css">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-PLACEHOLDER"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-PLACEHOLDER');
+    </script>
+    <style>
+        /* ---- Index-page specific styles ---- */
+
+        /* Process timeline */
+        .timeline-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            position: relative;
+            z-index: 1;
+        }
+        .timeline-line {
+            position: absolute;
+            top: 44px;
+            left: calc(12.5% + 16px);
+            right: calc(12.5% + 16px);
+            height: 2px;
+            background: linear-gradient(to right, #2D6A5A, #5B9E8A, #A0CBB2, #D4EBE0);
+            border-radius: 2px;
+            z-index: 0;
+        }
+        .phase-node {
+            width: 88px;
+            height: 88px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 34px;
+        }
+        .phase-card {
+            border-radius: 16px;
+            padding: 24px 18px;
+            border-top: 3px solid;
+        }
+        .phase-tag {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+        .phase-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 16px;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 14px;
+        }
+        .phase-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .phase-list li {
+            display: flex;
+            gap: 8px;
+            align-items: flex-start;
+            font-size: 13px;
+            color: #6B7280;
+        }
+        .phase-check { font-weight: 700; flex-shrink: 0; }
+
+        /* Quick action cards grid */
+        .quick-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+        }
+
+        /* Emergency section */
+        .right-now-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
+        }
+        .right-now-card {
+            background: white;
+            border-radius: 14px;
+            padding: 22px;
+        }
+
+        @media (max-width: 768px) {
+            .timeline-grid { grid-template-columns: 1fr 1fr; }
+            .timeline-line { display: none; }
+        }
+        @media (max-width: 480px) {
+            .timeline-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="tw-nav">
+        <div class="tw-nav-inner">
+            <a href="index.html" class="tw-nav-logo">
+                <span class="tw-nav-logo-icon">🌿</span>
+                <span class="tw-nav-logo-text">Tendwell</span>
+            </a>
+            <div class="tw-nav-links">
+                <a href="index.html" class="tw-active">Home</a>
+                <a href="guide.html">Guide</a>
+                <a href="providers.html">Providers</a>
+                <a href="costs.html">Costs</a>
+                <a href="support.html">Support</a>
+                <a href="guide.html" class="tw-nav-cta">Get Help Now</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Emergency Banner / Toggle Trigger -->
+    <button id="right-now-toggle" class="tw-emergency-bar" onclick="toggleRightNow()" aria-expanded="false" aria-controls="right-now-panel" style="width:100%;border:none;cursor:pointer;text-align:center;">
+        <p style="display:flex;align-items:center;justify-content:center;gap:10px;margin:0;">
+            <span>Did this just happen? <strong>See what to do in the next hour</strong></span>
+            <span id="right-now-chevron" style="display:inline-flex;align-items:center;transition:transform 0.3s ease;">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="display:block;"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+        </p>
+    </button>
+
+    <!-- RIGHT NOW Panel (collapsed by default) -->
+    <div id="right-now-panel" style="overflow:hidden;max-height:0;transition:max-height 0.4s ease;" aria-hidden="true">
+        <section id="right-now" style="background:#FEF2F2;border-bottom:2px solid #FCA5A5;padding:44px 32px;">
+            <div style="max-width:960px;margin:0 auto;">
+                <div style="display:flex;align-items:center;gap:12px;margin-bottom:22px;">
+                    <span style="font-size:26px;">🚨</span>
+                    <h2 style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:#7F1D1D;margin:0;">Did this just happen? Do these three things first.</h2>
+                </div>
+                <div class="right-now-grid">
+                    <div class="right-now-card" style="border-left:4px solid #EF4444;">
+                        <div style="font-size:22px;margin-bottom:10px;">1️⃣</div>
+                        <h3 style="font-size:15px;font-weight:700;color:#111827;margin-bottom:8px;">Get legal pronouncement</h3>
+                        <p style="font-size:13px;color:#6B7280;line-height:1.6;margin-bottom:14px;">If unexpected or at home, call <strong>911</strong>. Under hospice or hospital care, the attending doctor handles this. <em>Do not move the body until authorized.</em></p>
+                        <a href="tel:911" style="display:inline-block;background:#EF4444;color:white;text-decoration:none;padding:8px 18px;border-radius:100px;font-size:13px;font-weight:600;">Call 911</a>
+                    </div>
+                    <div class="right-now-card" style="border-left:4px solid #D97706;">
+                        <div style="font-size:22px;margin-bottom:10px;">2️⃣</div>
+                        <h3 style="font-size:15px;font-weight:700;color:#111827;margin-bottom:8px;">Contact a funeral home</h3>
+                        <p style="font-size:13px;color:#6B7280;line-height:1.6;margin-bottom:14px;">They will arrange transport. You don't need to make all decisions now — just get someone on the phone. They are available 24/7 and will guide you.</p>
+                        <a href="providers.html" style="display:inline-block;background:#D97706;color:white;text-decoration:none;padding:8px 18px;border-radius:100px;font-size:13px;font-weight:600;">Find a Funeral Home</a>
+                    </div>
+                    <div class="right-now-card" style="border-left:4px solid #2D6A5A;">
+                        <div style="font-size:22px;margin-bottom:10px;">3️⃣</div>
+                        <h3 style="font-size:15px;font-weight:700;color:#111827;margin-bottom:8px;">Call someone to be with you</h3>
+                        <p style="font-size:13px;color:#6B7280;line-height:1.6;margin-bottom:14px;">You should not be alone right now. Call family, a close friend, or neighbor. If you're in emotional crisis, text or call <strong>988</strong> — someone will answer.</p>
+                        <a href="tel:988" style="display:inline-block;background:#2D6A5A;color:white;text-decoration:none;padding:8px 18px;border-radius:100px;font-size:13px;font-weight:600;">Call/Text 988</a>
+                    </div>
+                </div>
+                <p style="font-size:13px;color:#991B1B;margin-top:16px;text-align:center;font-weight:500;">Everything else can wait. These are the only three things that matter right now.</p>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        function toggleRightNow() {
+            const panel = document.getElementById('right-now-panel');
+            const toggle = document.getElementById('right-now-toggle');
+            const chevron = document.getElementById('right-now-chevron');
+            const isOpen = toggle.getAttribute('aria-expanded') === 'true';
+            if (isOpen) {
+                panel.style.maxHeight = '0';
+                toggle.setAttribute('aria-expanded', 'false');
+                panel.setAttribute('aria-hidden', 'true');
+                chevron.style.transform = 'rotate(0deg)';
+            } else {
+                panel.style.maxHeight = panel.scrollHeight + 'px';
+                toggle.setAttribute('aria-expanded', 'true');
+                panel.setAttribute('aria-hidden', 'false');
+                chevron.style.transform = 'rotate(180deg)';
+            }
+        }
+    </script>
+
+    <!-- Hero Section -->
+    <section class="tw-hero">
+        <div class="tw-hero-label">🌿 A free Bay Area resource</div>
+        <h1>Take a deep breath.<br>We'll guide you through this.</h1>
+        <p>Tendwell helps Bay Area families navigate the practical and emotional path after losing a loved one — one clear step at a time.</p>
+        <div class="tw-hero-ctas">
+            <a href="guide.html" class="tw-btn tw-btn-primary">Start the Step-by-Step Guide →</a>
+            <a href="providers.html" class="tw-btn tw-btn-ghost">Find Local Providers</a>
+        </div>
+    </section>
+
+    <!-- Stats Bar -->
+    <div class="tw-stats-bar">
+        <div class="tw-stats-grid">
+            <div>
+                <div class="tw-stat-number">189 hours</div>
+                <div class="tw-stat-label">Average time families spend navigating post-loss logistics</div>
+            </div>
+            <div>
+                <div class="tw-stat-number">$9,000–$15,000</div>
+                <div class="tw-stat-label">Average funeral cost in the Bay Area</div>
+            </div>
+            <div>
+                <div class="tw-stat-number">8–15 services</div>
+                <div class="tw-stat-label">A family must coordinate after a loss</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Process Timeline Section -->
+    <section class="tw-section tw-section-white">
+        <div class="tw-container">
+            <div style="text-align:center;margin-bottom:56px;">
+                <span class="tw-section-kicker">The journey ahead</span>
+                <h2 class="tw-section-title" style="margin:0 auto 14px;">What to expect after a loss</h2>
+                <p class="tw-section-subtitle" style="margin:0 auto;">The days and weeks ahead involve many moving parts. Here's a simplified view of the journey — so nothing catches you off guard.</p>
+            </div>
+
+            <div style="position:relative;">
+                <div class="timeline-line"></div>
+                <div class="timeline-grid">
+                    <!-- Phase 1 -->
+                    <div style="text-align:center;">
+                        <div class="phase-node" style="background:#2D6A5A;box-shadow:0 4px 20px rgba(45,106,90,0.28);">⏱️</div>
+                        <div class="phase-card" style="background:#F5F2ED;border-color:#2D6A5A;">
+                            <div class="phase-tag" style="color:#2D6A5A;">First 24 Hours</div>
+                            <h3 class="phase-title">Immediate Steps</h3>
+                            <ul class="phase-list">
+                                <li><span class="phase-check" style="color:#2D6A5A;">✓</span>Legal pronouncement</li>
+                                <li><span class="phase-check" style="color:#2D6A5A;">✓</span>Contact funeral home</li>
+                                <li><span class="phase-check" style="color:#2D6A5A;">✓</span>Notify close family</li>
+                                <li><span class="phase-check" style="color:#2D6A5A;">✓</span>Locate documents</li>
+                                <li><span class="phase-check" style="color:#2D6A5A;">✓</span>Secure the home</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Phase 2 -->
+                    <div style="text-align:center;">
+                        <div class="phase-node" style="background:#4A8E7B;box-shadow:0 4px 20px rgba(74,142,123,0.24);">📋</div>
+                        <div class="phase-card" style="background:#F5F2ED;border-color:#4A8E7B;">
+                            <div class="phase-tag" style="color:#4A8E7B;">Days 2–7</div>
+                            <h3 class="phase-title">Arrangements</h3>
+                            <ul class="phase-list">
+                                <li><span class="phase-check" style="color:#4A8E7B;">✓</span>Plan service or ceremony</li>
+                                <li><span class="phase-check" style="color:#4A8E7B;">✓</span>Order flowers & catering</li>
+                                <li><span class="phase-check" style="color:#4A8E7B;">✓</span>Write the obituary</li>
+                                <li><span class="phase-check" style="color:#4A8E7B;">✓</span>Obtain death certificates</li>
+                                <li><span class="phase-check" style="color:#4A8E7B;">✓</span>Notify employer & benefits</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Phase 3 -->
+                    <div style="text-align:center;">
+                        <div class="phase-node" style="background:#6BAA90;box-shadow:0 4px 20px rgba(107,170,144,0.22);">⚖️</div>
+                        <div class="phase-card" style="background:#F5F2ED;border-color:#6BAA90;">
+                            <div class="phase-tag" style="color:#6BAA90;">Weeks 2–4</div>
+                            <h3 class="phase-title">Legal &amp; Financial</h3>
+                            <ul class="phase-list">
+                                <li><span class="phase-check" style="color:#6BAA90;">✓</span>File for probate</li>
+                                <li><span class="phase-check" style="color:#6BAA90;">✓</span>Notify Social Security</li>
+                                <li><span class="phase-check" style="color:#6BAA90;">✓</span>Cancel subscriptions</li>
+                                <li><span class="phase-check" style="color:#6BAA90;">✓</span>Review life insurance</li>
+                                <li><span class="phase-check" style="color:#6BAA90;">✓</span>Manage ongoing bills</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Phase 4 -->
+                    <div style="text-align:center;">
+                        <div class="phase-node" style="background:#A8CCBB;box-shadow:0 4px 20px rgba(168,204,187,0.28);">💚</div>
+                        <div class="phase-card" style="background:#F5F2ED;border-color:#A8CCBB;">
+                            <div class="phase-tag" style="color:#888;">Months 2–6</div>
+                            <h3 class="phase-title">Settling &amp; Healing</h3>
+                            <ul class="phase-list">
+                                <li><span class="phase-check" style="color:#888;">✓</span>Close financial accounts</li>
+                                <li><span class="phase-check" style="color:#888;">✓</span>Transfer assets & property</li>
+                                <li><span class="phase-check" style="color:#888;">✓</span>File final tax returns</li>
+                                <li><span class="phase-check" style="color:#888;">✓</span>Seek grief counseling</li>
+                                <li><span class="phase-check" style="color:#888;">✓</span>Honor your loved one</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="text-align:center;margin-top:48px;">
+                <p style="font-size:15px;color:#6B7280;line-height:1.7;">Tendwell has a free resource for every phase of this journey.</p>
+                <div style="margin-top:12px;font-size:20px;color:#D4EBE0;">↓</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Actions Section -->
+    <section class="tw-section tw-section-warm">
+        <div class="tw-container">
+            <div style="text-align:center;margin-bottom:48px;">
+                <span class="tw-section-kicker">Free tools &amp; resources</span>
+                <h2 class="tw-section-title">Where would you like to start?</h2>
+            </div>
+            <div class="quick-grid">
+                <a href="guide.html" class="tw-card">
+                    <div class="tw-card-icon">📋</div>
+                    <h3 class="tw-card-title">Step-by-Step Guide</h3>
+                    <p class="tw-card-body">A compassionate checklist walking you through everything from the first 24 hours to months ahead. Save your progress.</p>
+                    <span class="tw-card-arrow">Open guide →</span>
+                </a>
+                <a href="providers.html" class="tw-card">
+                    <div class="tw-card-icon">📍</div>
+                    <h3 class="tw-card-title">Find Local Providers</h3>
+                    <p class="tw-card-body">Funeral homes, florists, attorneys, and counselors — 91 Bay Area services on an interactive map.</p>
+                    <span class="tw-card-arrow">Browse providers →</span>
+                </a>
+                <a href="costs.html" class="tw-card">
+                    <div class="tw-card-icon">💰</div>
+                    <h3 class="tw-card-title">Understand the Costs</h3>
+                    <p class="tw-card-body">Average Bay Area funeral: $9,000–$15,000. Use our free estimator to plan your budget before you call anyone.</p>
+                    <span class="tw-card-arrow">See costs →</span>
+                </a>
+                <a href="support.html" class="tw-card">
+                    <div class="tw-card-icon">💙</div>
+                    <h3 class="tw-card-title">Grief Support</h3>
+                    <p class="tw-card-body">Free and low-cost counseling, support groups, and crisis resources in the Bay Area. You don't have to carry this alone.</p>
+                    <span class="tw-card-arrow">Find support →</span>
+                </a>
+                <a href="glossary.html" class="tw-card">
+                    <div class="tw-card-icon">📖</div>
+                    <h3 class="tw-card-title">Glossary of Terms</h3>
+                    <p class="tw-card-body">Plain-English definitions for the legal, medical, and financial words you'll encounter — so nothing gets lost in translation.</p>
+                    <span class="tw-card-arrow">Browse terms →</span>
+                </a>
+                <a href="faq.html" class="tw-card">
+                    <div class="tw-card-icon">❓</div>
+                    <h3 class="tw-card-title">FAQ</h3>
+                    <p class="tw-card-body">Honest answers to "Do I need a funeral home in CA?", "What if there's no will?", and 18 other questions families always ask.</p>
+                    <span class="tw-card-arrow">Read answers →</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="tw-footer">
+        <div class="tw-footer-inner">
+            <div class="tw-footer-grid">
+                <div>
+                    <div class="tw-footer-brand-name">🌿 Tendwell</div>
+                    <p class="tw-footer-tagline">Making end-of-life logistics accessible and clear for everyone in the Bay Area. Free to use, always.</p>
+                </div>
+                <div>
+                    <div class="tw-footer-col-title">Pages</div>
+                    <ul class="tw-footer-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="guide.html">Guide</a></li>
+                        <li><a href="providers.html">Providers</a></li>
+                        <li><a href="costs.html">Costs</a></li>
+                        <li><a href="support.html">Support</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="tw-footer-col-title">Resources</div>
+                    <ul class="tw-footer-links">
+                        <li><a href="glossary.html">Glossary</a></li>
+                        <li><a href="faq.html">FAQ</a></li>
+                        <li><a href="mailto:hello@tendwell.com">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="tw-footer-col-title">Disclaimer</div>
+                    <p class="tw-footer-disclaimer">Tendwell does not endorse any provider listed on this site. All listings are for informational purposes only. Always verify credentials directly with providers.</p>
+                </div>
+            </div>
+            <div class="tw-footer-bottom">
+                <span>© 2026 Tendwell. A free community resource.</span>
+                <span>Source: Empathy.com, NFDA, MoneyGeek</span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.querySelectorAll('.tw-card, .tw-btn').forEach(el => {
+            el.addEventListener('click', function() {
+                gtag('event', 'cta_click', {
+                    'element_text': this.textContent.trim().slice(0, 60),
+                    'page': 'home'
+                });
+            });
+        });
+    </script>
+</body>
+</html>

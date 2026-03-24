@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Support - Tendwell</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="tendwell.css">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'GA_MEASUREMENT_ID');
+    </script>
+    <style>
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        body {
+            background-color: #F5F2ED;
+            color: #2B2B2B;
+        }
+        .crisis-card {
+            border-left: 6px solid #2D6A5A;
+        }
+        .tag {
+            background-color: #E8F0ED;
+            color: #2D6A5A;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        .phone-button {
+            background-color: #2D6A5A;
+            color: white;
+            transition: background-color 0.2s;
+        }
+        .phone-button:hover {
+            background-color: #1f4a3f;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="tw-nav">
+        <div class="tw-nav-inner">
+            <a href="index.html" class="tw-nav-logo">
+                <span class="tw-nav-logo-icon">🌿</span>
+                <span class="tw-nav-logo-text">Tendwell</span>
+            </a>
+            <div class="tw-nav-links">
+                <a href="index.html">Home</a>
+                <a href="guide.html">Guide</a>
+                <a href="providers.html">Providers</a>
+                <a href="costs.html">Costs</a>
+                <a href="support.html" class="tw-active">Support</a>
+                <a href="guide.html" class="tw-nav-cta">Get Help Now</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <div class="tw-page-header">
+        <span class="tw-page-header-label">Grief &amp; Emotional Support</span>
+        <h1>You Don't Have to Carry This Alone</h1>
+        <p>Grief is not a problem to solve — it's a process to live through. These resources can help you find support at your own pace.</p>
+    </div>
+
+    <!-- Main Content -->
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+
+        <!-- Section 1: Crisis Resources -->
+        <section class="mb-16">
+            <div class="bg-white rounded-2xl p-8 crisis-card">
+                <p class="font-semibold text-lg mb-6" style="color: #2D6A5A;">If you or someone you know is in crisis</p>
+
+                <div class="space-y-6">
+                    <!-- 988 Suicide & Crisis Lifeline -->
+                    <div>
+                        <p class="font-semibold mb-2" style="color: #2B2B2B;">988 Suicide & Crisis Lifeline</p>
+                        <p class="mb-3" style="color: #888888;">Call or text <span class="font-semibold" style="color: #2B2B2B;">988</span> — Available 24/7</p>
+                        <a href="tel:988" onclick="gtag('event', 'phone_click', {number: '988', resource: 'crisis_lifeline'});" class="inline-block phone-button px-6 py-2 rounded-lg font-semibold">Call 988</a>
+                    </div>
+
+                    <!-- Crisis Text Line -->
+                    <div>
+                        <p class="font-semibold mb-2" style="color: #2B2B2B;">Crisis Text Line</p>
+                        <p class="mb-3" style="color: #888888;">Text <span class="font-semibold" style="color: #2B2B2B;">HOME</span> to <span class="font-semibold" style="color: #2B2B2B;">741741</span></p>
+                        <p class="text-sm" style="color: #888888;">Available 24/7 via text message</p>
+                    </div>
+
+                    <!-- SAMHSA Helpline -->
+                    <div>
+                        <p class="font-semibold mb-2" style="color: #2B2B2B;">SAMHSA Helpline</p>
+                        <p class="mb-3" style="color: #888888;">Call <span class="font-semibold" style="color: #2B2B2B;">1-800-662-4357</span></p>
+                        <p class="mb-3 text-sm" style="color: #888888;">Free, confidential, 24/7 — For substance abuse and mental health support</p>
+                        <a href="tel:1-800-662-4357" onclick="gtag('event', 'phone_click', {number: '1-800-662-4357', resource: 'samhsa'});" class="inline-block phone-button px-6 py-2 rounded-lg font-semibold">Call SAMHSA</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Bay Area Grief Support -->
+        <section class="mb-16">
+            <div class="mb-8">
+                <h2 class="text-3xl sm:text-4xl font-bold mb-2" style="color: #2B2B2B;">Local Support Services</h2>
+                <p class="text-lg" style="color: #888888;">These Bay Area organizations offer counseling, support groups, and compassionate care — many at no cost.</p>
+            </div>
+
+            <div class="space-y-6">
+                <!-- JFCS -->
+                <div class="bg-white rounded-2xl p-8">
+                    <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-4 gap-4">
+                        <h3 class="text-xl font-bold" style="color: #2B2B2B;">JFCS Grief & Bereavement Counseling</h3>
+                    </div>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="tag px-3 py-1 rounded-full">Counseling</span>
+                        <span class="tag px-3 py-1 rounded-full">Support Groups</span>
+                        <span class="tag px-3 py-1 rounded-full">Sliding Scale</span>
+                    </div>
+                    <p class="mb-4" style="color: #888888; line-height: 1.6;">Individual and group grief counseling serving San Francisco and Marin counties. All services welcome anyone regardless of age, faith, or type of loss. Offers specialized groups for spousal loss, parent loss, and sudden/traumatic death.</p>
+                    <a href="tel:415-449-1212" onclick="gtag('event', 'phone_click', {number: '415-449-1212', resource: 'jfcs'});" class="inline-block phone-button px-6 py-2 rounded-lg font-semibold">(415) 449-1212</a>
+                </div>
+
+                <!-- By the Bay Health -->
+                <div class="bg-white rounded-2xl p-8">
+                    <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-4 gap-4">
+                        <h3 class="text-xl font-bold" style="color: #2B2B2B;">By the Bay Health — Grief Support</h3>
+                    </div>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="tag px-3 py-1 rounded-full">Support Groups</span>
+                        <span class="tag px-3 py-1 rounded-full">Free</span>
+                    </div>
+                    <p class="mb-4" style="color: #888888; line-height: 1.6;">Offers community grief support groups open to anyone in San Francisco, regardless of whether your loved one was in their hospice program. Groups meet regularly and provide a safe, facilitated space to share your experience with others who understand.</p>
+                    <a href="tel:415-526-5699" onclick="gtag('event', 'phone_click', {number: '415-526-5699', resource: 'by_the_bay'});" class="inline-block phone-button px-6 py-2 rounded-lg font-semibold">(415) 526-5699</a>
+                </div>
+
+                <!-- KARA -->
+                <div class="bg-white rounded-2xl p-8">
+                    <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-4 gap-4">
+                        <h3 class="text-xl font-bold" style="color: #2B2B2B;">KARA Grief Support</h3>
+                    </div>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="tag px-3 py-1 rounded-full">Children & Teens</span>
+                        <span class="tag px-3 py-1 rounded-full">Adults</span>
+                        <span class="tag px-3 py-1 rounded-full">Free</span>
+                    </div>
+                    <p class="mb-4" style="color: #888888; line-height: 1.6;">One of the Bay Area's most respected grief organizations, based in Palo Alto. Offers peer support groups for children (ages 5+), teenagers, and adults. KARA's model centers on community and shared experience rather than clinical therapy. All services are free.</p>
+                    <a href="tel:650-321-5272" onclick="gtag('event', 'phone_click', {number: '650-321-5272', resource: 'kara'});" class="inline-block phone-button px-6 py-2 rounded-lg font-semibold">(650) 321-5272</a>
+                </div>
+
+                <!-- Bay Area CBT Center -->
+                <div class="bg-white rounded-2xl p-8">
+                    <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-4 gap-4">
+                        <h3 class="text-xl font-bold" style="color: #2B2B2B;">Bay Area CBT Center</h3>
+                    </div>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="tag px-3 py-1 rounded-full">Therapy</span>
+                        <span class="tag px-3 py-1 rounded-full">Individual</span>
+                    </div>
+                    <p class="mb-4" style="color: #888888; line-height: 1.6;">Offers integrative grief therapy combining Cognitive Behavioral Therapy, mindfulness, somatic techniques, and Acceptance and Commitment Therapy. Especially helpful for complicated grief, prolonged grief disorder, or grief combined with anxiety or depression. Insurance accepted.</p>
+                    <a href="tel:415-310-5142" onclick="gtag('event', 'phone_click', {number: '415-310-5142', resource: 'bay_area_cbt'});" class="inline-block phone-button px-6 py-2 rounded-lg font-semibold">(415) 310-5142</a>
+                </div>
+
+                <!-- Sutter Health -->
+                <div class="bg-white rounded-2xl p-8">
+                    <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-4 gap-4">
+                        <h3 class="text-xl font-bold" style="color: #2B2B2B;">Sutter Health Bereavement Program</h3>
+                    </div>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="tag px-3 py-1 rounded-full">Free</span>
+                        <span class="tag px-3 py-1 rounded-full">Open to All</span>
+                    </div>
+                    <p class="mb-4" style="color: #888888; line-height: 1.6;">Free individual and group bereavement support serving San Francisco and Marin counties. Open to anyone grieving the loss of a loved one — you do not need to be a Sutter Health patient. Groups are facilitated by trained bereavement counselors.</p>
+                    <a href="tel:855-259-0943" onclick="gtag('event', 'phone_click', {number: '855-259-0943', resource: 'sutter_health'});" class="inline-block phone-button px-6 py-2 rounded-lg font-semibold">(855) 259-0943</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: Understanding Grief -->
+        <section class="mb-16">
+            <div class="mb-8">
+                <h2 class="text-3xl sm:text-4xl font-bold mb-2" style="color: #2B2B2B;">What Grief Can Look and Feel Like</h2>
+                <p class="text-lg" style="color: #888888;">There is no "right" way to grieve. But understanding what you may experience can help you be gentler with yourself.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Numb -->
+                <div class="bg-white rounded-2xl p-8">
+                    <h3 class="text-lg font-bold mb-3" style="color: #2B2B2B;">"You might feel numb"</h3>
+                    <p style="color: #888888; line-height: 1.6;">In the first days and weeks, many people feel nothing at all — or feel like they're watching themselves from the outside. This is your mind protecting you. It's normal and it will shift in its own time.</p>
+                </div>
+
+                <!-- Angry -->
+                <div class="bg-white rounded-2xl p-8">
+                    <h3 class="text-lg font-bold mb-3" style="color: #2B2B2B;">"You might feel angry"</h3>
+                    <p style="color: #888888; line-height: 1.6;">Anger is one of the most common — and most misunderstood — grief responses. You might feel angry at the person who died, at doctors, at God, at yourself, or at the world. This is grief, not a character flaw.</p>
+                </div>
+
+                <!-- Relief -->
+                <div class="bg-white rounded-2xl p-8">
+                    <h3 class="text-lg font-bold mb-3" style="color: #2B2B2B;">"You might feel relief"</h3>
+                    <p style="color: #888888; line-height: 1.6;">If your loved one suffered a long illness, feeling relief doesn't mean you didn't love them. It means you loved them enough to not want them to suffer. Relief and grief can coexist.</p>
+                </div>
+
+                <!-- Timeline -->
+                <div class="bg-white rounded-2xl p-8">
+                    <h3 class="text-lg font-bold mb-3" style="color: #2B2B2B;">"Grief has no timeline"</h3>
+                    <p style="color: #888888; line-height: 1.6;">Anyone who tells you "it's been long enough" has never lost what you've lost. Grief comes in waves — it may feel manageable for weeks and then hit you in the grocery store on a Tuesday. This is normal.</p>
+                </div>
+
+                <!-- Physical -->
+                <div class="bg-white rounded-2xl p-8 md:col-span-2">
+                    <h3 class="text-lg font-bold mb-3" style="color: #2B2B2B;">"Physical symptoms are real"</h3>
+                    <p style="color: #888888; line-height: 1.6;">Grief affects the body too: exhaustion, insomnia, appetite changes, chest tightness, brain fog, and weakened immunity are all documented grief responses. If symptoms persist, please see your doctor.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: Helpful Books & Resources -->
+        <section class="mb-16">
+            <div class="mb-8">
+                <h2 class="text-3xl sm:text-4xl font-bold mb-2" style="color: #2B2B2B;">Further Reading</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Book 1 -->
+                <div class="bg-white rounded-2xl p-8">
+                    <p class="font-bold text-lg mb-2" style="color: #2B2B2B;">"It's OK That You're Not OK"</p>
+                    <p class="text-sm mb-3" style="color: #888888;">by Megan Devine</p>
+                    <p style="color: #888888; line-height: 1.6;">A compassionate guide that validates grief rather than trying to fix it.</p>
+                </div>
+
+                <!-- Book 2 -->
+                <div class="bg-white rounded-2xl p-8">
+                    <p class="font-bold text-lg mb-2" style="color: #2B2B2B;">"The Year of Magical Thinking"</p>
+                    <p class="text-sm mb-3" style="color: #888888;">by Joan Didion</p>
+                    <p style="color: #888888; line-height: 1.6;">A powerful memoir of sudden loss and the mind's attempt to make sense of it.</p>
+                </div>
+
+                <!-- Book 3 -->
+                <div class="bg-white rounded-2xl p-8">
+                    <p class="font-bold text-lg mb-2" style="color: #2B2B2B;">"Option B"</p>
+                    <p class="text-sm mb-3" style="color: #888888;">by Sheryl Sandberg & Adam Grant</p>
+                    <p style="color: #888888; line-height: 1.6;">Practical wisdom on building resilience after loss.</p>
+                </div>
+
+                <!-- Book 4 -->
+                <div class="bg-white rounded-2xl p-8">
+                    <p class="font-bold text-lg mb-2" style="color: #2B2B2B;">"When Breath Becomes Air"</p>
+                    <p class="text-sm mb-3" style="color: #888888;">by Paul Kalanithi</p>
+                    <p style="color: #888888; line-height: 1.6;">A neurosurgeon's reflection on mortality and meaning.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="tw-footer">
+        <div class="tw-footer-inner">
+            <div class="tw-footer-grid">
+                <div>
+                    <div class="tw-footer-brand-name">🌿 Tendwell</div>
+                    <p class="tw-footer-tagline">Making end-of-life logistics accessible and clear for Bay Area families. Free to use, always.</p>
+                </div>
+                <div>
+                    <div class="tw-footer-col-title">Pages</div>
+                    <ul class="tw-footer-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="guide.html">Guide</a></li>
+                        <li><a href="providers.html">Providers</a></li>
+                        <li><a href="costs.html">Costs</a></li>
+                        <li><a href="support.html">Support</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="tw-footer-col-title">Resources</div>
+                    <ul class="tw-footer-links">
+                        <li><a href="glossary.html">Glossary</a></li>
+                        <li><a href="faq.html">FAQ</a></li>
+                        <li><a href="mailto:hello@tendwell.com">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="tw-footer-col-title">Disclaimer</div>
+                    <p class="tw-footer-disclaimer">Tendwell does not endorse any provider listed on this site. All listings are for informational purposes only. Always verify credentials directly with providers.</p>
+                </div>
+            </div>
+            <div class="tw-footer-bottom">
+                <span>© 2026 Tendwell. A free community resource.</span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+    </script>
+</body>
+</html>
